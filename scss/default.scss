@@ -1,0 +1,175 @@
+/* ---------------------------------------------------
+    DEFAULT.SCSS
+----------------------------------------------------- */
+
+/* ---------------------------------------------------
+    1. COLORES
+----------------------------------------------------- */
+
+$primary-color: #3282b8;
+$secondary-color: #1b262c;
+$tertiary-color: #979fa3;
+$hover-color: #286791;
+$border-color: #ced4da;
+
+$main-font-color: #3282b8;
+$dark-font-color: #323232;
+$light-font-color: #818896;
+
+/* ---------------------------------------------------
+    2. ATRIBUTOS GLOBALES
+----------------------------------------------------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.toast {
+    position: fixed;
+    bottom: 35px;
+    right: 35px;
+    z-index: 1000 !important;
+}
+
+
+body {
+    font-family: 'Circular', sans-serif !important;
+    color: $secondary-color !important;
+    line-height: 1.2;
+    min-height: 100vh;
+    font-size: 15px;
+}
+
+// Cuando llegue a 1900px aumenta el tamaño de fuente.
+@media (min-width:1900px) {
+    body {
+        font-size: 20px;
+    }
+}
+
+td {
+    white-space: nowrap !important;
+}
+
+/* ---------------------------------------------------
+    3. TEXTOS
+----------------------------------------------------- */
+.text-primary{
+    color: $main-font-color !important;
+}
+
+.text-title {
+    color: $dark-font-color;
+    font-weight: bold;
+}
+
+.text-subtitle {
+    color: $light-font-color;
+}
+
+.text-small {
+    color: $light-font-color;
+}
+
+.text-brand {
+    color: $secondary-color;
+    font-weight: bold;
+}
+
+.text-dark {
+    color: $secondary-color;
+}
+
+/* ---------------------------------------------------
+    4. BOTONES
+----------------------------------------------------- */
+
+.btn-main{
+    color: white;
+    background: $primary-color;
+}
+
+.btn-main:hover{
+    color: white;
+    background: $primary-color;
+}
+
+
+/* ---------------------------------------------------
+    4. BADGES
+----------------------------------------------------- */
+
+.badge-main {
+    color: white;
+    background: $primary-color;
+}
+
+.badge-lg {
+    display: inline-block;
+    padding: .50em .80em;
+    font-size: 80%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+}
+
+/* ---------------------------------------------------
+    5. PLACEHOLDER
+----------------------------------------------------- */
+
+::placeholder {
+    color: $tertiary-color !important;
+    opacity: 1;
+}
+
+/* ---------------------------------------------------
+    6. MODALS
+----------------------------------------------------- */
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-items {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+    border-bottom-right-radius: .3rem;
+    border-bottom-left-radius: .3rem;
+}
+
+
+/* ---------------------------------------------------
+    7. FORMS
+----------------------------------------------------- */
+
+.form-control:focus {
+    border-color: $primary-color !important;
+    box-shadow: inset 0 1px 1px rgba($primary-color, 0.1), 0 0 8px rgba($primary-color, 0.1) !important;
+}
+
+// Forms -> Select2
+.select2-container .select2-selection:focus {
+    border-color: $primary-color !important;
+    box-shadow: inset 0 1px 1px rgba($primary-color, 0.1), 0 0 8px rgba($primary-color, 0.1) !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

@@ -1,0 +1,353 @@
+/* ---------------------------------------------------
+    DASHBOARD.SCSS
+----------------------------------------------------- */
+
+@import "default.scss";
+
+/* ---------------------------------------------------
+    1. SIDEBAR
+----------------------------------------------------- */
+
+#sidebar {
+    width: 260px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    transition: all 0.3s;
+    background-color: white !important;
+    border-right: 1px solid $border-color;
+}
+
+.sidebar-menu {
+    margin-bottom: 75px;
+}
+
+.sidebar-brand {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $border-color;
+}
+
+.sidebar-user {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid $border-color;
+}
+
+.sidebar-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+}
+
+.sidebar-user-name {
+    color: $secondary-color;
+    font-weight: bold;
+    display:block;
+}
+
+.sidebar-user-role, .sidebar-user-status {
+    color: $tertiary-color;
+    font-size:13px;
+    display:block;
+    margin-top: 4px;
+}
+
+.sidebar-user-status-circle {
+    color: #28a745;
+    font-size: 10px;
+    margin-right: 3px;
+}
+
+.sidebar-header-menu {
+    padding-top: 1rem;
+    padding-bottom: .5rem;
+    margin-left: 1.5rem;
+    list-style-type: none;
+    font-weight: bold;
+}
+
+.sidebar-menu-text {
+    color: $tertiary-color;
+    font-size: 14px;
+}
+
+.sidebar-dropdown {
+    padding-top: .4rem;
+    padding-bottom: .4rem;
+    margin-left: 1.5rem;
+    list-style-type: none;
+}
+
+.sidebar-dropdown > a {
+    text-decoration: none !important;
+}
+
+.sidebar-dropdown > a > i, .sidebar-footer a i {
+    color: $primary-color;
+    margin-right: 6px;
+    font-size: 1.2rem;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.sidebar-footer {
+    bottom: 0;
+    width: 260px;
+    position: fixed;
+    padding-top: .6rem;
+    padding-bottom: .6rem;
+    border-top: 1px solid $border-color;
+    border-right: 1px solid $border-color;
+}
+
+#sidebar.active {
+    margin-left: -260px;
+}
+
+// Estas 2 propiedades acomodan el :hover del footer del sidebar y las opciones de control de calidad y demás.
+.dropdown-item:hover {
+    background: $primary-color !important;
+    color: white;
+}
+
+.dropdown-item:hover > .dropdown-hovered {
+    color: white;
+}
+
+.select2-search__field ::placeholder{
+    color: red;
+    opacity: 1; /* Firefox */
+}
+/* ---------------------------------------------------
+  2. CONTENEDOR
+----------------------------------------------------- */
+
+#contenido {
+    width: calc(100% - 260px);
+    min-height: 100vh;
+    transition: all 0.3s;   
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 2.5rem;
+}
+
+#contenido.active {
+    width: 100%;
+}
+
+table.dataTable{
+    width: 100% !important;
+}
+
+/* ---------------------------------------------------
+  3. PAGINACION
+----------------------------------------------------- */
+
+.pagination > li > a {
+    color: $secondary-color !important;
+    background-color: white;
+    border-color: $border-color;
+}
+
+.pagination > li.active > a {
+    color: white !important;
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+}
+.pagination > li.disabled > a {
+    color: $secondary-color !important;
+    background-color: white !important;
+    border-color: $border-color !important;
+}
+
+.pagination > li > a:focus {
+  box-shadow: inset 0 1px 1px rgba($primary-color, 0.4), 0 0 8px rgba($primary-color, 0.4) !important;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+    color: white !important;
+    background-color: $primary-color !important;
+    border-color: $primary-color !important;
+}
+
+/* ---------------------------------------------------
+    ESTILOS PERSONALIZADOS
+----------------------------------------------------- */
+
+.contenedor-serie {
+    border: 1px solid $border-color !important;
+    border-radius: 30px !important !important;
+    padding: 1.2rem 1.4rem !important;
+    margin-bottom: 1rem;
+}
+
+.label-cantidades{
+    width: 100%;
+    color: white;
+    background-color: $dark-font-color;
+    display: inline-block;
+    font-size: 80%;
+    padding: .4em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    margin-bottom: 0 !important;
+}
+
+.input-cantidades{
+    border-radius: 0 !important;
+    border-top: 0 !important;
+    text-align: center !important;
+}
+
+.input-stock{
+    border-radius: 0 !important;
+    text-align: center !important;
+}
+// Personalizacion de los contenedores en Añadir y Editar Pedido.
+.tablaDatos, .tablaPedidos {
+    border: 1px solid $border-color;
+    border-radius: 3px !important;
+    padding: 2rem 3rem;
+}
+
+// Font Awesome - Color de Iconos globales.
+.icon-color {
+    color: $primary-color !important;
+}
+
+// Esconder los labels para que no se vean pero que ocupen su respectivo espacio en el DOM.
+.hide-label, .hide-options {
+    visibility: hidden !important;
+}
+
+// Sombra en los badge pills de Añadir y Editar Pedido.
+.badge-pill {
+    box-shadow: 0px 3px 10px rgba(32, 32, 32, 0.3) !important;
+}
+
+// Sweet Alert -> Texto centrado.
+.swal-text {
+    text-align: center;
+}
+
+// Ancho automatico para evitar scrollbars.
+.select2-container {
+    width: auto !important;
+}
+
+// Ajustar color del texto de las opciones de select2 asimismo agregar un poco de margen a la izquierda.
+.select2-selection__rendered {
+    margin-left: .5rem !important;
+    color: #495054;
+}
+
+// Ancho personalizado para el modal de Intercambiar Referencias encontrado en Control de Calidad
+.custom-width {
+    width: 35px !important;
+}
+
+// Borde del breamcrumb encontrado como navbar al principio de cada documento.
+.breadcrumb {
+    border: 1px solid #ced4da !important;
+}
+
+nav button:focus {
+    outline: none !important;
+}
+
+option[hover]{
+    color: white !important;
+    background: $primary-color !important;
+}
+
+/* ---------------------------------------------------
+  MEDIAQUERIES
+----------------------------------------------------- */
+
+@media (max-width: 1000px) {
+    #sidebar {
+        margin-left: -260px;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #contenido {
+        width: 100%;
+    }
+    #contenido.active {
+        width: calc(100% - 260px);
+    }
+}
+
+@media (max-width: 768px) {
+    .hide-options{
+        display: none;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .customInput{
+        margin-top: 1rem;
+    }
+}
+
+/* ---------------------------------------------------
+  MEDIAQUERIES - 1920x1080
+----------------------------------------------------- */
+
+@media (min-width: 1920px) {
+    .numero-casillero{
+        // font-size: 2rem;
+        color: red;
+    }
+    .badge-casillero{
+        font-size: 1.2rem;
+    }
+    .fa-casillero{
+        font-size: 2rem;
+    }
+    .referencia-casillero{
+        font-size: 2rem;
+    }
+    .pares-casillero{
+        font-size: 2rem;
+    }
+}
+
+.col-2{
+    flex: 0 0 20% !important;
+    max-width: 20% !important;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.card-body{
+    padding: 0.8rem;
+}
+
+// @media print {
+//     body * {
+//       visibility: hidden;
+//     }
+//     #print-modal, #print-modal * {
+//       visibility: visible;
+//     }
+//     #print-modal {
+//       position: absolute;
+//       left: 0;
+//       top: 0;
+//     }
+//   }
