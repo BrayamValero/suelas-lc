@@ -1,2 +1,2 @@
-# Suelas-LC---Web-App
+# Suelas-LC Web-App
 Management and audit system
