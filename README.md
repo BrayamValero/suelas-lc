@@ -1,6 +1,6 @@
 # Suelas LC | Web Application
 
-Suelas LC is a management and audit system web application.
+Suelas LC is a management and audit web application.
 
 ## Installation
 
