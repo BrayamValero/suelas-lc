@@ -296,7 +296,7 @@ $('#showDispatchedOrders').on('show.bs.modal', function (e) {
                 } else {
                     row.ESTADO = `
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="pedido-id-${row.ID}" value="${row.ID}">
+                        <input class="form-check-input" type="checkbox" name="producción-id-${row.ID}" value="${row.ID}">
                     </div>
                     `;
                 }
