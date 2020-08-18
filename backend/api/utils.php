@@ -266,7 +266,6 @@ function obtenerColores()
 {
     $sql = "SELECT * FROM COLOR;";
     $result = db_query($sql);
-
     echo json_encode($result);
 }
 

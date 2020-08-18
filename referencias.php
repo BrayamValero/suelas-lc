@@ -29,6 +29,12 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
     </div>
     <!-- Fin de Tabla -->
 
+    <!-- Boton -->
+    <div class="row mt-5">
+        <button class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirReferenciaModal">Añadir Referencia</button>
+    </div>
+    <!-- Fin de Botón -->
+
     <!-- Modal de Añadir Referencia -->
     <div class="modal fade" id="añadirReferenciaModal" tabindex="-1" role="dialog"
             aria-labelledby="añadirReferenciaModal" aria-hidden="true">
@@ -52,22 +58,22 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
                             <div class="form-group col-sm-4">
                                 <label for="añadirReferencia">Referencia</label>
-                                <input id="añadirReferencia" type="text" class="checkInput form-control" placeholder="Referencia" name="referencia" required>
+                                <input id="añadirReferencia" type="text" class="form-control" placeholder="Referencia" name="referencia" required>
                             </div>
 
                             <div class="form-group col-sm-6">
                                 <label for="añadirMarca">Marca</label>
-                                <input id="añadirMarca" type="text" class="checkInput form-control" placeholder="Nombre" name="marca" required>
+                                <input id="añadirMarca" type="text" class="form-control" placeholder="Nombre" name="marca" required>
                             </div>
 
                             <div class="form-group col-sm-2">
                                 <label for="añadirTalla">Talla</label>
-                                <input id="añadirTalla" type="number" min="0" class="checkInput form-control" placeholder="0" name="talla" required>
+                                <input id="añadirTalla" type="number" min="0" class="form-control" placeholder="0" name="talla" required>
                             </div>
 
                             <div class="form-group col-sm-4">
                                 <label for="añadirMaterial">Material</label>
-                                <select id="añadirMaterial" class="checkInput form-control" name="material" required>
+                                <select id="añadirMaterial" class="form-control" name="material" required>
                                     <option value="Expanso" selected>Expanso</option>
                                     <option value="PVC">PVC</option>
                                     <option value="PU">PU</option>
@@ -76,17 +82,17 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
                             <div class="form-group col-sm-4">
                                 <label for="añadirPesoMaquina">Peso Máquina</label>
-                                <input id="añadirPesoMaquina" type="number" min="1" class="checkInput form-control" placeholder="Peso" name="peso_maquina" required>
+                                <input id="añadirPesoMaquina" type="number" min="1" class="form-control" placeholder="Peso" name="peso_maquina" required>
                             </div>
 
                             <div class="form-group col-sm-4">
                                 <label for="añadirPesoIdeal">Peso Ideal</label>
-                                <input id="añadirPesoIdeal" type="number" min="1" class="checkInput form-control" placeholder="Peso" name="peso_ideal" required>
+                                <input id="añadirPesoIdeal" type="number" min="1" class="form-control" placeholder="Peso" name="peso_ideal" required>
                             </div>
 
                             <div class="form-group col-sm-12">
                                 <label for="añadirCapEmpaquetado">Cap. Empaquetado</label>
-                                <input id="añadirCapEmpaquetado" type="number" min="1" class="checkInput form-control" placeholder="Cap. Empaquetado" name="capacidad_empaquetado" required>
+                                <input id="añadirCapEmpaquetado" type="number" min="1" class="form-control" placeholder="Cap. Empaquetado" name="capacidad_empaquetado" required>
                             </div>
 
                         </div>
@@ -135,25 +141,25 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
                             <div class="form-group col-sm-4">
                                 <label for="editarReferencia">Referencia</label>
-                                <input id="editarReferencia" type="text" class="form-control checkEditedInput"
+                                <input id="editarReferencia" type="text" class="form-control"
                                         placeholder="Referencia" name="referencia" required>
                             </div>
 
                             <div class="form-group col-sm-6">
                                 <label for="editarMarca">Marca</label>
-                                <input id="editarMarca" type="text" class="form-control checkEditedInput"
+                                <input id="editarMarca" type="text" class="form-control"
                                         placeholder="Nombre" name="marca" required>
                             </div>
 
                             <div class="form-group col-sm-2">
                                 <label for="editarTalla">Talla</label>
-                                <input id="editarTalla" type="number" min="0" class="form-control checkEditedInput"
+                                <input id="editarTalla" type="number" min="0" max="50" class="form-control"
                                         placeholder="0" name="talla" required>
                             </div>
 
                             <div class="form-group col-sm-4">
                                 <label for="editarMaterial">Material</label>
-                                <select id="editarMaterial" class="form-control checkEditedInput" name="material"
+                                <select id="editarMaterial" class="form-control" name="material"
                                         required>
                                     <option value="Expanso" selected>Expanso</option>
                                     <option value="PVC">PVC</option>
@@ -164,18 +170,18 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
                             <div class="form-group col-sm-4">
                                 <label for="editarPesoMaquina">Peso Máquina</label>
                                 <input id="editarPesoMaquina" type="number" min="1"
-                                        class="form-control checkEditedInput" placeholder="Peso" name="peso_maquina" required>
+                                        class="form-control" placeholder="Peso" name="peso_maquina" required>
                             </div>
 
                             <div class="form-group col-sm-4">
                                 <label for="editarPesoIdeal">Peso Ideal</label>
                                 <input id="editarPesoIdeal" type="number" min="1"
-                                        class="form-control checkEditedInput" placeholder="Peso" name="peso_ideal" required>
+                                        class="form-control" placeholder="Peso" name="peso_ideal" required>
                             </div>
 
                             <div class="form-group col-sm-4">
                                 <label for="editarCapacidadEmpaquetado">Cap. Empaquetado</label>
-                                <input id="editarCapacidadEmpaquetado" type="number" min="1" class="form-control checkEditedInput" placeholder="Cap. Empaquetado" name="capacidad_empaquetado" required>
+                                <input id="editarCapacidadEmpaquetado" type="number" min="1" class="form-control" placeholder="Cap. Empaquetado" name="capacidad_empaquetado" required>
                             </div>
                             
                         </div>
@@ -197,22 +203,16 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
         </div>
     </div>
 
-    <!-- Boton -->
-    <div class="row mt-5">
-        <a class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirReferenciaModal"
-            href="#" role="button">Añadir Referencia</a>
-    </div>
-
     <!-- Toast => Alertas (data-delay="700" data-autohide="false") --> 
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
         <div class="toast-header">
             <i class="toast-icon"></i>
-            <strong class="mr-auto toast-title">Hello</strong>
+            <strong class="mr-auto toast-title"></strong>
             <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="toast-body">World</div>
+        <div class="toast-body"></div>
     </div>
 
 </div>
@@ -223,15 +223,6 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
 // Variables Inicializadas.
 var tabla;
-const editarId = document.getElementById("editarId");
-const editarReferencia = document.getElementById("editarReferencia");
-const editarMarca = document.getElementById("editarMarca");
-const editarTalla = document.getElementById("editarTalla");
-const editarMaterial = document.getElementById("editarMaterial");
-const editarPesoMaquina = document.getElementById("editarPesoMaquina");
-const editarPesoIdeal = document.getElementById("editarPesoIdeal");
-const editarCapacidadEmpaquetado = document.getElementById("editarCapacidadEmpaquetado");
-const botonAñadirReferencia = document.getElementById('botonAñadirReferencia');
 
 // Datatables => Mostrando la tabla REFERENCIAS
 $.ajax({
@@ -288,9 +279,9 @@ $.ajax({
         // Datatables => Paginación
         $.fn.DataTable.ext.pager.numbers_length = 5;
         
-        // Datatables => Buscador Personalizado
-        $('#customInput').on('keyup', function () {
-            tabla.search(this.value).draw();
+		// Datatables => Buscador Personalizado
+        document.getElementById('customInput').addEventListener('keyup', function () {
+			tabla.search(this.value).draw();
         });
 
     },   
@@ -300,141 +291,106 @@ $.ajax({
 
 });
 
-
-// AÑADIR => Limpiando inputs de Referencia.
-$('#añadirReferenciaModal').on('hidden.bs.modal', function (e) {
-    $(this).find("input, textarea").val('').end();
-});
-
 // AÑADIR => Añadiendo Referencia.
-botonAñadirReferencia.onclick = function() { 
+document.getElementById('botonAñadirReferencia').addEventListener('click', function () {
 
-    const checkValues = $(".checkInput").filter(function () {
-        return $.trim($(this).val()).length == 0
-    }).length == 0;
+    // $.post => Añadiendo el elemento al backend.
+    $.post( 'backend/api/referencias/añadir.php', $('#añadirReferenciaForm').serialize(), function(data) {
 
-    if(!checkValues){
+	    switch (data) {
 
-        return swal('Whoops', 'Debes llenar todos los campos.', 'warning');
+			case 'WARNING':
+				return swal('Whoops', 'Debes rellenar todos los campos.', 'warning');
+				break;
+			
+			case 'ERROR':
+				return swal('Error', 'La referencia ya se encuentra registrada.', 'error');
+				break;
 
-    } else {
+			default:
 
-        // $.post => Añadiendo el elemento al backend.
-        $.post( 'backend/api/referencias/añadir.php', $('#añadirReferenciaForm').serialize(), function(data) {
+				$('#añadirReferenciaModal').modal('hide')
 
-            if(!data){
+				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El color ha sido agregado satisfactoriamente.');
 
-                return swal('Error', 'Ya hay una referencia con ese código.', 'error');
+				const elems = $('#añadirReferenciaForm').serializeArray();
 
-            }
+				// Datatables => Añadiendo el elemento al frontend.
+				tabla.row.add({
+                    "ID":               data,
+                    "REFERENCIA":       elems[0].value,
+                    "MARCA":            elems[1].value,
+                    "TALLA":            elems[2].value,
+                    "MATERIAL":         elems[3].value,
+                    "PESO_MAQUINA":     elems[4].value,
+                    "PESO_IDEAL":       elems[5].value,
+                    "CAP_EMPAQUETADO":  elems[6].value,
+                    "ID":               data
+				}).draw().node();
 
-            $('#añadirReferenciaModal').modal('hide')
-            
-            toastNotifications('fas fa-check', 'text-success', '¡Agregada!', 'La referencia ha sido agregada satisfactoriamente.');
+                // Borrando los inputs del Modal.
+				$('#añadirReferenciaModal').on('hidden.bs.modal', function (e) {
+                    $(this).find("input, textarea").val('').end();
+                });
 
-            const elems = $('#añadirReferenciaForm').serializeArray();
-
-            // Datatables => Añadiendo el elemento al frontend.
-            tabla.row.add({
-                "ID":               data,
-                "REFERENCIA":       elems[0].value,
-                "MARCA":            elems[1].value,
-                "TALLA":            elems[2].value,
-                "MATERIAL":         elems[3].value,
-                "PESO_MAQUINA":     elems[4].value,
-                "PESO_IDEAL":       elems[5].value,
-                "CAP_EMPAQUETADO":  elems[6].value,
-                "ID":               data
-            }).draw().node();
-
-        });
-
-    }
-
-};
-
-// EDITAR => Mostrando Modal para Editar la referencia.
-$('#editarReferenciaModal').on('show.bs.modal', function (e) {
-
-    let id = $(e.relatedTarget).data('id');
-
-    $.ajax({
-        type: 'post',
-        url: 'backend/api/utils.php?fun=obtenerSuelaId',
-        data: 'id=' + id,
-        success: function (data) {
-
-            const result = JSON.parse(data);
-
-            $("#editarMaterial > option").each(function() {
-
-                if( result[0].MATERIAL == this.value ){
-
-                    $(this).prop("selected", true);
-                    
-                    return false;
-                
-                }
-
-            });
-
-            editarId.value = result[0].ID;
-            editarReferencia.value = result[0].REFERENCIA;
-            editarMarca.value = result[0].MARCA;
-            editarTalla.value = result[0].TALLA;
-            editarPesoMaquina.value = result[0].PESO_MAQUINA;
-            editarPesoIdeal.value = result[0].PESO_IDEAL;
-            editarCapacidadEmpaquetado.value = result[0].CAP_EMPAQUETADO;
         }
-    });
-});
 
+    });
+
+});
 
 // EDITAR => Editando Referencia.
 $('#tabla tbody').on( 'click', '.editarReferencia', function () {
 
     var result = $(this).parents('tr');
 
-    botonEditarReferencia.onclick = function() { 
-        
-        const checkValues = $(".checkEditedInput").filter(function () {
-            return $.trim($(this).val()).length == 0
-        }).length == 0;
+    document.getElementById('botonEditarReferencia').addEventListener('click', function () {
 
-        if(!checkValues){
+        var check = $('#editarReferenciaForm')[0].checkValidity();
 
-            return swal('Whoops', 'Debes llenar todos los campos.', 'warning');
-
-        } else {
-        
-            // $.post => Añadiendo el elemento al backend.
-            $.post( 'backend/api/referencias/editar.php', $('#editarReferenciaForm').serialize(), function(data) {
-
-                $('#editarReferenciaModal').modal('hide');
-
-                
-                toastNotifications('fas fa-edit', 'text-warning', '¡Editada!', 'La referencia ha sido editada satisfactoriamente.');
-
-                const elems = $('#editarReferenciaForm').serializeArray();
-
-                // Datatables => Editando el elemento en el frontend.
-                tabla.row(result).data({
-                    "ID":                   elems[0].value,
-                    "REFERENCIA":           elems[1].value,
-                    "MARCA":                elems[2].value,
-                    "TALLA":                elems[3].value,
-                    "MATERIAL":             elems[4].value,
-                    "PESO_MAQUINA":         elems[5].value,
-                    "PESO_IDEAL":           elems[6].value,
-                    "CAP_EMPAQUETADO":      elems[7].value,
-                    "ID":                   elems[0].value
-                }).draw(false);
-
-            });
-
+        if(!check){
+            return swal('Error', 'Datos inválidos, verifica.', 'error');
         }
 
-    };
+        // $.post => Añadiendo el elemento al backend.
+        $.post( 'backend/api/referencias/editar.php', $('#editarReferenciaForm').serialize(), function(data) {
+            
+            switch (data) {
+
+				case 'WARNING':
+					return swal('Whoops', 'Debes rellenar todos los campos.', 'warning');
+					break;
+				
+				case 'ERROR':
+					return swal('Error', 'La referencia ya se encuentra registrada.', 'error');
+					break;
+
+				default:
+
+					$('#editarReferenciaModal').modal('hide')
+
+					toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'La referencia ha sido editada satisfactoriamente.');
+
+					const elems = $('#editarReferenciaForm').serializeArray();
+
+					// Datatables => Añadiendo el elemento al frontend.
+					tabla.row(result).data({
+                        "ID":                   elems[0].value,
+                        "REFERENCIA":           elems[1].value,
+                        "MARCA":                elems[2].value,
+                        "TALLA":                elems[3].value,
+                        "MATERIAL":             elems[4].value,
+                        "PESO_MAQUINA":         elems[5].value,
+                        "PESO_IDEAL":           elems[6].value,
+                        "CAP_EMPAQUETADO":      elems[7].value,
+                        "ID":                   elems[0].value
+					}).draw(false);
+
+            }
+
+        }); 
+
+    });
 
 });
 
@@ -472,6 +428,48 @@ $('#tabla tbody').on( 'click', '.eliminarReferencia', function () {
     });
 
 });
+
+
+
+// EDITAR => Mostrando Modal para Editar la referencia.
+$('#editarReferenciaModal').on('show.bs.modal', function (e) {
+
+    let id = $(e.relatedTarget).data('id');
+
+    $.ajax({
+        type: 'post',
+        url: 'backend/api/utils.php?fun=obtenerSuelaId',
+        data: 'id=' + id,
+        success: function (data) {
+
+            const result = JSON.parse(data);
+
+            $("#editarMaterial > option").each(function() {
+
+                if( result[0].MATERIAL == this.value ){
+
+                    $(this).prop("selected", true);
+                    
+                    return false;
+                
+                }
+
+            });
+
+            document.getElementById('editarId').value = result[0].ID;
+            document.getElementById('editarReferencia').value = result[0].REFERENCIA;
+            document.getElementById('editarMarca').value = result[0].MARCA;
+            document.getElementById('editarTalla').value = result[0].TALLA;
+            document.getElementById('editarPesoMaquina').value = result[0].PESO_MAQUINA;
+            document.getElementById('editarPesoIdeal').value = result[0].PESO_IDEAL;
+            document.getElementById('editarCapacidadEmpaquetado').value = result[0].CAP_EMPAQUETADO;
+            
+        }
+    });
+
+});
+
+
 
 </script>
 

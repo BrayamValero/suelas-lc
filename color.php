@@ -19,59 +19,41 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
     <?php get_navbar('Inventario', 'Color'); ?>
 
     <!-- Mostramos la tabla con la información correspondiente -->
-	<div class="table-responsive-lg">
-		<table class="table table-bordered text-center" id="tabla">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Color</th>
-					<th scope="col">Codigo</th>
-					<th scope="col">Muestra</th>
-					<th scope="col">Opciones</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php
-					require_once "backend/api/db.php";
-					$sql = "SELECT * FROM COLOR;";
-					$result = db_query($sql);
-
-					foreach ($result as $row) {
-						echo "<tr>";
-
-						echo "<th scope=\"col\">{$row['ID']}</th>";
-						echo "<td>". mb_convert_case($row['COLOR'], MB_CASE_TITLE, "UTF-8") ."</td>";
-						echo "<td>#{$row['CODIGO']}</td>";
-						echo "<td>
-								<i class='fa fa-circle' style='color: #{$row['CODIGO']}; -webkit-text-stroke: 1px #dee2e6;'></i>
-							</td>";
-
-						echo "<td>
-								<a href='#' data-toggle='modal' data-target='#editarColor-modal' data-id='{$row['ID']}'>
-									<i class='fas fa-edit icon-color'></i>
-								</a>
-							</td>";
-
-						echo "</tr>";
-					}
-				?>
-			</tbody>
-		</table>
-	</div>
-	<!-- Fin de Tabla -->
+	<div class="table-responsive text-center" style="width:100%">
+        <div id="spinner" class="spinner-border text-center" role="status">
+            <span class="sr-only">Cargando...</span>
+        </div>
+        <table class="table table-bordered text-center" id="tabla">
+            <thead class="thead-dark"></thead>
+        </table>
+    </div>
+    <!-- Fin de Tabla -->
 
 	<!-- Boton -->
-	<div class="d-flex justify-content-center mt-5">
-		<a class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirColor-modal" href="#" role="button">Añadir Color</a>
+	<div class="row mt-5">
+		<button class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirColorModal">Añadir Color</button>
 	</div>
+	<!-- Fin de Botón -->
+
+	<!-- Toast => Alertas (data-delay="700" data-autohide="false") --> 
+	<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+		<div class="toast-header">
+			<i class="toast-icon"></i>
+			<strong class="mr-auto toast-title"></strong>
+			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+        <div class="toast-body"></div>
+    </div>
 
 	<!-- Modal de añadir Color -->
-	<div class="modal fade" id="añadirColor-modal" tabindex="-1" role="dialog" aria-labelledby="añadirColor-modal" aria-hidden="true">
+	<div class="modal fade" id="añadirColorModal" tabindex="-1" role="dialog" aria-labelledby="añadirColorModal" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 
 				<!-- Form -->
-				<form action="backend/api/color/crear.php" method="POST">
+				<form id="añadirColorForm">
 
 					<div class="modal-header">
 						<h5 class="modal-title"><i class="fas fa-star icon-color"></i> Añadir Color</h5>
@@ -85,13 +67,13 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 						<div class="form-row">
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirColor-modal">Color</label>
-								<input id="inputAñadirColor-modal" type="text" class="form-control" placeholder="Color" name="color" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required>
+								<label for="añadirColor">Color</label>
+								<input id="añadirColor" type="text" class="form-control" placeholder="Color" name="color" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirCodigo-modal">Código</label>
-								<input id="inputAñadirCodigo-modal" class="jscolor form-control" value="FFFFFF" name="codigo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required>
+								<label for="añadirCodigo">Código</label>
+								<input id="añadirCodigo" data-jscolor="{value:'#FFFFFF'}" class="form-control" name="codigo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required>
 							</div>
 
 						</div>
@@ -100,7 +82,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-						<button type="submit" class="btn btn-sm btn-main" id="submitAñadirColor-modal">Añadir Color</button>
+						<button type="button" class="btn btn-sm btn-main" id="botonAñadirColor">Añadir Color</button>
 					</div>
 
 				</form>
@@ -111,12 +93,12 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 	<!-- / Fin de Modal -->
 
 	<!-- Modal de Editar Color -->
-	<div class="modal fade" id="editarColor-modal" tabindex="-1" role="dialog" aria-labelledby="editarColor-modal" aria-hidden="true">
+	<div class="modal fade" id="editarColorModal" tabindex="-1" role="dialog" aria-labelledby="editarColorModal" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 
 				<!-- Form -->
-				<form action="backend/api/color/editar.php" method="POST">
+				<form id="editarColorForm">
 
 					<div class="modal-header">
 						<h5 class="modal-title"><i class="fab fa-slack-hash icon-color"></i> Editar Color</h5>
@@ -130,16 +112,16 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 						<div class="form-row">
 
 							<!-- ID escondido para el POST -->
-							<input type="hidden" name="id" id="inputEditarId-modal"> 
+							<input type="hidden" name="id" id="editarId"> 
 
 							<div class="form-group col-sm-6">
-								<label for="inputEditarColor-modal">Color</label>
-								<input id="inputEditarColor-modal" type="text" class="form-control" placeholder="Color" name="color" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required>
+								<label for="editarColor">Color</label>
+								<input id="editarColor" type="text" class="form-control" placeholder="Color" name="color" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputEditarCodigo-modal">Código</label>
-								<input id="inputEditarCodigo-modal" class="jscolor form-control" name="codigo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required>
+								<label for="editarCodigo">Código</label>
+								<input id="editarCodigo" data-jscolor="{value:'#FFFFFF'}" class="form-control" name="codigo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required>
 							</div>
 
 						</div>
@@ -148,7 +130,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-						<button type="submit" class="btn btn-sm btn-main" id="submitEditarColor-modal">Editar Color</button>
+						<button type="button" class="btn btn-sm btn-main" id="botonEditarColor">Editar Color</button>
 					</div>
 
 				</form>
@@ -163,45 +145,169 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 
 <!-- Inline JavaScript -->
 <script>
-// DataTables Plugin: https://datatables.net/
-const tabla = $('#tabla').DataTable({
-	info: false,
-	dom: "lrtip",
-	// searching: false,
-	lengthChange: false,
-	pageLength: 5,
-	order: [[0, 'desc']],
-	columnDefs: [{
-		targets: 4,
-		searchable: true,
-		orderable: true,
-		className: "align-middle", "targets": "_all"
-	}],
-	language: {
-		"url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
-	}
+
+// Declarando Variables.
+var tabla;
+
+// Datatables => Mostrando la tabla COLOR
+$.ajax({
+    type: 'get',
+    url: 'backend/api/utils.php?fun=obtenerColores',
+    async: false,
+    success: function (data) {
+
+        const result = JSON.parse(data);
+
+        tabla = $('#tabla').DataTable({
+            "initComplete": function(settings, json) {
+                $("#spinner").css('visibility', 'hidden');
+            },
+            "info": false,
+            "dom": "lrtip",
+            "pageLength": 6,
+            "lengthChange": false,
+            "order": [[0, 'desc']],
+            "data": result,
+            "columns": [
+                { data: "ID", title: "ID" },
+                { data: "COLOR", title: "Color" },
+                { data: "CODIGO", title: "Codigo" },
+                { 
+                    data: 'ID',
+                    title: "Opciones", render: function(value, type, row) {
+                        return `<a href='javascript:void(0)' class='editarColor' data-toggle='modal' data-target='#editarColorModal' data-id='${value}'>
+                            <i class='fas fa-edit icon-color'></i>
+                        </a>`;
+                    }
+                },
+            ],
+            "columnDefs": [{
+                searchable: true,
+                orderable: true,
+                className: "align-middle", "targets": "_all"
+            }],
+            "language": {
+                "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
+            }
+        });
+
+        // Datatables => Paginación
+        $.fn.DataTable.ext.pager.numbers_length = 5;
+        
+		// Datatables => Buscador Personalizado
+	   	document.getElementById('customInput').addEventListener('keyup', function () {
+			tabla.search(this.value).draw();
+        });
+	   
+    },   
+    error: function(error) {
+        console.log("No hay data para mostrar: " + error);
+    }
+
 });
 
-// Custom Search DataTables
-$('#customInput').on( 'keyup', function () {
-	tabla.search( this.value ).draw();
+// AÑADIR => Añadiendo Color.
+document.getElementById('botonAñadirColor').addEventListener('click', function () {
+
+	// $.post => Añadiendo el elemento al backend.
+	$.post( 'backend/api/color/añadir.php', $('#añadirColorForm').serialize(), function(data) {
+
+		switch (data) {
+
+			case 'WARNING':
+				return swal('Whoops', 'Debes rellenar todos los campos.', 'warning');
+				break;
+			
+			case 'ERROR':
+				return swal('Error', 'El color ya se encuentra registrado.', 'error');
+				break;
+
+			default:
+
+				$('#añadirColorModal').modal('hide')
+
+				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El color ha sido agregado satisfactoriamente.');
+
+				const elems = $('#añadirColorForm').serializeArray();
+
+				// Datatables => Añadiendo el elemento al frontend.
+				tabla.row.add({
+				    "ID":               data,
+				    "COLOR":       		elems[0].value,
+				    "CODIGO":           elems[1].value,
+				    "ID":               data
+				}).draw().node();
+
+				// Limpiando los inputs del modal => Añadir.
+				document.getElementById('añadirColor').value = '';
+				document.getElementById('añadirCodigo').jscolor.fromString('#FFFFFF');
+
+		}	
+
+	});
+
 });
 
-// Editar Color > dataType
-$('#editarColor-modal').on('show.bs.modal', function (e) {
+// EDITAR => Editando Color.
+$('#tabla tbody').on( 'click', '.editarColor', function () {
 
-	let rowid = $(e.relatedTarget).data('id');
+	let result = $(this).parents('tr');
+
+    document.getElementById('botonEditarColor').addEventListener('click', function () {
+        
+      	// $.post => Añadiendo el elemento al backend.
+		$.post( 'backend/api/color/editar.php', $('#editarColorForm').serialize(), function(data, status) {
+
+			switch (data) {
+
+				case 'WARNING':
+					return swal('Whoops', 'Debes rellenar todos los campos.', 'warning');
+					break;
+				
+				case 'ERROR':
+					return swal('Error', 'El color ya se encuentra registrado.', 'error');
+					break;
+
+				default:
+
+					$('#editarColorModal').modal('hide')
+
+					toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'El color ha sido editado satisfactoriamente.');
+
+					const elems = $('#editarColorForm').serializeArray();
+
+					// Datatables => Añadiendo el elemento al frontend.
+					tabla.row(result).data({
+						"ID":               elems[0].value,
+						"COLOR":       		elems[1].value,
+						"CODIGO":           elems[2].value,
+						"ID":               elems[0].value,
+					}).draw(false);
+
+			}		
+
+		});	
+
+    });
+
+});
+
+// Editar Color => Modal.
+$('#editarColorModal').on('show.bs.modal', function (e) {
+
+	let id = $(e.relatedTarget).data('id');
 
 	$.ajax({
 		type: 'post',
 		url: 'backend/api/utils.php?fun=obtenerColor',
-		data: 'id=' + rowid,
+		data: 'id=' + id,
 		dataType: "json",
 		success: function (data) {
 
-			$('#inputEditarId-modal').val(data[0].ID);
-			$('#inputEditarColor-modal').val(data[0].COLOR.toProperCase());
-			$('#inputEditarCodigo-modal').val(data[0].CODIGO);
+			document.getElementById('editarId').value = data[0].ID;
+			document.getElementById('editarColor').value = data[0].COLOR.toProperCase();
+			document.getElementById('editarCodigo').value = data[0].CODIGO;
+			document.getElementById('editarCodigo').jscolor.fromString(data[0].CODIGO);
 
 		}
 	});

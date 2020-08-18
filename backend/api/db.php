@@ -13,8 +13,7 @@ define('DB', array(
     'pass' => ''
 ));
 
-function db_connect()
-{
+function db_connect(){
     $dsn = DB['dsn'];
     $user = DB['user'];
     $pass = DB['pass'];
@@ -32,8 +31,7 @@ function db_connect()
     }
 }
 
-function db_query($sql, $data = array())
-{
+function db_query($sql, $data = array()){
     try {
         $db = db_connect();
         $mysql = $db->prepare($sql);
@@ -45,7 +43,19 @@ function db_query($sql, $data = array())
     }
 
     $result = $mysql->fetchAll(PDO::FETCH_ASSOC);
-
     $db = null;
     return $result;
+}
+
+// Global Function which is going to be used in every Database Manipulation Script.
+function test_input($data) {
+
+    // If GET or POST data is not empty, apply trim(), stripslashes(), and htmlspecialchars().
+    if(!empty($data)){
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
 }
