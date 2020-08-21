@@ -18,11 +18,11 @@ echo "<div class='header-body pt-3 pb-3'>
                         <li class='breadcrumb-item d-inline active' aria-current='page'>$titulo</li>
                     </div>
                     <div class='col-sm-12 col-md-6 col-lg-5'>
-                        <div class='input-group customInput'>
+                        <div class='input-group searchInput'>
                             <div class='input-group-prepend'>
                             <div class='input-group-text'><i class='fas fa-search'></i></div>
                             </div>
-                            <input type='text' id='customInput' class='form-control form-control' placeholder='Buscar'>
+                            <input type='text' id='searchInput' class='form-control form-control' placeholder='Buscar'>
                         </div>
                     </div>
                 </ol>

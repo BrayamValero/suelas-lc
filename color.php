@@ -209,6 +209,12 @@ $.ajax({
 // AÑADIR => Añadiendo Color.
 document.getElementById('botonAñadirColor').addEventListener('click', function () {
 
+	let check = $('#añadirColorForm')[0].checkValidity();
+
+	if(!check){
+		return swal('Error', 'Datos inválidos, verifica.', 'error');
+	}
+		
 	// $.post => Añadiendo el elemento al backend.
 	$.post( 'backend/api/color/añadir.php', $('#añadirColorForm').serialize(), function(data) {
 
@@ -254,6 +260,12 @@ $('#tabla tbody').on( 'click', '.editarColor', function () {
 	let result = $(this).parents('tr');
 
     document.getElementById('botonEditarColor').addEventListener('click', function () {
+
+		let check = $('#editarColorForm')[0].checkValidity();
+
+		if(!check){
+			return swal('Error', 'Datos inválidos, verifica.', 'error');
+		}
         
       	// $.post => Añadiendo el elemento al backend.
 		$.post( 'backend/api/color/editar.php', $('#editarColorForm').serialize(), function(data, status) {

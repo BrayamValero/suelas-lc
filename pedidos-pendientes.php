@@ -4,8 +4,14 @@
 include 'components/header.php';
 include 'components/components.php';
 
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'):
+// Agregamos los roles que se quiere que usen esta página.
+$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
 
 ?>
 
@@ -340,29 +346,7 @@ $('.eliminarPedido').on('click', function (e) {
     });
 });
 
-// Cambiar Prioridad => Baja o Alta
-// function cambiar_prioridad(el) {
-
-//     const prioridad = el.value;
-//     const pedido_id = el.dataset.pedidoid;
-//     window.location = `backend/api/pedidos/cambiar_prioridad.php?id=${pedido_id}&prioridad=${prioridad}`;
-
-// }
-
 </script>
 
 <!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
-?>

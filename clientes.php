@@ -18,29 +18,32 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
     <!-- Incluimos el Navbar -->
     <?php get_navbar('Ventas', 'Clientes'); ?>
 
-	<!-- Tabla -->
-	<div class="table-responsive-lg">
+	<!-- Mostramos la tabla con la información correspondiente -->
+	<div class="table-responsive text-center" style="width:100%">
+		<div id="spinner" class="spinner-border text-center" role="status">
+			<span class="sr-only">Cargando...</span>
+		</div>
 		<table class="table table-bordered text-center" id="tabla">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">#</th>
-					<th scope="col">Tipo</th>
-					<th scope="col">DNI</th>
-					<th scope="col">Nombre</th>
-					<th scope="col">Cliente</th>
-					<th scope="col">Activo</th>
-					<th scope="col">Opciones</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
+			<thead class="thead-dark"></thead>
 		</table>
 	</div>
 	<!-- Fin de Tabla -->
 
+	<!-- Toast => Alertas (data-delay="700" data-autohide="false") --> 
+	<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+		<div class="toast-header">
+			<i class="toast-icon"></i>
+			<strong class="mr-auto toast-title"></strong>
+			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="toast-body"></div>
+	</div>
+
 	<!-- Boton -->
 	<div class="d-flex justify-content-center mt-5">
-		<a class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirCliente-modal" href="#" role="button">Añadir Cliente</a>
+		<button class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirCliente-modal">Añadir Cliente</button>
 	</div>
 
 	<!-- Modal de Añadir Cliente -->
@@ -97,7 +100,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-signature"></i></div>
 									</div>
-									<input name="nombre" type="text" class="form-control" id="inputAñadirNombre-modal" placeholder="Nombre y Apellido" pattern="[A-Za-zÀ-ž\s]+" title="El nombre solo puede contener letras." required>
+									<input name="nombre" type="text" class="form-control" id="inputAñadirNombre-modal" placeholder="Nombre y Apellido">
 								</div>
 							</div>
 
@@ -107,7 +110,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-phone"></i></div>
 									</div>
-									<input name="telefono" type="number" min="1" class="form-control" id="inputAñadirTelefono-modal" placeholder="Fijo" required>
+									<input name="telefono" type="number" min="1" class="form-control" id="inputAñadirTelefono-modal" placeholder="Fijo">
 								</div>
 							</div>
 
@@ -127,7 +130,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-envelope"></i></div>
 									</div>
-									<input name="email" type="email" class="form-control" id="inputAñadirCorreo-modal" placeholder="Correo Electrónico" required>
+									<input name="email" type="email" class="form-control" id="inputAñadirCorreo-modal" placeholder="Correo Electrónico">
 								</div>
 							</div>  
 
@@ -137,7 +140,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
 									</div>
-									<input name="direccion" type="text" class="form-control" id="inputAñadirDireccion-modal" placeholder="Dirección" required>
+									<input name="direccion" type="text" class="form-control" id="inputAñadirDireccion-modal" placeholder="Dirección">
 								</div>
 							</div>
 
@@ -202,7 +205,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-id-card"></i></div>
 									</div>
-									<input type="number" min="1" id="inputNumeroDocumento-modal" name="numero-documento" class="form-control" placeholder="Documento" required>
+									<input type="number" min="1" id="inputNumeroDocumento-modal" name="numero-documento" class="form-control" placeholder="Documento">
 								</div>
 							</div>
 
@@ -212,7 +215,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-signature"></i></div>
 									</div>
-									<input name="cliente-nombre" type="text" class="form-control" id="inputNombre-modal" placeholder="Nombre y Apellido" pattern="[A-Za-zÀ-ž\s]+" title="El nombre solo puede contener letras." required>
+									<input name="cliente-nombre" type="text" class="form-control" id="inputNombre-modal" placeholder="Nombre y Apellido">
 								</div>
 							</div>
 
@@ -222,7 +225,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-phone"></i></div>
 									</div>
-									<input name="cliente-telefono" type="number" min="1" class="form-control" id="inputTelephone-modal" placeholder="Fijo" required>
+									<input name="cliente-telefono" type="number" min="1" class="form-control" id="inputTelephone-modal" placeholder="Fijo">
 								</div>
 							</div>
 
@@ -242,7 +245,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-envelope"></i></div>
 									</div>
-									<input name="cliente-email" type="email" class="form-control" id="inputEmail-modal" placeholder="Email" required>
+									<input name="cliente-email" type="email" class="form-control" id="inputEmail-modal" placeholder="Email">
 								</div>
 							</div>  
 
@@ -252,7 +255,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
 									</div>
-									<input name="cliente-direccion" type="text" class="form-control" id="inputAddress-modal" placeholder="Dirección" required>
+									<input name="cliente-direccion" type="text" class="form-control" id="inputAddress-modal" placeholder="Dirección">
 								</div>
 							</div>
 
@@ -329,96 +332,216 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 
 <!-- Inline JavaScript -->
 <script>
-/* DATATABLES CUSTOMIZATION */
-const tabla = $('#tabla').DataTable({
-	info: false,
-	dom: "lrtip",
-	pageLength: 10,
-	lengthChange: false,
-	order: [[0, 'desc']],
-	processing: true,
-	serverSide: true,
-	ajax: {
-		url: "<?= BASE_URL . "backend/api/tabla_ssp.php"; ?>",
-		method: "GET",
-		data: {
-			tabla: 'CLIENTES',
-			pk: 'ID',
-			columnas: [
-				{nombre: 'ID', index: 0},
-				{nombre: 'DOCUMENTO', index: 1},
-				{nombre: 'DOCUMENTO_NRO', index: 2},
-				{nombre: 'NOMBRE', index: 3},
-				{nombre: 'TIPO', index: 4},
-				{nombre: 'ACTIVO', index: 5},
-				// Esta es solo para rellenar la tabla de OPCIONES.
-				{nombre: 'ID', index: 6}
-			]
-		}
-	},
-	// createdRow => This is particularly useful when using deferred rendering (deferRender) or server-side processing (serverSide) so you can add events, class name information or otherwise format the row when it is created.
-	createdRow: function(row, data, dataIndex) {
+
+// VARIABLES => Declarando Variables Globales.
+var tabla;
+var posicionTabla;
+// const botonAñadir = document.getElementById('botonAñadir');
+// const botonEditar = document.getElementById('botonEditar');
+
+// DATATABLES => Mostrando la tabla STOCK.
+$.ajax({
+    type: 'get',
+    url: 'backend/api/utils.php?fun=obtenerClientes',
+    async: false,
+    success: function (data) {
+
+        const result = JSON.parse(data);
+
+		console.log(result);
+
+        tabla = $('#tabla').DataTable({
+            "initComplete": function(settings, json) {
+                $("#spinner").css('visibility', 'hidden');
+            },
+            "info": false,
+            "dom": "lrtip",
+            "pageLength": 6,
+            "lengthChange": false,
+            "order": [[0, 'desc']],
+            "data": result,
+            "columns": [
+                { data: "ID", title: "#" },
+				{ data: "TIPO", title: "Cliente" },
+                { data: "DOCUMENTO", title: "Tipo" },
+                { data: "DOCUMENTO_NRO", title: "Documento" },
+				{ data: "NOMBRE", title: "Nombre" },
+				{ data: "ACTIVO", title: "Activo", 
+					render: function(value, type, row) {
+						
+						if(row.ACTIVO === 'SI'){
+
+							return `<label class='switch'>
+								<input type='checkbox' class='cambiarEstado' data-id='${row.ID}' checked>
+								<span class='slider round'></span>
+							</label>`;
+
+						} else {
+
+							return `<label class='switch'>
+								<input type='checkbox' class='cambiarEstado' data-id='${row.ID}'>
+								<span class='slider round'></span>
+							</label>`;
+							
+						}
+
+					}
+				},
+                { data: 'ID', title: "Opciones",
+					render: function(value, type, row) {
+						return `<a href='javascript:void(0)' data-toggle='modal' data-target='#editarClienteModal' data-id='${row.ID}'>
+									<i class='fas fa-edit icon-color'></i>
+								</a>			
+								<a href='javascript:void(0)' data-toggle='modal' data-target='#verClienteModal' data-id='${row.ID}'>
+									<i class='fas fa-eye icon-color'></i>
+								</a>`;
+                	}
+                },
+            ],
+            "columnDefs": [{
+                searchable: true,
+                orderable: true,
+                className: "align-middle", "targets": "_all"
+            }],
+            "language": {
+                "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
+            }
+        });
+
+        // DATATABLES => Paginación
+        $.fn.DataTable.ext.pager.numbers_length = 5;
+        
+		// DATATABLES => Buscador Personalizado
+	   	document.getElementById('searchInput').addEventListener('keyup', function () {
+			tabla.search(this.value).draw();
+        });
+	   
+    }
+
+});
+
+// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar un Elemento)
+$('#tabla tbody').on( 'click', 'tr', function () { 
+	posicionTabla = this;
+});
+
+// /* DATATABLES CUSTOMIZATION */
+// const tabla = $('#tabla').DataTable({
+// 	info: false,
+// 	dom: "lrtip",
+// 	pageLength: 10,
+// 	lengthChange: false,
+// 	order: [[0, 'desc']],
+// 	processing: true,
+// 	serverSide: true,
+// 	ajax: {
+// 		url: "<?= BASE_URL . "backend/api/tabla_ssp.php"; ?>",
+// 		method: "GET",
+// 		data: {
+// 			tabla: 'CLIENTES',
+// 			pk: 'ID',
+// 			columnas: [
+// 				{nombre: 'ID', index: 0},
+// 				{nombre: 'DOCUMENTO', index: 1},
+// 				{nombre: 'DOCUMENTO_NRO', index: 2},
+// 				{nombre: 'NOMBRE', index: 3},
+// 				{nombre: 'TIPO', index: 4},
+// 				{nombre: 'ACTIVO', index: 5},
+// 				// Esta es solo para rellenar la tabla de OPCIONES.
+// 				{nombre: 'ID', index: 6}
+// 			]
+// 		}
+// 	},
+// 	// createdRow => This is particularly useful when using deferred rendering (deferRender) or server-side processing (serverSide) so you can add events, class name information or otherwise format the row when it is created.
+// 	createdRow: function(row, data, dataIndex) {
 		
-		for (let rowCell of row.cells) {
-			rowCell.innerHTML = rowCell.innerHTML.toProperCase();
-		}
+// 		for (let rowCell of row.cells) {
+// 			rowCell.innerHTML = rowCell.innerHTML.toProperCase();
+// 		}
 
-		row.cells[1].innerHTML = row.cells[1].innerHTML.toUpperCase();
+// 		row.cells[1].innerHTML = row.cells[1].innerHTML.toUpperCase();
 
-		if (row.cells[5].innerHTML == 'Si') {
+// 		if (row.cells[5].innerHTML == 'Si') {
 
-			row.cells[5].innerHTML = `<i class='fas fa-check-circle text-success'></i></button>`;
+// 			row.cells[5].innerHTML = `<i class='fas fa-check-circle text-success'></i></button>`;
 
-		} else {
+// 		} else {
 
-			row.cells[5].innerHTML = `<i class='fas fa-times-circle text-danger'></i>`;
+// 			row.cells[5].innerHTML = `<i class='fas fa-times-circle text-danger'></i>`;
 			
-		}
+// 		}
 
-		row.cells[6].innerHTML = 
-		`
-			<?php if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'): ?>
+// 		row.cells[6].innerHTML = 
+// 		`
+// 			<?php if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'): ?>
 
-			<a href='#' data-toggle='modal' data-target='#editarCliente-modal' data-id='${data[0]}'>
-				<i class='fas fa-edit icon-color'></i>
-			</a>
+// 			<a href='#' data-toggle='modal' data-target='#editarCliente-modal' data-id='${data[0]}'>
+// 				<i class='fas fa-edit icon-color'></i>
+// 			</a>
 			
-			<a href='#' data-id='${data[0]}' onclick='desactivarCliente(${data[0]})'>
-				<i class='fas fa-trash icon-color'></i>
-			</a>
-			<a href='#' data-toggle='modal' data-target='#verCliente-modal' data-id='${data[0]}'>
-				<i class='fas fa-eye icon-color'></i>
-			</a>
+// 			<a href='#' data-id='${data[0]}' onclick='desactivarCliente(${data[0]})'>
+// 				<i class='fas fa-trash icon-color'></i>
+// 			</a>
+// 			<a href='#' data-toggle='modal' data-target='#verCliente-modal' data-id='${data[0]}'>
+// 				<i class='fas fa-eye icon-color'></i>
+// 			</a>
 
-			<?php else: ?>
+// 			<?php else: ?>
 			
-			<a href='#' data-toggle='modal' data-target='#verCliente-modal' data-id='${data[0]}'>
-				<i class='fas fa-eye icon-color'></i>
-			</a>
+// 			<a href='#' data-toggle='modal' data-target='#verCliente-modal' data-id='${data[0]}'>
+// 				<i class='fas fa-eye icon-color'></i>
+// 			</a>
 
-			<?php endif; ?>
-		`;
+// 			<?php endif; ?>
+// 		`;
 
-	},
-	columnDefs: [{
-		searchable: true,
-		orderable: true,
-		className: "align-middle", "targets": "_all"
-	}],
-	language: {
-		"url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
+// 	},
+// 	columnDefs: [{
+// 		searchable: true,
+// 		orderable: true,
+// 		className: "align-middle", "targets": "_all"
+// 	}],
+// 	language: {
+// 		"url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
+// 	}
+// });
+
+// // Paginación - DataTables
+// $.fn.DataTable.ext.pager.numbers_length = 5;
+
+// ELIMINAR => Eliminando Referencia.
+$('#tabla tbody').on( 'click', '.cambiarEstado', function () {
+
+	let id = $(this).data("id");
+	var estado = $(this).is(':checked');
+
+	console.log(estado);
+
+	if(!estado){
+
+		// Desactivando cliente
+		$.get(`backend/api/clientes/desactivar.php?id=${id}`);
+
+
+	} else {
+
+		// Activando cliente
+		$.get(`backend/api/clientes/activar.php?id=${id}`);
+				
+
 	}
+
 });
 
-// Paginación - DataTables
-$.fn.DataTable.ext.pager.numbers_length = 5;
 
-// Custom Search - DataTables
-$('#customInput').on('keyup', function () {
-	tabla.search(this.value).draw();
-});
+// var checkBox = document.getElementById("myCheck");
+//   var text = document.getElementById("text");
+//   if (checkBox.checked == true){
+//     text.style.display = "block";
+//   } else {
+//      text.style.display = "none";
+//   }
 
-/* END OF DATATABLES CUSTOMIZATION */
 
 // Modal de Editar Clientes
 $('#editarCliente-modal').on('show.bs.modal', function (e) {

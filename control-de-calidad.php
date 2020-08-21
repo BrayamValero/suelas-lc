@@ -31,7 +31,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
             <div class="col">
                 <h6 class="text-title">Control de Calidad</h6>
 
-                <!-- Revisamos que haya una máqua ACTIVA, en caso de que no haya,  -->
+                <!-- Revisamos que haya una Maquinaria ACTIVA, en caso de que no haya,  -->
                 <?php
                 $sql = "SELECT * FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
                 $maquinarias = db_query($sql);
@@ -78,18 +78,21 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
                 $sql = "SELECT ID FROM COLOR WHERE COLOR = ?;";
                 $color = db_query($sql, array($maquinaria_selected[0]['COLOR']));
 
-                $sql = "SELECT P.*, S.REFERENCIA AS SUELA_REFERENCIA, S.ID AS SUELA_ID, S.PESO_IDEAL AS PESO_IDEAL, S.PESO_MAQUINA AS PESO_MAQUINA, S.MARCA AS MARCA, S.TALLA AS TALLA 
-                    FROM PRODUCCION P 
-                        JOIN SUELAS S ON P.SUELA_ID = S.ID WHERE P.ESTADO = 'PENDIENTE' 
-                            AND P.COLOR_ID = ? 
-                        ORDER BY CREATED_AT ASC;";
+                $sql = "SELECT P.*, S.REFERENCIA AS SUELA_REFERENCIA,
+                                    S.ID AS SUELA_ID, S.PESO_IDEAL AS PESO_IDEAL,
+                                    S.PESO_MAQUINA AS PESO_MAQUINA, S.MARCA AS MARCA,
+                                    S.TALLA AS TALLA 
+                                        FROM PRODUCCION P 
+                                            JOIN SUELAS S ON P.SUELA_ID = S.ID WHERE P.ESTADO = 'PENDIENTE' 
+                                                AND P.COLOR_ID = ? 
+                                            ORDER BY CREATED_AT ASC;";
 
                 $result = db_query($sql, array($color[0]['ID']));
 
                 $sql = "SELECT * FROM CASILLEROS WHERE MAQUINARIA_ID = ?;";
                 $casilleros = db_query($sql, array($id));
-
                 $repetidos = array();
+
                 ?>
                 
             </div>
@@ -149,7 +152,9 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
             <tbody>
                 <tr>
                     <?php
+
                     $total_producir = 0;
+
                     foreach ($casilleros as $index => $casillero) {
                         
                         $casillero_impreso = false;
@@ -158,7 +163,9 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
                         if ($casillero['NUMERO'] <= 10) {
 
                             foreach ($result as $row) {
-                                if (!in_array($row['SUELA_ID'], $repetidos)) {
+
+                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
                                         
                                         echo "<td>";
@@ -183,29 +190,45 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
                                         
                                         echo "</td>";
 
-                                        array_push($repetidos, $row['SUELA_ID']);
+                                        // array_push($repetidos, $row['SUELA_ID']);
+
                                         $casillero_impreso = true;
 
                                     }
-                                }
+
+                                // }
+
                             }
 
                             if ($casillero_impreso == false) {
-                                if ($casillero['SUELA_ID'] != '') {
-                                    $sql = "SELECT * FROM SUELAS WHERE ID = ?;";
 
+                                if ($casillero['SUELA_ID'] != '') {
+
+                                    $sql = "SELECT * FROM SUELAS WHERE ID = ?;";
                                     $marca = db_query($sql, array($casillero['SUELA_ID']))[0]['MARCA'];
                                     $talla = db_query($sql, array($casillero['SUELA_ID']))[0]['TALLA'];
 
-                                    echo "<td class='align-middle'><div class='badge badge-main badge-casillero mb-2'>Referencia</div><div class='font-weight-bold'>" . mb_convert_case($marca, MB_CASE_TITLE, 'UTF-8') . " " . $talla . "</div></td>";
+                                    echo "<td class='align-middle'>
+                                            <div class='badge badge-main badge-casillero mb-2'>Referencia</div>
+                                                <div class='font-weight-bold'>" . mb_convert_case($marca, MB_CASE_TITLE, 'UTF-8') . " " . $talla . "</div>
+                                            </td>";
+
                                 } elseif ($casillero['ACTIVO'] == 0) {
+
                                     echo "<td class='align-middle'><i class='fas fa-ban fa-casillero text-danger my-2'></i></td>";
+
                                 } else {
+
                                     echo "<td class='align-middle'><div class='badge badge-success badge-casillero my-2'>Vacio</div></td>";
+
                                 }
+                                
                             }
+
                         }
+
                     }
+                    
                     ?>
                 </tr>
             </tbody>
@@ -238,12 +261,16 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
                 <tr>
                     <?php
                     foreach ($casilleros as $index => $casillero) {
+
                         $casillero_impreso = false;
 
                         // Segunda hilera
                         if ($casillero['NUMERO'] > 10 && $casillero['NUMERO'] <= 20) {
+
                             foreach ($result as $row) {
-                                if (!in_array($row['SUELA_ID'], $repetidos)) {
+
+                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
 
                                         echo "<td>";
@@ -268,11 +295,14 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 
                                         echo "</td>";
 
-                                        array_push($repetidos, $row['SUELA_ID']);
+                                        // array_push($repetidos, $row['SUELA_ID']);
+
                                         $casillero_impreso = true;
                                         
                                     }
-                                }
+
+                                // }
+
                             }
 
                             if ($casillero_impreso == false) {
@@ -316,12 +346,16 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
                 <tr>
                     <?php
                     foreach ($casilleros as $index => $casillero) {
+
                         $casillero_impreso = false;
 
                         // Tercera hilera
                         if ($casillero['NUMERO'] > 20) {
+
                             foreach ($result as $row) {
-                                if (!in_array($row['SUELA_ID'], $repetidos)) {
+
+                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
 
                                         echo "<td>";
@@ -347,11 +381,15 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 
                                         echo "</td>";
 
-                                        array_push($repetidos, $row['SUELA_ID']);
+                                        // array_push($repetidos, $row['SUELA_ID']);
+                                        
                                         $casillero_impreso = true;
+
                                     
                                     }
-                                }
+
+                                // }
+
                             }
 
                             if ($casillero_impreso == false) {
@@ -805,10 +843,39 @@ $('.habilitarCasillero').on('click', function (e) {
 
 });
 
+// Vaciar Casillero
+$('.vaciarCasillero').on('click', function (e) {
+
+    let casilleroId = $(e.target.parentElement.parentElement.parentElement).data('id');
+
+    swal({
+        title: "¿Deseas vaciar el casillero?",
+        text: "Descuida, puedes agregar referencias luego.",
+        icon: "warning",
+        buttons: [
+            'No',
+            'Si'
+        ],
+        dangerMode: true,
+    }).then(function (isConfirm) {
+        if (isConfirm) {
+            swal({
+                title: '¡Éxito!',
+                text: 'El casillero se encuentra vacio.',
+                icon: 'success'
+            }).then(function () {
+                window.location = `backend/api/maquinarias/vaciar-casillero.php?id=${casilleroId}&maquinaria=<?= $id; ?>`
+            });
+        } else {
+            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
+        }
+
+    });
+
+});
+
 // Deshabilitar Casillero
 $('.deshabilitarCasillero').on('click', function (e) {
-
-    event.preventDefault();
 
     let casilleroId = $(e.target.parentElement.parentElement.parentElement).data('id');
 
@@ -838,9 +905,7 @@ $('.deshabilitarCasillero').on('click', function (e) {
 
 // Deshabilitar Máquina
 $('.deshabilitarMaquina').on('click', function (e) {
-
-    event.preventDefault();
-
+    
     let casilleroId = $(e.target.parentElement.parentElement.parentElement).data('id');
 
     swal({

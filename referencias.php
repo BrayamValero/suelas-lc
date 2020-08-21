@@ -68,7 +68,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
                             <div class="form-group col-sm-2">
                                 <label for="añadirTalla">Talla</label>
-                                <input id="añadirTalla" type="number" min="0" class="form-control" placeholder="0" name="talla" required>
+                                <input id="añadirTalla" type="number" min="0" max="99" class="form-control" placeholder="0" name="talla" required>
                             </div>
 
                             <div class="form-group col-sm-4">
@@ -153,7 +153,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
                             <div class="form-group col-sm-2">
                                 <label for="editarTalla">Talla</label>
-                                <input id="editarTalla" type="number" min="0" max="50" class="form-control"
+                                <input id="editarTalla" type="number" min="0" max="99" class="form-control"
                                         placeholder="0" name="talla" required>
                             </div>
 
@@ -175,7 +175,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
                             <div class="form-group col-sm-4">
                                 <label for="editarPesoIdeal">Peso Ideal</label>
-                                <input id="editarPesoIdeal" type="number" min="1"
+                                <input id="editarPesoIdeal" type="number" min=1"
                                         class="form-control" placeholder="Peso" name="peso_ideal" required>
                             </div>
 
@@ -223,6 +223,9 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
 // Variables Inicializadas.
 var tabla;
+var posicionTabla;
+const botonAñadirReferencia = document.getElementById('botonAñadirReferencia');
+const botonEditarReferencia = document.getElementById('botonEditarReferencia');
 
 // Datatables => Mostrando la tabla REFERENCIAS
 $.ajax({
@@ -280,30 +283,39 @@ $.ajax({
         $.fn.DataTable.ext.pager.numbers_length = 5;
         
 		// Datatables => Buscador Personalizado
-        document.getElementById('customInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
 			tabla.search(this.value).draw();
         });
 
-    },   
-    error: function(error) {
-        console.log("No hay data para mostrar: " + error);
     }
 
 });
 
+// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar un Elemento)
+$('#tabla tbody').on( 'click', 'tr', function () { 
+	posicionTabla = this;
+});
+
+
 // AÑADIR => Añadiendo Referencia.
-document.getElementById('botonAñadirReferencia').addEventListener('click', function () {
+botonAñadirReferencia.addEventListener('click', function () {
+
+	// ID del formulario.
+	let formulario = $('#añadirReferenciaForm');
+
+	// Si el formulario tiene algún campo incorrecto, lanzar error.
+	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+
+	// Si todos los campos son correctos, Bloquear el botón de envío de data.
+	botonAñadirReferencia.disabled = true;
 
     // $.post => Añadiendo el elemento al backend.
-    $.post( 'backend/api/referencias/añadir.php', $('#añadirReferenciaForm').serialize(), function(data) {
+    $.post( 'backend/api/referencias/añadir.php', formulario.serialize(), function(data) {
 
 	    switch (data) {
-
-			case 'WARNING':
-				return swal('Whoops', 'Debes rellenar todos los campos.', 'warning');
-				break;
 			
 			case 'ERROR':
+                botonAñadirReferencia.disabled = false;
 				return swal('Error', 'La referencia ya se encuentra registrada.', 'error');
 				break;
 
@@ -313,7 +325,7 @@ document.getElementById('botonAñadirReferencia').addEventListener('click', func
 
 				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El color ha sido agregado satisfactoriamente.');
 
-				const elems = $('#añadirReferenciaForm').serializeArray();
+				const elems = formulario.serializeArray();
 
 				// Datatables => Añadiendo el elemento al frontend.
 				tabla.row.add({
@@ -335,62 +347,70 @@ document.getElementById('botonAñadirReferencia').addEventListener('click', func
 
         }
 
-    });
+    }).always(
+
+        // Luego de agregar el elemento tanto en frontend como backend, habilitar el botón.
+        $('#añadirReferenciaModal').on('hidden.bs.modal', function (e) {
+            botonAñadirReferencia.disabled = false;
+        })
+
+    ); 
 
 });
 
 // EDITAR => Editando Referencia.
-$('#tabla tbody').on( 'click', '.editarReferencia', function () {
+botonEditarReferencia.addEventListener('click', function () {
 
-    var result = $(this).parents('tr');
+	// ID del formulario.
+	let formulario = $('#editarReferenciaForm');
 
-    document.getElementById('botonEditarReferencia').addEventListener('click', function () {
+	// Si el formulario tiene algún campo incorrecto, lanzar error.
+	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
 
-        var check = $('#editarReferenciaForm')[0].checkValidity();
+	// Si todos los campos son correctos, Bloquear el botón de envío de data.
+	botonEditarReferencia.disabled = true;
 
-        if(!check){
-            return swal('Error', 'Datos inválidos, verifica.', 'error');
+    // $.post => Añadiendo el elemento al backend.
+    $.post( 'backend/api/referencias/editar.php', formulario.serialize(), function(data) {
+        
+        switch (data) {
+
+            case 'ERROR':
+                botonEditarReferencia.disabled = false;
+                return swal('Error', 'La referencia ya se encuentra registrada.', 'error');
+                break;
+
+            default:
+
+                $('#editarReferenciaModal').modal('hide')
+
+                toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'La referencia ha sido editada satisfactoriamente.');
+
+                const elems = formulario.serializeArray();
+
+                // Datatables => Añadiendo el elemento al frontend.
+                tabla.row(posicionTabla).data({
+                    "ID":                   elems[0].value,
+                    "REFERENCIA":           elems[1].value,
+                    "MARCA":                elems[2].value,
+                    "TALLA":                elems[3].value,
+                    "MATERIAL":             elems[4].value,
+                    "PESO_MAQUINA":         elems[5].value,
+                    "PESO_IDEAL":           elems[6].value,
+                    "CAP_EMPAQUETADO":      elems[7].value,
+                    "ID":                   elems[0].value
+                }).draw(false);
+
         }
 
-        // $.post => Añadiendo el elemento al backend.
-        $.post( 'backend/api/referencias/editar.php', $('#editarReferenciaForm').serialize(), function(data) {
-            
-            switch (data) {
+    }).always(
 
-				case 'WARNING':
-					return swal('Whoops', 'Debes rellenar todos los campos.', 'warning');
-					break;
-				
-				case 'ERROR':
-					return swal('Error', 'La referencia ya se encuentra registrada.', 'error');
-					break;
+        // Luego de agregar el elemento tanto en frontend como backend, habilitar el botón.
+        $('#editarReferenciaModal').on('hidden.bs.modal', function (e) {
+            botonEditarReferencia.disabled = false;
+        })
 
-				default:
-
-					$('#editarReferenciaModal').modal('hide')
-
-					toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'La referencia ha sido editada satisfactoriamente.');
-
-					const elems = $('#editarReferenciaForm').serializeArray();
-
-					// Datatables => Añadiendo el elemento al frontend.
-					tabla.row(result).data({
-                        "ID":                   elems[0].value,
-                        "REFERENCIA":           elems[1].value,
-                        "MARCA":                elems[2].value,
-                        "TALLA":                elems[3].value,
-                        "MATERIAL":             elems[4].value,
-                        "PESO_MAQUINA":         elems[5].value,
-                        "PESO_IDEAL":           elems[6].value,
-                        "CAP_EMPAQUETADO":      elems[7].value,
-                        "ID":                   elems[0].value
-					}).draw(false);
-
-            }
-
-        }); 
-
-    });
+    ); 
 
 });
 
@@ -400,14 +420,14 @@ $('#tabla tbody').on( 'click', '.eliminarReferencia', function () {
     let id = $(this).data("id");
 
     swal({
-    title: "¿Estás seguro?",
-    text: "Se eliminará de las siguientes tablas: Casillero, Stock, Series y Producción.",
-    icon: "warning",
-    buttons: [
-        'No',
-        'Si'
-    ],
-    dangerMode: true,
+        title: "¿Estás seguro?",
+        text: "Se eliminará de las siguientes tablas: Casillero, Stock, Series y Producción.",
+        icon: "warning",
+        buttons: [
+            'No',
+            'Si'
+        ],
+        dangerMode: true,
     }).then((isConfirm) => {
         
         if (isConfirm) {
@@ -418,8 +438,8 @@ $('#tabla tbody').on( 'click', '.eliminarReferencia', function () {
             // Datatable => Quitando el elemento del frontend.
             tabla.row( $(this).parents('tr') ).remove().draw(false);
 
+            // Mostrando Notificación de éxito.
             toastNotifications('fas fa-trash', 'text-danger', '¡Eliminada!', 'La referencia ha sido eliminada satisfactoriamente.');
-
 
         } else {
             swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
@@ -429,9 +449,7 @@ $('#tabla tbody').on( 'click', '.eliminarReferencia', function () {
 
 });
 
-
-
-// EDITAR => Mostrando Modal para Editar la referencia.
+// VISTA => Agregar datos importantes a la data escondida.
 $('#editarReferenciaModal').on('show.bs.modal', function (e) {
 
     let id = $(e.relatedTarget).data('id');

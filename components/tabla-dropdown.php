@@ -5,17 +5,18 @@
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         <?php
         if (isset($i) && isset($casilleros) && $casilleros[$i]['ACTIVO'] == 1) {
-            echo "<a class='dropdown-item' data-toggle='modal' data-target='#asignarReferenciaModal' href='#'>Asignar Referencia</a>";
-            echo "<a class='dropdown-item' data-toggle='modal' data-target='#swapReferenceModal' href='#'>Intercambiar Referencias</a>";
+            echo "<a class='dropdown-item' data-toggle='modal' data-target='#asignarReferenciaModal' href='javascript:void(0)'>Asignar Referencia</a>";
+            echo "<a class='dropdown-item' data-toggle='modal' data-target='#swapReferenceModal' href='javascript:void(0)'>Intercambiar Referencias</a>";
             echo "<div class='dropdown-divider'></div>";
         }
         ?>
 
         <?php
         if (isset($i) && isset($casilleros) && $casilleros[$i]['ACTIVO'] == 0) {
-            echo "<a class='dropdown-item habilitarCasillero' href='#'>Habilitar Casillero</a>";
+            echo "<a class='dropdown-item habilitarCasillero' href='javascript:void(0)'>Habilitar Casillero</a>";
         } elseif (isset($i) && isset($casilleros) && $casilleros[$i]['ACTIVO'] == 1) {
-            echo "<a class='dropdown-item deshabilitarCasillero' href='#'>Deshabilitar Casillero</a>";
+            echo "<a class='dropdown-item vaciarCasillero' href='javascript:void(0)'>Vaciar Casillero</a>";
+            echo "<a class='dropdown-item deshabilitarCasillero' href='javascript:void(0)'>Deshabilitar Casillero</a>";
         }
         ?>
     </div>

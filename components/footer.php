@@ -17,11 +17,6 @@
             $('#sidebar, #contenido').toggleClass('active');
         });
 
-        // Select2 Plugin
-        $('.select-filter').select2({
-            theme: "bootstrap4",
-        });
-
     });
 
 </script>

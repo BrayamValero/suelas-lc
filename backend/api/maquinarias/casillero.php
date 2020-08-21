@@ -12,11 +12,12 @@ if ($suela_id == 'VACIO') {
     $sql = "UPDATE CASILLEROS SET SUELA_ID = NULL, COLOR = NULL WHERE ID = ?;";
     db_query($sql, array($casillero_id));
 } else {
-    $sql = "SELECT * FROM CASILLEROS 
-            WHERE SUELA_ID = ? 
-                AND COLOR = ?
-                AND ID != ? ;";
-    $result = db_query($sql, array($suela_id, $casillero_color, $casillero_id));
+
+    // $sql = "SELECT * FROM CASILLEROS 
+    //         WHERE SUELA_ID = ? 
+    //             AND COLOR = ?
+    //             AND ID != ? ;";
+    // $result = db_query($sql, array($suela_id, $casillero_color, $casillero_id));
 
     if (empty($result)) {
         $sql = "UPDATE CASILLEROS SET SUELA_ID = ?, COLOR = ? WHERE ID = ?;";
@@ -24,6 +25,7 @@ if ($suela_id == 'VACIO') {
     } else {
         $_SESSION['casillero_suela'] = true;
     }
+    
 }
 
 if (isset($_GET['redir']) && $_GET['redir'] == 'cc') {

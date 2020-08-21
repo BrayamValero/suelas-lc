@@ -102,6 +102,13 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
         });             
     }    
 
+    // select2 => Aplicando el dropdown.
+    $(document).ready(function () {
+        $('.dropdown-select2').select2({
+            theme: "bootstrap4",
+        });
+    });
+
     </script>
 
 </head>

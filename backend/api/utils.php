@@ -135,6 +135,10 @@ if (isset($_GET['fun'])) {
             obtenerReporteProduccion();
             break;
 
+        case 'obtenerSuelasEnStock':
+            obtenerSuelasEnStock();
+            break;
+            
         case 'obtenerStockCompleto':
             obtenerStockCompleto();
             break;
@@ -143,9 +147,6 @@ if (isset($_GET['fun'])) {
             obtenerSuelaEnStock();
             break;
         
-        case 'obtenerSuelasEnStock':
-            obtenerSuelasEnStock();
-            break;
 
         case 'obtenerSerie':
             obtenerSerie();
@@ -200,7 +201,7 @@ if (isset($_GET['fun'])) {
 
 function obtenerClientes()
 {
-    $sql = "SELECT * FROM CLIENTES WHERE ACTIVO = 'SI';";
+    $sql = "SELECT * FROM CLIENTES;";
     $result = db_query($sql);
 
     echo json_encode($result);
@@ -478,6 +479,35 @@ function obtenerReporteProduccion()
     echo json_encode($result);
 }
 
+function obtenerSuelasEnStock(){
+    $sql = "SELECT ST.ID, C.NOMBRE, SU.REFERENCIA, SU.MARCA, SU.TALLA, COL.COLOR, ST.CANTIDAD 
+                FROM STOCK ST
+                    LEFT JOIN SUELAS SU
+                        ON ST.SUELA_ID = SU.ID
+                    LEFT JOIN CLIENTES C
+                        ON ST.CLIENTE_ID = C.ID
+                    LEFT JOIN COLOR COL
+                        ON ST.COLOR_ID = COL.ID;";
+    $result = db_query($sql);
+    echo json_encode($result);
+}
+
+
+function obtenerSuelaEnStock(){
+    $sql = "SELECT ST.ID, C.NOMBRE, SU.REFERENCIA, SU.MARCA, SU.TALLA, COL.COLOR, ST.CANTIDAD 
+    FROM STOCK ST
+        LEFT JOIN SUELAS SU
+            ON ST.SUELA_ID = SU.ID
+        LEFT JOIN CLIENTES C
+            ON ST.CLIENTE_ID = C.ID
+        LEFT JOIN COLOR COL
+            ON ST.COLOR_ID = COL.ID
+    WHERE  ST.ID = ?;";
+    $result = db_query($sql, array($_POST['id']));
+    echo json_encode($result);
+}
+
+
 function obtenerStockCompleto(){
 
     $sql = "SELECT STO.SUELA_ID, STO.COLOR_ID, STO.CANTIDAD
@@ -487,21 +517,6 @@ function obtenerStockCompleto(){
                 WHERE STO.CANTIDAD > 0 AND CLI.NOMBRE = 'FABRICA';";
 
     $result = db_query($sql);
-    echo json_encode($result);
-
-}
-
-function obtenerSuelasEnStock(){
-    $sql = "SELECT * FROM STOCK;";
-    $result = db_query($sql);
-    echo json_encode($result);
-
-}
-
-function obtenerSuelaEnStock()
-{
-    $sql = "SELECT * FROM STOCK WHERE ID = ?;";
-    $result = db_query($sql, array($_POST['id']));
     echo json_encode($result);
 
 }
