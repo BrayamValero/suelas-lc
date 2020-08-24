@@ -4,8 +4,14 @@
 include 'components/header.php';
 include 'components/components.php';
 
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'):
+// Agregamos los roles que se quiere que usen esta página.
+$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
 
 ?>
 
@@ -146,8 +152,11 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 <!-- Inline JavaScript -->
 <script>
 
-// Declarando Variables.
+// Variables Inicializadas.
 var tabla;
+var posicionTabla;
+const botonAñadirColor = document.getElementById('botonAñadirColor');
+const botonEditarColor = document.getElementById('botonEditarColor')
 
 // Datatables => Mostrando la tabla COLOR
 $.ajax({
@@ -195,36 +204,38 @@ $.ajax({
         $.fn.DataTable.ext.pager.numbers_length = 5;
         
 		// Datatables => Buscador Personalizado
-	   	document.getElementById('customInput').addEventListener('keyup', function () {
+        document.getElementById('searchInput').addEventListener('keyup', function () {
 			tabla.search(this.value).draw();
         });
 	   
-    },   
-    error: function(error) {
-        console.log("No hay data para mostrar: " + error);
     }
 
 });
 
+// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar un Elemento)
+$('#tabla tbody').on( 'click', 'tr', function () { 
+	posicionTabla = this;
+});
+
 // AÑADIR => Añadiendo Color.
-document.getElementById('botonAñadirColor').addEventListener('click', function () {
+botonAñadirColor.addEventListener('click', function () {
 
-	let check = $('#añadirColorForm')[0].checkValidity();
+	// ID del formulario.
+	let formulario = $('#añadirColorForm');
 
-	if(!check){
-		return swal('Error', 'Datos inválidos, verifica.', 'error');
-	}
-		
+	// Si el formulario tiene algún campo incorrecto, lanzar error.
+	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+
+	// Si todos los campos son correctos, Bloquear el botón de envío de data.
+	botonAñadirColor.disabled = true;
+
 	// $.post => Añadiendo el elemento al backend.
-	$.post( 'backend/api/color/añadir.php', $('#añadirColorForm').serialize(), function(data) {
+	$.post( 'backend/api/color/añadir.php', formulario.serialize(), function(data) {
 
 		switch (data) {
 
-			case 'WARNING':
-				return swal('Whoops', 'Debes rellenar todos los campos.', 'warning');
-				break;
-			
 			case 'ERROR':
+				botonAñadirColor.disabled = false;
 				return swal('Error', 'El color ya se encuentra registrado.', 'error');
 				break;
 
@@ -234,7 +245,7 @@ document.getElementById('botonAñadirColor').addEventListener('click', function 
 
 				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El color ha sido agregado satisfactoriamente.');
 
-				const elems = $('#añadirColorForm').serializeArray();
+				const elems = formulario.serializeArray();
 
 				// Datatables => Añadiendo el elemento al frontend.
 				tabla.row.add({
@@ -250,57 +261,65 @@ document.getElementById('botonAñadirColor').addEventListener('click', function 
 
 		}	
 
-	});
+	}).always(
+
+        // Luego de agregar el elemento tanto en frontend como backend, habilitar el botón.
+        $('#añadirColorModal').on('hidden.bs.modal', function (e) {
+            botonAñadirColor.disabled = false;
+        })
+
+    );
 
 });
 
 // EDITAR => Editando Color.
-$('#tabla tbody').on( 'click', '.editarColor', function () {
+botonEditarColor.addEventListener('click', function () {
 
-	let result = $(this).parents('tr');
+	// ID del formulario.
+	let formulario = $('#editarColorForm');
 
-    document.getElementById('botonEditarColor').addEventListener('click', function () {
+	// Si el formulario tiene algún campo incorrecto, lanzar error.
+	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
 
-		let check = $('#editarColorForm')[0].checkValidity();
+	// Si todos los campos son correctos, Bloquear el botón de envío de data.
+	botonEditarColor.disabled = true;
 
-		if(!check){
-			return swal('Error', 'Datos inválidos, verifica.', 'error');
-		}
-        
-      	// $.post => Añadiendo el elemento al backend.
-		$.post( 'backend/api/color/editar.php', $('#editarColorForm').serialize(), function(data, status) {
+	// $.post => Añadiendo el elemento al backend.
+	$.post( 'backend/api/color/editar.php', formulario.serialize(), function(data, status) {
 
-			switch (data) {
+		switch (data) {
+			
+			case 'ERROR':
+				botonEditarColor.disabled = false;
+				return swal('Error', 'El color ya se encuentra registrado.', 'error');
+				break;
 
-				case 'WARNING':
-					return swal('Whoops', 'Debes rellenar todos los campos.', 'warning');
-					break;
-				
-				case 'ERROR':
-					return swal('Error', 'El color ya se encuentra registrado.', 'error');
-					break;
+			default:
 
-				default:
+				$('#editarColorModal').modal('hide')
 
-					$('#editarColorModal').modal('hide')
+				toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'El color ha sido editado satisfactoriamente.');
 
-					toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'El color ha sido editado satisfactoriamente.');
+				const elems = formulario.serializeArray();
 
-					const elems = $('#editarColorForm').serializeArray();
+				// Datatables => Añadiendo el elemento al frontend.
+				tabla.row(posicionTabla).data({
+					"ID":               elems[0].value,
+					"COLOR":       		elems[1].value,
+					"CODIGO":           elems[2].value,
+					"ID":               elems[0].value,
+				}).draw(false);
 
-					// Datatables => Añadiendo el elemento al frontend.
-					tabla.row(result).data({
-						"ID":               elems[0].value,
-						"COLOR":       		elems[1].value,
-						"CODIGO":           elems[2].value,
-						"ID":               elems[0].value,
-					}).draw(false);
+		}		
 
-			}		
+	}).always(
 
-		});	
+        // Luego de agregar el elemento tanto en frontend como backend, habilitar el botón.
+        $('#editarColorModal').on('hidden.bs.modal', function (e) {
+            botonEditarColor.disabled = false;
+        })
 
-    });
+    );
 
 });
 
@@ -330,16 +349,3 @@ $('#editarColorModal').on('show.bs.modal', function (e) {
 
 <!-- Incluyendo el footer.php -->
 <?php include_once 'components/footer.php'; ?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
-?>

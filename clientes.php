@@ -4,8 +4,14 @@
 include 'components/header.php';
 include 'components/components.php';
 
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'):
+// Agregamos los roles que se quiere que usen esta página.
+$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
 
 ?>
 
@@ -43,15 +49,15 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 
 	<!-- Boton -->
 	<div class="d-flex justify-content-center mt-5">
-		<button class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirCliente-modal">Añadir Cliente</button>
+		<button class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirClienteModal">Añadir Cliente</button>
 	</div>
 
-	<!-- Modal de Añadir Cliente -->
-	<div class="modal fade" id="añadirCliente-modal" tabindex="-1" role="dialog" aria-labelledby="añadirCliente-modal" aria-hidden="true">
+	<!-- Añadir Cliente -->
+	<div class="modal fade" id="añadirClienteModal" tabindex="-1" role="dialog" aria-labelledby="añadirClienteModal" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 			<div class="modal-content">
 
-				<form action="backend/api/clientes/crear.php" method="POST">
+				<form id="añadirClienteForm">
 
 					<div class="modal-header">
 						<h5 class="modal-title"><i class="fas fa-user-plus icon-color"></i> Añadir Cliente</h5>
@@ -66,16 +72,16 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 						<div class="form-row">
 							
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirCliente-modal">Tipo de Cliente</label>
-								<select name="cliente" id="inputAñadirCliente-modal" class="form-control">
-									<option value="EXTERNO">Externo</option>
-									<option value="INTERNO">Interno</option>
+								<label for="añadirTipoCliente">Tipo de Cliente</label>
+								<select name="tipo_cliente" id="añadirTipoCliente" class="form-control" required>
+									<option value="Externo">Externo</option>
+									<option value="Interno">Interno</option>
 								</select>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirCedula-modal">Tipo Documento</label>
-								<select name="cedula" id="inputAñadirCedula-modal" class="form-control">
+								<label for="añadirTipoDocumento">Tipo Documento</label>
+								<select name="tipo_documento" id="añadirTipoDocumento" class="form-control" required>
 									<option value="CC">CC</option>
 									<option value="CE">CE</option>
 									<option value="PA">PA</option>
@@ -85,62 +91,62 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirDocumento-modal">Numero documento</label>
+								<label for="añadirNumeroDocumento">Numero documento</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-id-card"></i></div>
 									</div>
-									<input type="documento" min="1" id="inputAñadirDocumento-modal" name="documento" class="form-control" placeholder="Documento">
+									<input name="numero_documento" type="number" min="1" id="añadirNumeroDocumento"  class="form-control" placeholder="Documento" required>
 								</div>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirNombre-modal">Nombre y Apellido</label>
+								<label for="añadirNombre">Nombre y Apellido</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-signature"></i></div>
 									</div>
-									<input name="nombre" type="text" class="form-control" id="inputAñadirNombre-modal" placeholder="Nombre y Apellido">
+									<input name="nombre" type="text" class="form-control" id="añadirNombre" placeholder="Nombre y Apellido" required>
 								</div>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirTelefono-modal">Teléfono Fijo</label>
+								<label for="añadirTeléfono">Teléfono Fijo</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-phone"></i></div>
 									</div>
-									<input name="telefono" type="number" min="1" class="form-control" id="inputAñadirTelefono-modal" placeholder="Fijo">
+									<input name="telefono" type="number" min="1" class="form-control" id="añadirTeléfono" placeholder="Fijo" required>
 								</div>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirCelular-modal">Teléfono Movil</label>
+								<label for="añadirCelular">Teléfono Movil</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-mobile-alt"></i></div>
 									</div>
-									<input name="celular" type="number" min="1" class="form-control" id="inputAñadirCelular-modal" placeholder="Móvil">
+									<input name="celular" type="number" min="1" class="form-control" id="añadirCelular" placeholder="Móvil" required>
 								</div>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirCorreo-modal">Email</label>
+								<label for="añadirCorreo">Email</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-envelope"></i></div>
 									</div>
-									<input name="email" type="email" class="form-control" id="inputAñadirCorreo-modal" placeholder="Correo Electrónico">
+									<input name="correo" type="email" class="form-control" id="añadirCorreo" placeholder="Correo Electrónico" required>
 								</div>
 							</div>  
 
 							<div class="form-group col-sm-6">
-								<label for="inputAñadirDireccion-modal">Dirección</label>
+								<label for="añadirDireccion">Dirección</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
 									</div>
-									<input name="direccion" type="text" class="form-control" id="inputAñadirDireccion-modal" placeholder="Dirección">
+									<input name="direccion" type="text" class="form-control" id="añadirDireccion" placeholder="Dirección" required>
 								</div>
 							</div>
 
@@ -150,7 +156,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-						<button type="submit" class="btn btn-sm btn-main">Guardar Cambios</button>
+						<button type="button" id="botonAñadirCliente" class="btn btn-sm btn-main">Guardar Cambios</button>
 					</div>
 
 				</form>
@@ -160,16 +166,16 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 	</div>
 	<!-- Fin de Modal -->
 
-	<!-- Editar Modal de Cliente -->
-	<div class="modal fade" id="editarCliente-modal" tabindex="-1" role="dialog" aria-labelledby="editarCliente-modal" aria-hidden="true">
+	<!-- Editar Cliente -->
+	<div class="modal fade" id="editarClienteModal" tabindex="-1" role="dialog" aria-labelledby="editarClienteModal" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 			<div class="modal-content">
 
 				<!-- Form -->
-				<form action="backend/api/clientes/editar.php" method="POST">
+				<form id="editarClienteForm">
 
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-user-edit icon-color"></i> Editar Cliente</h5>
+						<h5 class="modal-title"><i class="fas fa-user-edit icon-color"></i> Editar Cliente</h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 						</button>
@@ -180,17 +186,17 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 						<div class="form-row">
 							
 							<div class="form-group col-sm-6">
-								<input type="hidden" name="id" id="id-modal-edit">
-								<label for="inputTipoCliente-modal">Tipo de Cliente</label>
-								<select name="tipo-cliente" id="inputTipoCliente-modal" class="form-control">
-									<option value="EXTERNO">Externo</option>
-									<option value="INTERNO">Interno</option>
+								<input type="hidden" name="id" id="editarId">
+								<label for="editarTipoCliente">Tipo de Cliente</label>
+								<select name="tipo_cliente" id="editarTipoCliente" class="form-control">
+									<option value="Externo">Externo</option>
+									<option value="Interno">Interno</option>
 								</select>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputTipoDocumento-modal">Tipo Documento</label>
-								<select name="tipo-documento" id="inputTipoDocumento-modal" class="form-control">
+								<label for="editarTipoDocumento">Tipo Documento</label>
+								<select name="tipo_documento" id="ieditarTipoDocumento" class="form-control">
 									<option value="CC">CC</option>
 									<option value="CE">CE</option>
 									<option value="PA">PA</option>
@@ -200,62 +206,62 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputNumeroDocumento-modal">Numero documento</label>
+								<label for="editarNumeroDocumento">Numero documento</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-id-card"></i></div>
 									</div>
-									<input type="number" min="1" id="inputNumeroDocumento-modal" name="numero-documento" class="form-control" placeholder="Documento">
+									<input type="number" min="1" id="editarNumeroDocumento" name="numero_documento" class="form-control" placeholder="Documento">
 								</div>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputNombre-modal">Nombre y Apellido</label>
+								<label for="editarNombre">Nombre y Apellido</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-signature"></i></div>
 									</div>
-									<input name="cliente-nombre" type="text" class="form-control" id="inputNombre-modal" placeholder="Nombre y Apellido">
+									<input name="nombre" type="text" class="form-control" id="editarNombre" placeholder="Nombre y Apellido">
 								</div>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputTelephone">Teléfono Fijo</label>
+								<label for="editarTelefono">Teléfono Fijo</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-phone"></i></div>
 									</div>
-									<input name="cliente-telefono" type="number" min="1" class="form-control" id="inputTelephone-modal" placeholder="Fijo">
+									<input name="telefono" type="number" min="1" class="form-control" id="editarTelefono" placeholder="Fijo">
 								</div>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputTelephone">Teléfono Movil</label>
+								<label for="editarCelular">Teléfono Movil</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-mobile-alt"></i></div>
 									</div>
-									<input name="cliente-celular" type="number" min="1" class="form-control" id="inputMobilePhone-modal" placeholder="Móvil">
+									<input name="celular" type="number" min="1" class="form-control" id="editarCelular" placeholder="Móvil">
 								</div>
 							</div>
 
 							<div class="form-group col-sm-6">
-								<label for="inputEmail">Email</label>
+								<label for="editarCorreo">Email</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-envelope"></i></div>
 									</div>
-									<input name="cliente-email" type="email" class="form-control" id="inputEmail-modal" placeholder="Email">
+									<input name="correo" type="email" class="form-control" id="editarCorreo" placeholder="Email">
 								</div>
 							</div>  
 
 							<div class="form-group col-sm-6">
-								<label for="inputAddress">Dirección</label>
+								<label for="editarDireccion">Dirección</label>
 								<div class="input-group mb-2">
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
 									</div>
-									<input name="cliente-direccion" type="text" class="form-control" id="inputAddress-modal" placeholder="Dirección">
+									<input name="direccion" type="text" class="form-control" id="editarDireccion" placeholder="Dirección">
 								</div>
 							</div>
 
@@ -265,7 +271,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-						<button type="submit" class="btn btn-sm btn-main">Editar</button>
+						<button type="button" id="botonEditarCliente" class="btn btn-sm btn-main">Editar</button>
 					</div>
 
 				</form>
@@ -275,8 +281,8 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 	</div>
 	<!-- / Fin de Modal -->
 
-	<!-- Ver Cliente Modal -->
-	<div class="modal fade" id="verCliente-modal" tabindex="-1" role="dialog" aria-labelledby="verCliente-modal" aria-hidden="true">
+	<!-- Ver Cliente -->
+	<div class="modal fade" id="verClienteModal" tabindex="-1" role="dialog" aria-labelledby="verClienteModal" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-md" role="document">
 			<div class="modal-content">
 
@@ -295,28 +301,26 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 						<div class="form-row">
 
 							<div class="form-group col-6">
-								<label for="inputVerCelular-modal">Teléfono Movil</label>
-								<input id="inputVerCelular-modal" name="celular" type="number" min="1" class="form-control" readonly>
+								<label for="verCelular">Teléfono Movil</label>
+								<input id="verCelular" name="celular" type="number" min="1" class="form-control" readonly>
 							</div>
 
 							<div class="form-group col-6">
-								<label for="inputVerTelefono-modal">Teléfono Fijo</label>
-								<input id="inputVerTelefono-modal" name="telefono" type="number" min="1" class="form-control" readonly>
+								<label for="verTelefono">Teléfono Fijo</label>
+								<input id="verTelefono" name="telefono" type="number" min="1" class="form-control" readonly>
 							</div>
 
 							<div class="form-group col-12">
-								<label for="inputVerDireccion-modal">Dirección</label>
-								<input id="inputVerDireccion-modal" name="direccion" type="text" class="form-control" readonly>
+								<label for="verDireccion">Dirección</label>
+								<input id="verDireccion" name="direccion" type="text" class="form-control" readonly>
 							</div>
 
 							<div class="form-group col-12">
-								<label for="inputVerCorreo-modal">Correo Electrónico</label>
-								<input id="inputVerCorreo-modal" name="email" type="email" class="form-control" readonly>
+								<label for="verCorreo">Correo Electrónico</label>
+								<input id="verCorreo" name="correo" type="email" class="form-control" readonly>
 							</div>  
 
 						</div>
-
-						<div id="checkEstado" class="form-group text-center"></div>
 						
 					</div>
 
@@ -336,10 +340,10 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 // VARIABLES => Declarando Variables Globales.
 var tabla;
 var posicionTabla;
-// const botonAñadir = document.getElementById('botonAñadir');
-// const botonEditar = document.getElementById('botonEditar');
+const botonAñadirCliente = document.getElementById('botonAñadirCliente');
+const botonEditarCliente = document.getElementById('botonEditarCliente');
 
-// DATATABLES => Mostrando la tabla STOCK.
+// DATATABLES => Mostrando la tabla CLIENTES.
 $.ajax({
     type: 'get',
     url: 'backend/api/utils.php?fun=obtenerClientes',
@@ -347,8 +351,6 @@ $.ajax({
     success: function (data) {
 
         const result = JSON.parse(data);
-
-		console.log(result);
 
         tabla = $('#tabla').DataTable({
             "initComplete": function(settings, json) {
@@ -425,265 +427,216 @@ $('#tabla tbody').on( 'click', 'tr', function () {
 	posicionTabla = this;
 });
 
-// /* DATATABLES CUSTOMIZATION */
-// const tabla = $('#tabla').DataTable({
-// 	info: false,
-// 	dom: "lrtip",
-// 	pageLength: 10,
-// 	lengthChange: false,
-// 	order: [[0, 'desc']],
-// 	processing: true,
-// 	serverSide: true,
-// 	ajax: {
-// 		url: "<?= BASE_URL . "backend/api/tabla_ssp.php"; ?>",
-// 		method: "GET",
-// 		data: {
-// 			tabla: 'CLIENTES',
-// 			pk: 'ID',
-// 			columnas: [
-// 				{nombre: 'ID', index: 0},
-// 				{nombre: 'DOCUMENTO', index: 1},
-// 				{nombre: 'DOCUMENTO_NRO', index: 2},
-// 				{nombre: 'NOMBRE', index: 3},
-// 				{nombre: 'TIPO', index: 4},
-// 				{nombre: 'ACTIVO', index: 5},
-// 				// Esta es solo para rellenar la tabla de OPCIONES.
-// 				{nombre: 'ID', index: 6}
-// 			]
-// 		}
-// 	},
-// 	// createdRow => This is particularly useful when using deferred rendering (deferRender) or server-side processing (serverSide) so you can add events, class name information or otherwise format the row when it is created.
-// 	createdRow: function(row, data, dataIndex) {
-		
-// 		for (let rowCell of row.cells) {
-// 			rowCell.innerHTML = rowCell.innerHTML.toProperCase();
-// 		}
+// AÑADIR => Añadiendo Cliente.
+botonAñadirCliente.addEventListener('click', function () {
 
-// 		row.cells[1].innerHTML = row.cells[1].innerHTML.toUpperCase();
+	// ID del formulario.
+	let formulario = $('#añadirClienteForm');
 
-// 		if (row.cells[5].innerHTML == 'Si') {
+	// Si el formulario tiene algún campo incorrecto, lanzar error.
+	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
 
-// 			row.cells[5].innerHTML = `<i class='fas fa-check-circle text-success'></i></button>`;
+	// Si todos los campos son correctos, Bloquear el botón de envío de data.
+	botonAñadirCliente.disabled = true;
 
-// 		} else {
+    // $.post => Añadiendo el elemento al backend.
+    $.post( 'backend/api/clientes/añadir.php', formulario.serialize(), function(data) {
 
-// 			row.cells[5].innerHTML = `<i class='fas fa-times-circle text-danger'></i>`;
+	    switch (data) {
 			
-// 		}
+			case 'ERROR':
+                botonAñadirCliente.disabled = false;
+				return swal('Error', 'El cliente ya se encuentra registrado.', 'error');
+				break;
 
-// 		row.cells[6].innerHTML = 
-// 		`
-// 			<?php if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'): ?>
+			default:
 
-// 			<a href='#' data-toggle='modal' data-target='#editarCliente-modal' data-id='${data[0]}'>
-// 				<i class='fas fa-edit icon-color'></i>
-// 			</a>
-			
-// 			<a href='#' data-id='${data[0]}' onclick='desactivarCliente(${data[0]})'>
-// 				<i class='fas fa-trash icon-color'></i>
-// 			</a>
-// 			<a href='#' data-toggle='modal' data-target='#verCliente-modal' data-id='${data[0]}'>
-// 				<i class='fas fa-eye icon-color'></i>
-// 			</a>
+				$('#añadirClienteModal').modal('hide')
 
-// 			<?php else: ?>
-			
-// 			<a href='#' data-toggle='modal' data-target='#verCliente-modal' data-id='${data[0]}'>
-// 				<i class='fas fa-eye icon-color'></i>
-// 			</a>
+				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El cliente ha sido agregado satisfactoriamente.');
 
-// 			<?php endif; ?>
-// 		`;
+				const elems = formulario.serializeArray();
 
-// 	},
-// 	columnDefs: [{
-// 		searchable: true,
-// 		orderable: true,
-// 		className: "align-middle", "targets": "_all"
-// 	}],
-// 	language: {
-// 		"url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
-// 	}
-// });
+				console.log(elems);
 
-// // Paginación - DataTables
-// $.fn.DataTable.ext.pager.numbers_length = 5;
+				// Datatables => Añadiendo el elemento al frontend.
+				tabla.row.add({
+                    "ID":               data,
+                    "TIPO":       		elems[0].value,
+					"DOCUMENTO":        elems[1].value,
+					"DOCUMENTO_NRO":    elems[2].value,
+                    "NOMBRE":         	elems[3].value,
+                    "ACTIVO":     		'SI',
+                    "ID":               data
+				}).draw().node();
 
-// ELIMINAR => Eliminando Referencia.
+                // Borrando los inputs del Modal.
+				 $('#añadirClienteModal').on('hidden.bs.modal', function (e) {
+                    $(this).find("input, textarea").val('').end();
+                 });
+
+        }
+
+    }).always(
+
+        // Luego de agregar el elemento tanto en frontend como backend, habilitar el botón.
+        $('#añadirClienteModal').on('hidden.bs.modal', function (e) {
+            botonAñadirCliente.disabled = false;
+        })
+
+    ); 
+
+});
+
+// EDITAR => Editando Clientes.
+botonEditarCliente.addEventListener('click', function () {
+
+	// ID del formulario.
+	let formulario = $('#editarClienteForm');
+
+	// Si el formulario tiene algún campo incorrecto, lanzar error.
+	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+
+	// Si todos los campos son correctos, Bloquear el botón de envío de data.
+	botonEditarCliente.disabled = true;
+
+    // $.post => Añadiendo el elemento al backend.
+    $.post( 'backend/api/clientes/editar.php', formulario.serialize(), function(data) {
+        
+        switch (data) {
+
+            case 'ERROR':
+                botonEditarCliente.disabled = false;
+                return swal('Error', 'El cliente ya se encuentra registado.', 'error');
+                break;
+
+            default:
+
+                $('#editarClienteModal').modal('hide')
+
+                toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'El cliente ha sido editado satisfactoriamente.');
+
+				const elems = formulario.serializeArray();
+				
+				// Se realiza un AJAX request en el cual se obtienen los datos del ID actual para actualizar la data en la tabla de DataTables.
+				$.ajax({
+					type : 'post',
+					url : 'backend/api/utils.php?fun=obtenerClienteId',
+					data :  'id='+ data,
+					dataType: 'json',
+					success: function (data) {
+
+						console.table(data);
+
+						// Datatables => Añadiendo el elemento al frontend.
+						tabla.row(posicionTabla).data({
+							"ID":               data[0].ID,
+							"TIPO":       		data[0].TIPO,
+							"DOCUMENTO":       	data[0].DOCUMENTO,
+							"DOCUMENTO_NRO":    data[0].DOCUMENTO_NRO,
+							"NOMBRE":     		data[0].NOMBRE,
+							"ACTIVO":         	data[0].ACTIVO,
+							"ID":               data[0].ID
+						}).draw(false);
+
+					}
+					
+				});
+
+        }
+
+    }).always(
+
+        // Luego de agregar el elemento tanto en frontend como backend, habilitar el botón.
+        $('#editarClienteModal').on('hidden.bs.modal', function (e) {
+            botonEditarCliente.disabled = false;
+        })
+
+    ); 
+
+});
+
+
+// CAMBIAR => Cambiando el estado del cliente.
 $('#tabla tbody').on( 'click', '.cambiarEstado', function () {
 
 	let id = $(this).data("id");
-	var estado = $(this).is(':checked');
-
-	console.log(estado);
-
-	if(!estado){
-
-		// Desactivando cliente
-		$.get(`backend/api/clientes/desactivar.php?id=${id}`);
-
-
-	} else {
-
-		// Activando cliente
-		$.get(`backend/api/clientes/activar.php?id=${id}`);
-				
-
-	}
+	let estado = $(this).is(':checked');
+	let result = !estado ? $.get(`backend/api/clientes/desactivar.php?id=${id}`) : $.get(`backend/api/clientes/activar.php?id=${id}`);
 
 });
 
-
-// var checkBox = document.getElementById("myCheck");
-//   var text = document.getElementById("text");
-//   if (checkBox.checked == true){
-//     text.style.display = "block";
-//   } else {
-//      text.style.display = "none";
-//   }
-
-
-// Modal de Editar Clientes
-$('#editarCliente-modal').on('show.bs.modal', function (e) {
-	let rowid = $(e.relatedTarget).data('id');
+// VISTA -> Editar Clientes 
+$('#editarClienteModal').on('show.bs.modal', function (e) {
+	
+	let id = $(e.relatedTarget).data('id');
 
 	$.ajax({
 		type : 'post',
 		url : 'backend/api/utils.php?fun=obtenerClienteId',
-		data :  'id='+ rowid,
-		dataType: "json",
+		data :  'id='+ id,
+		dataType: 'json',
 		success : function(data){
 
-			if(data[0].TIPO === 'EXTERNO') {
-				$('#inputTipoCliente-modal')[0].selectedIndex = 0;
-			} else {
-				$('#inputTipoCliente-modal')[0].selectedIndex = 1;
-			}
+			$("#editarTipoCliente > option").each(function() {
 
-			if(data[0].DOCUMENTO === 'CC') {
-				$('#inputTipoDocumento-modal')[0].selectedIndex = 0;
-			} else if(data[0].DOCUMENTO === 'CE') {
-				$('#inputTipoDocumento-modal')[0].selectedIndex = 1;
-			} else if(data[0].DOCUMENTO === 'PA') {
-				$('#inputTipoDocumento-modal')[0].selectedIndex = 2;
-			} else if(data[0].DOCUMENTO === 'NIT') {
-				$('#inputTipoDocumento-modal')[0].selectedIndex = 3;
-			} else {
-				$('#inputTipoDocumento-modal')[0].selectedIndex = 4;
-			}
+                if( data[0].TIPO == this.value ){
 
-			$('#id-modal-edit').val(data[0].ID);
-			$('#inputNumeroDocumento-modal').val(data[0].DOCUMENTO_NRO);
-			$('#inputNombre-modal').val(data[0].NOMBRE.toProperCase());
-			$('#inputTelefono-modal').val(data[0].TELEFONO);
-			$('#inputEmail-modal').val(data[0].CORREO.toLowerCase());
-			$('#inputTelephone-modal').val(data[0].TELEFONO);
-			$('#inputMobilePhone-modal').val(data[0].CELULAR);
-			$('#inputAddress-modal').val(data[0].DIRECCION.toProperCase());
+                    $(this).prop("selected", true);
+                    
+                    return false;
+                
+                }
+
+			});
+
+			$("#editarTipoDocumento > option").each(function() {
+
+                if( data[0].DOCUMENTO == this.value ){
+
+                    $(this).prop("selected", true);
+                    
+                    return false;
+                
+                }
+
+			});			
+
+			document.getElementById('editarId').value = data[0].ID;
+			document.getElementById('editarNumeroDocumento').value = data[0].DOCUMENTO_NRO;
+			document.getElementById('editarNombre').value = data[0].NOMBRE;
+			document.getElementById('editarTelefono').value = data[0].TELEFONO;
+			document.getElementById('editarCelular').value = data[0].CELULAR;
+			document.getElementById('editarCorreo').value = data[0].CORREO;
+			document.getElementById('editarDireccion').value = data[0].DIRECCION;
+
 		}
 	});
 });
 
-// Modal de Ver Informacion del Cliente
-$('#verCliente-modal').on('show.bs.modal', function (e) {
+// VISTA -> Ver Clientes 
+$('#verClienteModal').on('show.bs.modal', function (e) {
 	
-	let rowid = $(e.relatedTarget).data('id');
+	let id = $(e.relatedTarget).data('id');
 
 	$.ajax({
 		type : 'post',
 		url : 'backend/api/utils.php?fun=obtenerClienteId',
-		data :  'id='+ rowid,
-		dataType: "json",
+		data :  'id='+ id,
+		dataType: 'json',
 		success : function(data){
 
-			$('#inputVerTelefono-modal').val(data[0].TELEFONO);
-			$('#inputVerCelular-modal').val(data[0].CELULAR);
-			$('#inputVerDireccion-modal').val(data[0].DIRECCION.toProperCase());
-			$('#inputVerCorreo-modal').val(data[0].CORREO.toLowerCase());
-
-			const checkEstado = $('#checkEstado');
-            checkEstado.empty();
-
-			if (data[0].ACTIVO === 'SI') {
-				checkEstado.append(
-					`<small>El usuario se encuentra activo.</small>`
-				);
-            } else {
-                checkEstado.append(
-                    `<small>El usuario se encuentra inactivo, <a href='#' onclick='activarCliente(${data[0].ID})' class='text-info font-weight-bold'>Activar aquí.</a>`
-                );
-            }
+			document.getElementById('verTelefono').value = data[0].TELEFONO;
+			document.getElementById('verCelular').value = data[0].CELULAR;
+			document.getElementById('verCorreo').value = data[0].CORREO;
+			document.getElementById('verDireccion').value = data[0].DIRECCION;
 			
 		}
+
 	});
 });
-
-// Desactivar Cliente
-function desactivarCliente(id) {
-	swal({
-		title: "¿Estás seguro?",
-		text: "El cliente pasará a estar inactivo.",
-		icon: "warning",
-		buttons: [
-			'No',
-			'Si'
-		],
-		dangerMode: true,
-	}).then(function (isConfirm) {
-		if (isConfirm) {
-			swal({
-				title: '¡Inactivo!',
-				text: 'El cliente se encuentra inactivo.',
-				icon: 'success'
-			}).then(function () {
-				window.location.href = `backend/api/clientes/desactivar.php?id=${id}`
-			});
-		} else {
-			swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
-		}
-	});
-}
-
-// Activar Cliente
-function activarCliente(id) {
-	swal({
-		title: "¿Estás seguro?",
-		text: "El cliente pasará a estar Activo.",
-		icon: "warning",
-		buttons: [
-			'No',
-			'Si'
-		],
-		dangerMode: true,
-	}).then(function (isConfirm) {
-		if (isConfirm) {
-			swal({
-				title: '¡Activado!',
-				text: 'El cliente se encuentra activo.',
-				icon: 'success'
-			}).then(function () {
-				window.location.href = `backend/api/clientes/activar.php?id=${id}`
-			});
-		} else {
-			swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
-		}
-	});
-}
 
 </script>
 
 <!-- Incluyendo el footer.php -->
 <?php include_once 'components/footer.php'; ?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
-?>
