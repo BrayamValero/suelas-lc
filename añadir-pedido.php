@@ -224,10 +224,12 @@ botonAñadirSerie.addEventListener('click', function () {
     // Realizando formulas para la personalización de colores.
     let color = obtenerColor[0].COLOR.toProperCase();
     let backgroundHex = obtenerColor[0].CODIGO;
-    let red = parseInt(backgroundHex.substring(0, 2), 16);
-    let green = parseInt(backgroundHex.substring(2, 4), 16);
-    let blue = parseInt(backgroundHex.substring(4, 6), 16);
-    let colorHex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '000000' : 'FFFFFF';
+
+    let red = parseInt(backgroundHex.substring(1, 3), 16);
+    let green = parseInt(backgroundHex.substring(3, 5), 16);
+    let blue = parseInt(backgroundHex.substring(5, 7), 16);
+
+    let colorHex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
 
     // AÑADIENDO LA SERIE -> NOMBRE SERIE, COLOR Y RANGO
     $('.contenedorPedidos').append(`

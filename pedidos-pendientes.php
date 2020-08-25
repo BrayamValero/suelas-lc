@@ -39,14 +39,13 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                 </tr>
             </thead>
             <tbody>
-                <!-- Obtenemos la data mediante PHP -->
+
                 <?php
                 require_once "backend/api/db.php";
                 require_once "backend/api/utils.php";
+
                 $sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE FROM PEDIDOS P JOIN CLIENTES C ON P.CLIENTE_ID = C.ID WHERE P.ESTADO IN ('EN ANALISIS', 'PENDIENTE');";
                 $result = db_query($sql);
-
-                // echo '<pre>'; print_r($result); echo '</pre>';
 
                 foreach ($result as $row) {
                     echo "<tr id='{$row['ID']}'>";
@@ -57,6 +56,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                     echo "<td>" . date('d-m-Y', strtotime($row['FECHA_ESTIMADA'])) . "</td>";
 
                     if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
+                       
                         if ($row['ESTADO'] === 'EN ANALISIS') {
                             
                             echo "<td> 
@@ -67,20 +67,35 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                             echo "<td>Pendiente</td>";
                         }
                     } else {
+
                         if ($row['ESTADO'] === 'EN ANALISIS') {
+
                             echo "<td>En analisis</td>";
+
                         } else {
+
                             echo "<td>Pendiente</td>";
+
                         }
                     }
 
                     echo "<td>";
                     
                     if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
+
                         if ($row['ESTADO'] === 'EN ANALISIS') {
                             echo "<a href='editar-pedido.php?id={$row['ID']}'><i class='fas fa-edit icon-color'></i></a>";
-                            echo "<a href='#' class='ml-1 eliminarPedido' data-id='{$row['ID']}'><i class='fas fa-trash icon-color'></i></a>";
+                            echo "<a href='#' class='ml-1 eliminarPedido' data-id='{$row['ID']}'><i class='fas fa-trash icon-color'></i></a>";                     
+                            echo "<a class='ml-1' href='#' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'><i class='fas fa-eye icon-color'></i></a>";
+                        } else {
+                            echo "<a class='ml-1' href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
+                                <i class='fas fa-eye icon-color'></i>
+                            </a>";
+                            echo "<a href='javascript:void(0)' class='ml-1 cancelarPedido' data-id='{$row['ID']}'>
+                                <i class='fas fa-ban icon-color'></i>
+                            </a>";  
                         }
+
                     } 
 
                     if ($_SESSION['USUARIO']['CARGO'] == 'VENTAS') {
@@ -88,11 +103,12 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                             echo "<a href='editar-pedido.php?id={$row['ID']}'><i class='fas fa-edit icon-color'></i></a>";
                         }
                     }
-                        
-                    echo "<a class='ml-1' href='#' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'><i class='fas fa-eye icon-color'></i></a>";
+
                     echo "</td>";
                     echo "</tr>";
+
                 }
+
                 ?>
             </tbody>
         </table>
@@ -246,26 +262,21 @@ $('#verPedido').on('show.bs.modal', function (e) {
             });
 
             // Decoración del color en cada serie.
-            let colorHex;
             let color = obtenerColor[0].COLOR;
             let backgroundHex = obtenerColor[0].CODIGO;
 
-            let red = parseInt(backgroundHex.substring(0, 2), 16);
-            let green = parseInt(backgroundHex.substring(2, 4), 16);
-            let blue = parseInt(backgroundHex.substring(4, 6), 16);
-
-            if ((red*0.299 + green*0.587 + blue*0.114) > 186){
-                colorHex = "000000";
-            } else {
-                colorHex = "FFFFFF";
-            }
+            let red = parseInt(backgroundHex.substring(1, 3), 16);
+            let green = parseInt(backgroundHex.substring(3, 5), 16);
+            let blue = parseInt(backgroundHex.substring(5, 7), 16);
+            
+            let colorHex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
 
             $('.contenedorPedidos').append(`
                 <div id="serie-${i}" class="contenedor-serie shadow-sm">
                     <div class="form-row">
                         <div class="col">
                             <strong>${result[0].MARCA.toProperCase()}</strong>
-                            <span class="badge border" style="background-color: #${backgroundHex}; color: #${colorHex};">${color.toProperCase()}</span>
+                            <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color.toProperCase()}</span>
                             <small class="text-muted">${result[0].TALLA} al ${result[result.length - 1].TALLA}</small>
                         </div>
                     </div>
@@ -313,7 +324,7 @@ $('#verPedido').on('show.bs.modal', function (e) {
 // Eliminar pedidos.
 $('.eliminarPedido').on('click', function (e) {
 
-    let row = $(e.target.parentElement).data('id');
+    let id = $(e.target.parentElement).data('id');
 
     swal({
         title: "¿Estás seguro?",
@@ -332,10 +343,10 @@ $('.eliminarPedido').on('click', function (e) {
                 icon: 'success'
             }).then(function () {
 
-                $.get(`backend/api/pedidos/delete.php?id=${row}`, function () {
+                $.get(`backend/api/pedidos/delete.php?id=${id}`, function () {
 
-                    var elem = document.getElementById(row);
-                    elem.parentNode.removeChild(elem);
+                    var htmlElem = document.getElementById(id);
+                    htmlElem.parentNode.removeChild(htmlElem);
 
                 });
 
@@ -343,9 +354,49 @@ $('.eliminarPedido').on('click', function (e) {
         } else {
             swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
+
     });
+
 });
 
+$('.cancelarPedido').on('click', function (e) {
+
+    // Pedido_id
+    let id = $(e.target.parentElement).data('id');
+
+    swal({
+        title: "¿Estás seguro?",
+        text: "Todas las suelas producidas pasaran al <em>INVENTARIO<em>, además, las suelas sacadas del stock volverán a su destino.",
+        icon: "warning",
+        buttons: [
+            'No',
+            'Si'
+        ],
+        dangerMode: true,
+    }).then(function (isConfirm) {
+        if (isConfirm) {
+            swal({
+                title: '¡Eliminado!',
+                text: 'El pedido ha sido eliminado.',
+                icon: 'success'
+            }).then(function () {
+
+                // $.post => Añadiendo el elemento al backend.
+                $.post( 'backend/api/pedidos/cancelar.php', { 'pedido_id': id }, function(data) {
+
+                    console.log("Listo");
+
+                });
+
+            });
+        } else {
+            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
+        }
+
+    });
+
+
+});
 </script>
 
 <!-- Incluimos el footer.php -->
