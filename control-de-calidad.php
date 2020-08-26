@@ -3,8 +3,6 @@
 // Incluimos el header.php y components.php
 include 'components/header.php';
 include 'components/components.php';
-
-// Esto solo se ejecuta la primera vez que se inicia el sistema es para rellenar la tabla suelas.
 require_once 'backend/api/utils.php';
 
 $sql = "SELECT SUM(CAPACIDAD) AS CAPACIDAD_TOTAL FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
@@ -14,8 +12,14 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
     $capacidad_total[0]['CAPACIDAD_TOTAL'] = 0;
 }
 
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION' || $_SESSION['USUARIO']['CARGO'] == 'CONTROL'): 
+// Agregamos los roles que se quiere que usen esta página.
+$roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION', 'CONTROL');
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
 
 ?>
 
@@ -425,44 +429,6 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
         <h6>No hay maquinarias</h6>
     <?php endif; ?>
 
-    <!-- Modal de Ver Pedido -->
-    <div class="modal fade" id="verPedido-modal" tabindex="-1" role="dialog" aria-labelledby="verPedido-modal"
-            aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-shopping-bag icon-color"></i> Datos del Pedido</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Table -->
-                        <div class="table-responsive-lg">
-                            <table class="table table-bordered text-center" id="tabla-modal">
-                                <!-- Table Head -->
-                                <thead class="thead-dark">
-                                <tr>    
-                                    <th class="align-middle" scope="col">Prioridad</th>  
-                                    <th class="align-middle" scope="col">Marca</th>
-                                    <th class="align-middle" scope="col">Color</th>
-                                    <th class="align-middle" scope="col">Talla</th>
-                                    <th class="align-middle" scope="col">Cantidad</th>
-                                    <th class="align-middle" scope="col">Estado</th>
-                                </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                            <div id="checkEstado" class="form-group text-center"></div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Fin de Modal -->
-
     <!-- Modal de Editar Color en Máquina -->
     <div class="modal fade" id="editarColorMaquinaModal" aria-labelledby="editarColorMaquinaModal" tabindex="-1" role="dialog" aria-hidden="true" >
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
@@ -480,7 +446,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
                             <input type="hidden" name="id" value="<?= $id; ?>">
                             <div class="form-group col-md-10">
                                 <label for="inputColorModal">Color</label>
-                                <select name="color" class="form-control filter-select2" id="inputColorModal">
+                                <select name="color" class="form-control dropdown-select2" id="inputColorModal">
 
                                     <?php
 
@@ -533,7 +499,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
                             <input type="hidden" name="casillero-color" id="colorCasillero" value="<?= $maquinaria_selected[0]['COLOR'] ?>">
                             <div class="form-group col-md-10">
                                 <label for="inputReferenciaModal">Referencia</label>
-                                <select name="suela-id" id="inputReferenciaModal" class="form-control filter-select2">
+                                <select name="suela-id" id="inputReferenciaModal" class="form-control dropdown-select2">
 
                                     <?php
                                     $material = $maquinaria_selected[0]['MATERIAL'];
@@ -635,14 +601,6 @@ var numero;
 const selectMaquinariaBSwap = document.getElementById('id-maquinaria-modal-swap');
 const botoneraCasilleros = document.getElementById('botonera-casilleros');
 
-
-// select2 plugin: https://github.com/select2
-$(document).ready(function () {
-    $('.filter-select2').select2({
-        theme: "bootstrap4",
-    });
-});
-
 // DataTables Plugin: https://datatables.net/
 const tabla = $('#tabla').DataTable({
     info: false,
@@ -661,105 +619,6 @@ const tabla = $('#tabla').DataTable({
         "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
     }
 });
-
-// Ver Pedidos Pendientes (Información Inferior)
-$('#verPedido-modal').on('show.bs.modal', function (e) {
-
-    // Obtener Datos del Pedido
-    let pedidoId = $(e.relatedTarget).data('pedido-id');
-
-    $.ajax({
-        type: 'post',
-        url: 'backend/api/utils.php?fun=obtenerProduccionReferencia',
-        data: 'pedido_id=' + pedidoId,
-        success: function (data) {
-
-            const result = JSON.parse(data);
-            const tabla = $('#tabla-modal > tbody:last-child');
-            tabla.empty();
-
-            let urgente;
-
-            result.forEach(row => {
-
-                if (row.URGENTE == '0') {
-                    urgente = '<i class="fa fa-circle text-white" style="-webkit-text-stroke: 1px #323232;"></i>';
-                } else {
-                    urgente = '<i class="fa fa-circle text-success" style="-webkit-text-stroke: 1px light-green;"></i>';
-                }
-                
-                tabla.append(`<tr>
-                    <td>${urgente}</td>
-                    <td>${row.SUELA_MARCA.toProperCase()}</td>
-                    <td>${row.SUELA_COLOR.toProperCase()}</td>
-                    <td>${row.SUELA_TALLA}</td>
-                    <td>${row.CANTIDAD}</td>
-                    <td>${row.ESTADO.toProperCase()}</td>
-                </tr>`);
-
-            });
-
-        }
-    });
-
-    // Obtenemos el estado de Pedido a Produccion
-    let id = $(e.relatedTarget).data('id');
-
-    $.ajax({
-        type: 'post',
-        url: 'backend/api/utils.php?fun=obtenerEstadoPedidoAProduccion',
-        data: 'id=' + id,
-        success: function (data) {
-
-            const result = JSON.parse(data);
-            const checkEstado = $('#checkEstado');
-            checkEstado.empty();
-    
-            if (result[0].ESTADO === 'PENDIENTE') {
-                    checkEstado.append(
-                        `<small>Los moldes <strong class="text-info">no se han acomodado aun.</strong></small>`
-                    );
-            } else {
-                checkEstado.append(
-                    `<small>Los moldes <strong class="text-info">ya se encuentran acomodados.</strong></small>`
-                );
-            }
-            
-        }
-    });
-
-});
-
-// Notificar Arreglo de Moldes - De Produccion a Administracion (Información Inferior)
-function notificarArreglo(id) {
-    swal({
-        title: "¿Desea notificar el arreglo de los moldes?",
-        text: "Esta acción no se puede deshacer.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
-
-        if (isConfirm) {
-            swal({
-                title: '¡Acomodados!',
-                text: 'Los moldes han sido acomodados satisfactoriamente.',
-                icon: 'success'
-            }).then(function () {
-                
-                // Cambiamos de status
-                window.location = `backend/api/auditoria/notificar_arreglo.php?id=${id}`;
-                
-            });
-
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
-        }
-    });
-};
 
 // Marcar Empaquetado (Control de Calidad)
 function marcarEmpaquetado(id, restante) {
@@ -1077,17 +936,4 @@ if (isset($_SESSION['casillero_suela']) && $_SESSION['casillero_suela'] == true)
 
 include_once 'components/footer.php'; 
 
-?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
 ?>

@@ -196,6 +196,10 @@ if (isset($_GET['fun'])) {
             obtenerPedidosParaEmpaquetar();
             break;
 
+        case 'obtenerVentasCulminadas':
+            obtenerVentasCulminadas();
+            break;
+
     }
 }
 
@@ -639,5 +643,15 @@ function obtenerPedidosParaEmpaquetar(){
                 ON PROD.COLOR_ID = COL.ID
         WHERE PROD.PEDIDO_ID = ?;";
     $result = db_query($sql, array($_POST['pedido_id']));
+    echo json_encode($result);
+}
+
+function obtenerVentasCulminadas(){
+    $sql = "SELECT P.*, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE 
+                FROM PEDIDOS P 
+                    JOIN CLIENTES C 
+                        ON P.CLIENTE_ID = C.ID 
+                WHERE P.ESTADO = 'COMPLETADO';";
+    $result = db_query($sql);
     echo json_encode($result);
 }

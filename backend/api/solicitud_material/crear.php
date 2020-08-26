@@ -3,49 +3,49 @@ session_start();
 require_once "../db.php";
 echo '<pre>'; print_r($_POST); echo '</pre>';
 
-// 1. SOLICITUD_MATERIAL
-$solicitud_material = json_decode($_POST['solicitud_material']);
+// // 1. SOLICITUD_MATERIAL
+// $solicitud_material = json_decode($_POST['solicitud_material']);
 
-$pedido_id = $solicitud_material->pedido_id;
-$cliente_id = $solicitud_material->cliente_id;
-$estado = 'PENDIENTE';
+// $pedido_id = $solicitud_material->pedido_id;
+// $cliente_id = $solicitud_material->cliente_id;
+// $estado = 'PENDIENTE';
 
-$sql = "INSERT INTO SOLICITUD_MATERIAL VALUES(NULL, ?, ?, ?, NOW());";
-$data = array($pedido_id, $cliente_id, $estado);
+// $sql = "INSERT INTO SOLICITUD_MATERIAL VALUES(NULL, ?, ?, ?, NOW());";
+// $data = array($pedido_id, $cliente_id, $estado);
 
-$result = db_query($sql, $data);
+// $result = db_query($sql, $data);
 
-// 2. MATERIALES_SOLICITADOS
-$sql = "SELECT MAX(ID) AS ID FROM SOLICITUD_MATERIAL;";
-$solicitud_material_id = db_query($sql)[0]['ID'];
+// // 2. MATERIALES_SOLICITADOS
+// $sql = "SELECT MAX(ID) AS ID FROM SOLICITUD_MATERIAL;";
+// $solicitud_material_id = db_query($sql)[0]['ID'];
 
-$materiales_solicitados = json_decode($_POST['materiales_solicitados']);
+// $materiales_solicitados = json_decode($_POST['materiales_solicitados']);
 
-foreach ($materiales_solicitados as $material_solicitado){
+// foreach ($materiales_solicitados as $material_solicitado){
     
-    $material = trim(strtoupper($material_solicitado->material));
-    $color = trim(strtoupper($material_solicitado->color));
-    $cantidad = $material_solicitado->cantidad;
-    $dureza = $material_solicitado->dureza;
+//     $material = trim(strtoupper($material_solicitado->material));
+//     $color = trim(strtoupper($material_solicitado->color));
+//     $cantidad = $material_solicitado->cantidad;
+//     $dureza = $material_solicitado->dureza;
 
-    $sql = "INSERT INTO MATERIALES_SOLICITADOS VALUES(NULL, ?, ?, ?, ?, ?);";
-    $data = array($solicitud_material_id, $material, $color, $cantidad, $dureza);
+//     $sql = "INSERT INTO MATERIALES_SOLICITADOS VALUES(NULL, ?, ?, ?, ?, ?);";
+//     $data = array($solicitud_material_id, $material, $color, $cantidad, $dureza);
 
-    $result = db_query($sql, $data);
+//     $result = db_query($sql, $data);
 
-}
+// }
 
-// 3. AUDITORIA_PED_NOR
-$sql = "INSERT INTO AUDITORIA_PED_NOR VALUES(NULL, NOW(), NULL, ?, ?);";
-$data = array($estado, $solicitud_material_id);
+// // 3. AUDITORIA_PED_NOR
+// $sql = "INSERT INTO AUDITORIA_PED_NOR VALUES(NULL, NOW(), NULL, ?, ?);";
+// $data = array($estado, $solicitud_material_id);
 
-$result = db_query($sql, $data);
+// $result = db_query($sql, $data);
 
-// 4. AUDITORIA_PED_PRO
-$sql = "INSERT INTO AUDITORIA_PED_PRO VALUES(NULL, NOW(), NULL, ?, ?);";
-$data = array($estado, $pedido_id);
+// // 4. AUDITORIA_PED_PRO
+// $sql = "INSERT INTO AUDITORIA_PED_PRO VALUES(NULL, NOW(), NULL, ?, ?);";
+// $data = array($estado, $pedido_id);
 
-$result = db_query($sql, $data);
+// $result = db_query($sql, $data);
 
 //5. Actualización de Stock
 $actualizar_stock = json_decode($_POST['actualizar_stock']);

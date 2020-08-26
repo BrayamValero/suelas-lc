@@ -5,8 +5,14 @@ include 'components/header.php';
 include 'components/components.php';
 require_once 'backend/api/utils.php';
 
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'):
+// Agregamos los roles que se quiere que usen esta página.
+$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
 
 ?>
 
@@ -194,19 +200,14 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             // Decoración del color en cada serie.
-            let colorHex;
             let color = obtenerColor[0].COLOR;
             let backgroundHex = obtenerColor[0].CODIGO;
 
-            let red = parseInt(backgroundHex.substring(0, 2), 16);
-            let green = parseInt(backgroundHex.substring(2, 4), 16);
-            let blue = parseInt(backgroundHex.substring(4, 6), 16);
+            let red = parseInt(backgroundHex.substring(1, 3), 16);
+            let green = parseInt(backgroundHex.substring(3, 5), 16);
+            let blue = parseInt(backgroundHex.substring(5, 7), 16);
 
-            if ((red*0.299 + green*0.587 + blue*0.114) > 186){
-                colorHex = "000000";
-            } else {
-                colorHex = "FFFFFF";
-            }
+            let colorHex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
 
             $('.contenedorPedidos').append(`
                 <div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
@@ -374,7 +375,7 @@ document.getElementById('botonAprobarPedido').addEventListener('click', function
                     icon: 'success'
                 }).then(function () {
 
-                    // 1. Obtenemos los materiales solicitados.
+                    // Obtenemos los materiales solicitados.
                     $.ajax({
                         type: 'post',
                         url: 'backend/api/utils.php?fun=obtenerCantidadesSolicitud',
@@ -413,8 +414,6 @@ document.getElementById('botonAprobarPedido').addEventListener('click', function
 
                             });
 
-                            console.table(materiales_solicitados);
-
                             // 2. Creamos la solicitud de la materia prima a Norsaplast.
                             $.post("backend/api/solicitud_material/crear.php", {
                                 solicitud_material: JSON.stringify({
@@ -448,16 +447,3 @@ document.getElementById('botonAprobarPedido').addEventListener('click', function
 
 <!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
-?>

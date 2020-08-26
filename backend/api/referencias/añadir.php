@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Si el $check no contiene data, quiere decir que no se encuentra el elemento en la Database.
         if(empty($check)){
 
-            $sql = "INSERT INTO SUELAS VALUES (NULL, ?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO SUELAS VALUES (NULL, ?, ?, ?, ?, ?, ?, ?);";
             $data = array($referencia, $marca, $talla, $material, $peso_maquina, $peso_ideal, $capacidad_empaquetado);
             db_query($sql, $data);
         
