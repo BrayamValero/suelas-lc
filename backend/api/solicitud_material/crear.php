@@ -69,7 +69,7 @@ foreach ($actualizar_stock as $stock){
     $result = db_query($sql, $data);
 
     // Actualizando el STOCK (Restamos en caso de que se haya descontado stock)
-    $sql = "UPDATE STOCK SET CANTIDAD = CANTIDAD - ? WHERE SUELA_ID = ? AND COLOR_ID = ?;";
+    $sql = "UPDATE STOCK SET CANTIDAD = CANTIDAD - ? WHERE SUELA_ID = ? AND COLOR_ID = ? AND CLIENTE_ID = 19; ";
     $data = array($stock, $suela_id, $color_id);
     $result = db_query($sql, $data);
 

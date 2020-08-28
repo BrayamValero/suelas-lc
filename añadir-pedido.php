@@ -19,7 +19,7 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
     <?php get_navbar('Pedidos', 'Añadir Pedido'); ?>
 
     <!-- Form -->
-    <form action="backend/api/pedidos/añadir.php" method="post">
+    <form id="añadirPedidoForm" action="backend/api/pedidos/añadir.php" method="post">
 
         <!-- Tabla de Datos -->
         <div class="tablaDatos shadow-sm">
@@ -320,6 +320,14 @@ botonFinalizarPedido.addEventListener("click", function(){
         event.preventDefault();
         return Swal.fire("Error", "Debes agregar al menos (1) serie al pedido.", "warning");
     }
+
+});
+
+$(document).ready(function () {
+    $("#añadirPedidoForm").submit(function () {
+        $("#botonFinalizarPedido").attr("disabled", true);
+        return true;
+    });
 });
 
 // Comprobar que hayan Clientes disponibles.
