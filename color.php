@@ -202,11 +202,6 @@ $.ajax({
 
         // Datatables => Paginación
         $.fn.DataTable.ext.pager.numbers_length = 5;
-        
-		// Datatables => Buscador Personalizado
-        document.getElementById('searchInput').addEventListener('keyup', function () {
-			tabla.search(this.value).draw();
-        });
 	   
     }
 

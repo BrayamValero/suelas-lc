@@ -134,8 +134,6 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
 
 <script>
 
-/* PLUGINS */
-
 // DataTables Plugin: https://datatables.net/
 const tabla = $('#tabla').DataTable({
 	info: false,
@@ -152,9 +150,6 @@ const tabla = $('#tabla').DataTable({
 		"url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
 	}
 });
-
-/* FIN DE PLUGINS */
-
 
 // Editar Dureza - Modal
 $('#editarDureza-modal').on('show.bs.modal', function (e) {

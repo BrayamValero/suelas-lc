@@ -382,11 +382,6 @@ const tabla = $('#tabla').DataTable({
     }
 });
 
-// Custom Search DataTables
-$('#customInput').on( 'keyup', function () {
-    tabla.search( this.value ).draw();
-});
-
 // Variables Globales
 var reporte_id;
 

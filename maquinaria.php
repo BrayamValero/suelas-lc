@@ -273,20 +273,6 @@ const tabla = $('#tabla').DataTable({
 	}
 });
 
-// Custom Search DataTables
-$('#customInput').on( 'keyup', function () {
-	tabla.search( this.value ).draw();
-});
-
-// select2 plugin: https://github.com/select2
-$(document).ready(function () {
-    $('.filter-select2').select2({
-        theme: "bootstrap4",
-    });
-});
-
-/* FIN DE PLUGINS */
-
 // Obtenemos todos los Colores.
 $.ajax({
 	type: 'get',

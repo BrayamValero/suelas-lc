@@ -197,13 +197,8 @@ const tabla = $('#tabla').DataTable({
     }
 });
 
-// Custom Search DataTables
-$('#customInput').on( 'keyup', function () {
-    tabla.search( this.value ).draw();
-});
-
-    // DataTables Plugin: https://datatables.net/
-    const tabla_1 = $('#tabla2').DataTable({
+// DataTables Plugin: https://datatables.net/
+const tabla_1 = $('#tabla2').DataTable({
     info: false,
     dom: "lrtip",
     // searching: false,
@@ -222,54 +217,53 @@ $('#customInput').on( 'keyup', function () {
 });
 
 function registrarPeso(id, cantidad) {
+
     swal({
         title: "Despachos",
         text: `Ingrese el peso correspondiente a los ${cantidad} pares de suelas`,
         content: "input",
-    })
-        .then((peso) => {
+    }).then((peso) => {
 
-            if ( peso > 0 && peso !== null ) {
+        if ( peso > 0 && peso !== null ) {
 
-                swal({
-                    title: "¿Estás seguro?",
-                    text: `El peso a registrar es de ${peso} Kgs por (${cantidad}) pares de suelas.`,
-                    icon: "warning",
-                    buttons: [
-                        'No',
-                        'Si'
-                    ],
-                    dangerMode: true,
-                }).then(function (isConfirm) {
-                    if (isConfirm && cantidad != null) {
-                        swal({
-                            title: '¡Empaquetado!',
-                            text: 'El pedido ha sido enviado a despacho.',
-                            icon: 'success'
-                        }).then(function () {
-                            $.get("backend/api/pedidos/editar-produccion.php", {
-                                    id: id,
-                                    estado: 'PESADO',
-                                    pares: cantidad,
-                                    peso: peso
-                                },
-                                function (data, status) {
-                                    if (status === "success") {
-                                        window.location.reload();
-                                    }
-                                });
-                        });
-                    } else {
-                        swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
-                    }
-                });
+            swal({
+                title: "¿Estás seguro?",
+                text: `El peso a registrar es de ${peso} Kgs por (${cantidad}) pares de suelas.`,
+                icon: "warning",
+                buttons: [
+                    'No',
+                    'Si'
+                ],
+                dangerMode: true,
+            }).then(function (isConfirm) {
+                if (isConfirm && cantidad != null) {
+                    swal({
+                        title: '¡Empaquetado!',
+                        text: 'El pedido ha sido enviado a despacho.',
+                        icon: 'success'
+                    }).then(function () {
+                        $.get("backend/api/pedidos/editar-produccion.php", {
+                                id: id,
+                                estado: 'PESADO',
+                                pares: cantidad,
+                                peso: peso
+                            },
+                            function (data, status) {
+                                if (status === "success") {
+                                    window.location.reload();
+                                }
+                            });
+                    });
+                } else {
+                    swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
+                }
+            });
 
-            }
-            
-        });
+        }
+        
+    });
             
 }
-
 
 $('#showDispatchedOrders').on('show.bs.modal', function (e) {
 

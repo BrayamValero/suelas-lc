@@ -159,12 +159,6 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 
 <!-- Inline JavaScript -->
 <script>
-// select2 plugin: https://github.com/select2
-$(document).ready(function () {
-    $('.filter-select2').select2({
-        theme: "bootstrap4",
-    });
-});
 
 // Declaración de Variables
 var i = 0;

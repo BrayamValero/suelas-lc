@@ -128,12 +128,6 @@ const tabla = $('#tabla').DataTable({
 	}
 });
 
-// Custom Search DataTables
-$('#customInput').on( 'keyup', function () {
-	tabla.search( this.value ).draw();
-});
-
-
 // Obtenemos todas las Materias Primas.
 $.ajax({
     type: 'get',

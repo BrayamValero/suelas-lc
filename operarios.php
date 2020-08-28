@@ -200,11 +200,6 @@ const tabla = $('#tabla').DataTable({
 	}
 });
 
-// Custom Search DataTables
-$('#customInput').on( 'keyup', function () {
-	tabla.search( this.value ).draw();
-});
-
 // Constantes para el Modal de Asignar Operario.
 const inputOperario = document.getElementById('inputOperario-modal');
 const inputTurno = document.getElementById('inputTurno-modal');

@@ -3,22 +3,25 @@ session_start();
 require_once "db.php";
 // http://localhost/php/suelas-lc/backend/api/script.php
 
+$sql = "SELECT * FROM SERIES;";
+$series = db_query($sql);
+// echo '<pre>'; print_r($series); echo '</pre>';
 
+// Por cada serie que haya en sistema.
+foreach ($series as $key => $serie) {
 
-// $sql = "UPDATE SUELAS SET CAP_EMPAQUETADO = 100; ";
-// $result = db_query($sql);
+    $sql = "SELECT * FROM SUELAS WHERE UPPER(MARCA) = ?;";
+    $suelas = db_query($sql, array($serie['NOMBRE']));
+    // echo '<pre>'; print_r($suelas); echo '</pre>';
 
-// // echo '<pre>'; print_r($result); echo '</pre>';
+    foreach ($suelas as $key => $suela) {
 
-// foreach ($result as $row) {
+        $sql = "INSERT INTO GRUPO_SERIES VALUES(NULL, ?, ?);";
+        $data = array($serie['ID'], $suela['ID']);
+        $result = db_query($sql, $data);
 
-//     $cambiar = ucwords(strtolower($row['MARCA']));
-//     $id = $row['ID'];
+    }
 
-//     $sql = "UPDATE SUELAS SET MARCA = ? WHERE ID = ?;";
-//     $final = db_query($sql, array($cambiar, $id));
+}
 
-// }
-
-// echo "DONE";
-
+echo "¡Query Finalizado!";

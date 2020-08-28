@@ -216,24 +216,6 @@ const tabla = $('#tabla').DataTable({
 	}
 });
 
-// Custom Search DataTables
-$('#customInput').on( 'keyup', function () {
-	tabla.search( this.value ).draw();
-});
-
-$(document).ready(function () {
-	$('.select-multiple').select2({
-		// dropdownParent: $('#example'),
-		language: {
-			"noResults": function(){
-				return "No se encuentran resultados";
-			}
-   		},
-		allowClear: true,
-		placeholder: 'Seleccione una marca'
-	});
-});
-
 // 1. Modal de Añadir Serie
 $('#añadirSerieModal').on('show.bs.modal', function (e) {
 	// Borramos las opciones del select2

@@ -412,11 +412,6 @@ $.ajax({
 
         // DATATABLES => Paginación
         $.fn.DataTable.ext.pager.numbers_length = 5;
-        
-		// DATATABLES => Buscador Personalizado
-	   	document.getElementById('searchInput').addEventListener('keyup', function () {
-			tabla.search(this.value).draw();
-        });
 	   
     }
 

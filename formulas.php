@@ -299,11 +299,6 @@ const tabla = $('#tabla').DataTable({
     }
 });
 
-// Custom Search DataTables
-$('#customInput').on( 'keyup', function () {
-    tabla.search( this.value ).draw();
-});
-
 // Añadir Formula (Variables)
 var añadirMateriales = [];
 const añadirNombre = document.getElementById('añadirNombre');
