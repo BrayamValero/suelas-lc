@@ -200,19 +200,18 @@ $.ajax({
 
 // Notificar el Registro de Materia Prima a Inventario - De Norsaplast a Inventario.
 function notificarRegistro(id) {
-    swal({
-        title: "¿Desea registrar la materia prima en el inventario?",
-        text: "Esta acción no se puede deshacer.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
 
-        if (isConfirm) {
-            swal({
+
+    Swal.fire({
+        title: '¿Desea registrar la materia prima en el inventario?',
+        text: 'Esta acción no se puede deshacer..',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Registrado!',
                 text: 'El material ha sido agregado a inventario.',
                 icon: 'success'
@@ -268,10 +267,9 @@ function notificarRegistro(id) {
                 
             });
 
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
     });
+
 };
     
 </script>

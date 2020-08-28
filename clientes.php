@@ -429,7 +429,7 @@ botonAñadirCliente.addEventListener('click', function () {
 	let formulario = $('#añadirClienteForm');
 
 	// Si el formulario tiene algún campo incorrecto, lanzar error.
-	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
 	// Si todos los campos son correctos, Bloquear el botón de envío de data.
 	botonAñadirCliente.disabled = true;
@@ -441,7 +441,7 @@ botonAñadirCliente.addEventListener('click', function () {
 			
 			case 'ERROR':
                 botonAñadirCliente.disabled = false;
-				return swal('Error', 'El cliente ya se encuentra registrado.', 'error');
+				return Swal.fire('Error', 'El cliente ya se encuentra registrado.', 'error');
 				break;
 
 			default:
@@ -490,7 +490,7 @@ botonEditarCliente.addEventListener('click', function () {
 	let formulario = $('#editarClienteForm');
 
 	// Si el formulario tiene algún campo incorrecto, lanzar error.
-	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
 	// Si todos los campos son correctos, Bloquear el botón de envío de data.
 	botonEditarCliente.disabled = true;
@@ -502,7 +502,7 @@ botonEditarCliente.addEventListener('click', function () {
 
             case 'ERROR':
                 botonEditarCliente.disabled = false;
-                return swal('Error', 'El cliente ya se encuentra registado.', 'error');
+                return Swal.fire('Error', 'El cliente ya se encuentra registado.', 'error');
                 break;
 
             default:

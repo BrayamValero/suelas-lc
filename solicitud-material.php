@@ -183,33 +183,27 @@ $('#verSolicitud-modal').on('show.bs.modal', function (e) {
 
 // Entregar Materia Prima de Norsaplast a Industria de Suelas -> Administradora Norsaplast.
 function entregarPedido(id) {
-    swal({
-        title: "¿Desea entregar el pedido?",
-        text: "Vas a despachar el pedido a Industria de Suelas.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
 
-        if (isConfirm) {
-            swal({
+    Swal.fire({
+        title: '¿Desea entregar el pedido?',
+        text: 'Vas a despachar el pedido a Industria de Suelas.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Enviado!',
                 text: 'El pedido ha sido despachado a Industria de Suelas.',
                 icon: 'success'
             }).then(function () {
-                
                 // Cambiamos de status
                 window.location = `backend/api/solicitud_material/norsaplast/entregar_pedido.php?id=${id}`;
-                
             });
-
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
     });
+
 };
 </script>
 

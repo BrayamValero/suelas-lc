@@ -344,34 +344,27 @@ $('#editarMaquinaria-modal').on('show.bs.modal', function (e) {
 // Eliminar una máquina.
 $('.eliminarMaquina').on('click', function (e) {
 
-    let row = $(e.target.parentElement).data('id');
+    let id = $(e.target.parentElement).data('id');
 
-    event.preventDefault();
-
-    swal({
-        title: "¿Estás seguro?",
-        text: "Si eliminas la máquina puedes alterar la producción.",
-        icon: "warning",
-        buttons: [
-        'No',
-        'Si'
-        ],
-        dangerMode: true,
-    }).then(function(isConfirm) {
-        if (isConfirm) {
-        swal({
-            title: '¡Eliminada!',
-            text: 'La máquina ha sido eliminada.',
-            icon: 'success'
-        }).then(function() {
-
-            window.location.href = `backend/api/maquinarias/delete.php?id=${row}`
-            
-        });
-        } else {
-        swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Si eliminas la máquina puedes alterar la producción.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
+                title: '¡Eliminada!',
+                text: 'La máquina ha sido eliminada.',
+                icon: 'success'
+            }).then(function() {
+                window.location.href = `backend/api/maquinarias/delete.php?id=${id}`
+            });
         }
     });
+    
 });
 
 </script>

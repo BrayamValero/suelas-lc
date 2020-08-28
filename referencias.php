@@ -305,7 +305,7 @@ botonAñadirReferencia.addEventListener('click', function () {
 	let formulario = $('#añadirReferenciaForm');
 
 	// Si el formulario tiene algún campo incorrecto, lanzar error.
-	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
 	// Si todos los campos son correctos, Bloquear el botón de envío de data.
 	botonAñadirReferencia.disabled = true;
@@ -317,7 +317,7 @@ botonAñadirReferencia.addEventListener('click', function () {
 			
 			case 'ERROR':
                 botonAñadirReferencia.disabled = false;
-				return swal('Error', 'La referencia ya se encuentra registrada.', 'error');
+				return Swal.fire('Error', 'La referencia ya se encuentra registrada.', 'error');
 				break;
 
 			default:
@@ -366,7 +366,7 @@ botonEditarReferencia.addEventListener('click', function () {
 	let formulario = $('#editarReferenciaForm');
 
 	// Si el formulario tiene algún campo incorrecto, lanzar error.
-	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
 	// Si todos los campos son correctos, Bloquear el botón de envío de data.
 	botonEditarReferencia.disabled = true;
@@ -378,7 +378,7 @@ botonEditarReferencia.addEventListener('click', function () {
 
             case 'ERROR':
                 botonEditarReferencia.disabled = false;
-                return swal('Error', 'La referencia ya se encuentra registrada.', 'error');
+                return Swal.fire('Error', 'La referencia ya se encuentra registrada.', 'error');
                 break;
 
             default:
@@ -420,18 +420,15 @@ $('#tabla tbody').on( 'click', '.eliminarReferencia', function () {
 
     let id = $(this).data("id");
 
-    swal({
-        title: "¿Estás seguro?",
+    Swal.fire({
+        title: '¿Estás seguro?',
         text: "Se eliminará de las siguientes tablas: Casillero, Stock, Series y Producción.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then((isConfirm) => {
-        
-        if (isConfirm) {
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
 
             // Quitando el elemento del backend.
             $.get(`backend/api/referencias/eliminar.php?id=${id}`);
@@ -442,10 +439,7 @@ $('#tabla tbody').on( 'click', '.eliminarReferencia', function () {
             // Mostrando Notificación de éxito.
             toastNotifications('fas fa-trash', 'text-danger', '¡Eliminada!', 'La referencia ha sido eliminada satisfactoriamente.');
 
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
-
     });
 
 });

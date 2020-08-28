@@ -426,7 +426,7 @@ $.ajax({
         const result = JSON.parse(data);
 
         if (result.TOTAL == 0) {
-            swal('Atención', 'No hay materia entregada aun por parte del Molinero. Asímismo, no hay materia sobrante del turno anterior.', 'warning');
+            Swal.fire('Atención', 'No hay materia entregada aun por parte del Molinero. Asímismo, no hay materia sobrante del turno anterior.', 'warning');
         }
 
         inputMateriaRecibidaAdd.value = result.TOTAL;
@@ -581,28 +581,26 @@ $('#verReporteModal').on('show.bs.modal', function (e) {
 
 // Aprobar Reporte -> Solo Molineros pueden aprobar.
 function confirmar_reporte(id) {
-	swal({
-		title: "¿Estás seguro?",
-		text: "Luego de aprobar el reporte el operario no podrá editarlo.",
-		icon: "warning",
-		buttons: [
-			'No',
-			'Si'
-		],
-		dangerMode: true,
-	}).then(function (isConfirm) {
-		if (isConfirm) {
-			swal({
-				title: '¡Aprobado!',
-				text: 'El reporte ha sido aprobado satisfactoriamente.',
-				icon: 'success'
-			}).then(function () {
-				window.location = `backend/api/reportes/aprobar.php?id=${id}`
-			});
-		} else {
-			swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
-		}
-	});
+
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Luego de aprobar el reporte el operario no podrá editarlo.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
+                title: '!Aprobado!',
+                text: 'El reporte ha sido aprobado satisfactoriamente.',
+                icon: 'success'
+            }).then(function () {
+                window.location = `backend/api/reportes/aprobar.php?id=${id}`
+            });
+        }
+    });
+
 };
 
 </script>

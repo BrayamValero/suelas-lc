@@ -216,6 +216,20 @@ const tabla = $('#tabla').DataTable({
 	}
 });
 
+// Select2 => Dependencia de este archivo 
+$(document).ready(function () {
+	$('.select-multiple').select2({
+		// dropdownParent: $('#example'),
+		language: {
+			"noResults": function(){
+				return "No se encuentran resultados";
+			}
+   		},
+		allowClear: true,
+		placeholder: 'Seleccione una marca'
+	});
+});
+
 // 1. Modal de Añadir Serie
 $('#añadirSerieModal').on('show.bs.modal', function (e) {
 	// Borramos las opciones del select2

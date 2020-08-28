@@ -399,22 +399,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Comprobar que todos los campos estén llenos.
         if (Object.entries(añadirMateriales).length === 0 || añadirNombre.value == '') {
-            return swal("Whoops", "Debes rellenar todos los campos.", "warning");
+            return Swal.fire("Whoops", "Debes rellenar todos los campos.", "warning");
         }
 
-        // Registrando la fórmula en el sistema.
-        swal({
-        title: '¿Estás Seguro?',
-        text: 'Recuerda que la formula se puede guardar luego.',
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-            dangerMode: true,
-        }).then(function (isConfirm) {
-            if (isConfirm) {
-                swal({
+        Swal.fire({
+            title: '¿Estás Seguro?',
+            text: 'Recuerda que la formula se puede guardar luego..',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result.value) {
+                Swal.fire({
                     title: '¡Añadida!',
                     text: 'La fórmula ha sido añadida con éxito.',
                     icon: 'success'
@@ -428,11 +425,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     window.location = window.location.href;
                 });
-            } else {
-                swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
             }
         });
-
+    
     });
 
     // 3. Editar Formula
@@ -546,20 +541,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 3.3 Editando la Formula en la Base de Datos.
         botonEditarFormula.addEventListener('click', function () {
-
-            // Editando la fórmula en el sistema.
-            swal({
-            title: '¿Estás Seguro?',
-            text: 'Recuerda que la formula se puede editar luego.',
-            icon: "warning",
-            buttons: [
-                'No',
-                'Si'
-            ],
-                dangerMode: true,
-            }).then(function (isConfirm) {
-                if (isConfirm) {
-                    swal({
+            
+            Swal.fire({
+                title: 'Estás Seguro?',
+                text: 'Recuerda que la formula se puede editar luego..',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No',
+            }).then((result) => {
+                if (result.value) {
+                    Swal.fire({
                         title: '¡Editada!',
                         text: 'La fórmula ha sido editada con éxito.',
                         icon: 'success'
@@ -574,8 +566,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         window.location = window.location.href;
                     });
-                } else {
-                    swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
                 }
             });
 
@@ -684,19 +674,17 @@ document.addEventListener('DOMContentLoaded', function () {
     $('.eliminarFormula').on('click', function (e) {
 
         let formula_id = $(e.target.parentElement).data('id');
-
-        swal({
-            title: "¿Estás seguro?",
-            text: "Si eliminas la fórmula tendrás que crearla de nuevo.",
-            icon: "warning",
-            buttons: [
-                'No',
-                'Si'
-            ],
-            dangerMode: true,
-        }).then(function(isConfirm) {
-            if (isConfirm) {
-                swal({
+        
+        Swal.fire({
+            title: '¿Estás seguro',
+            text: 'Si eliminas la fórmula tendrás que crearla de nuevo..',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result.value) {
+                Swal.fire({
                     title: '¡Eliminada!',
                     text: 'La fórmula ha sido eliminada.',
                     icon: 'success'
@@ -705,39 +693,35 @@ document.addEventListener('DOMContentLoaded', function () {
                     window.location = `backend/api/formulas/borrar.php?formula-id=${formula_id}`
                     
                 });
-            } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
             }
         });
-
+        
     });
 
 });
 
 // Aprobar Formula
 function aprobarFormula(formula_id) {
-    swal({
-        title: "¿Estás seguro?",
-        text: "Si cambias el estado de la formula no podrás editarla.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
-        if (isConfirm) {
-            swal({
+
+    Swal.fire({
+        title: 'Estás seguro?',
+        text: 'Si cambias el estado de la formula no podrás editarla..',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Pendiente!',
                 text: 'El pedido ya pasó a producción.',
                 icon: 'success'
             }).then(function () {
                 window.location = `backend/api/formulas/aprobar.php?id=${formula_id}`
             });
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
     });
+
 };
     
 </script>

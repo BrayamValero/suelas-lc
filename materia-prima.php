@@ -473,7 +473,8 @@ $(document).on('click', '#submitMovimiento', function () {
         if (parseFloat(inputMovimientoCantidad.value) > parseFloat(datosMateria[0].EXISTENCIA)) {
         
             event.preventDefault();
-            swal("Error", "No hay stock suficiente para retirar.", "error");
+            
+            Swal.fire("Error", "No hay stock suficiente para retirar.", "error");
 
             console.log(`${parseFloat(inputMovimientoCantidad.value)} es mayor a la cantidad disponible que es ${parseFloat(datosMateria[0].EXISTENCIA)}`);
             

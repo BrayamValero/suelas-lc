@@ -240,7 +240,7 @@ $.ajax({
                 { 
                     data: 'ID',
                     title: "Opciones", render: function(value, type, row) {
-                        return `<a href='javascript:void(0)' data-id='${value}' class='empty'>
+                        return `<a href='javascript:void(0)' data-id='${value}' class='eliminarStock'>
 									<i class='fas fa-trash icon-color mr-1'></i>
 								</a>
 								<a href='javascript:void(0)' data-id='${value}' data-operacion='+' data-toggle='modal' data-target='#añadirMovimientoModal'>
@@ -281,7 +281,7 @@ botonAñadirStock.addEventListener('click', function () {
 	let formulario = $('#añadirStockForm');
 
 	// Si el formulario tiene algún campo incorrecto, lanzar error.
-	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
 	// Si todos los campos son correctos, Bloquear el botón de envío de data.
 	botonAñadirStock.disabled = true;
@@ -295,7 +295,7 @@ botonAñadirStock.addEventListener('click', function () {
 			case 'ERROR':
 
 				botonAñadirStock.disabled = false;
-				return swal('Error', 'La referencia usada ya se encuentra registrada en esa Ubicación.', 'error');
+				return Swal.fire('Error', 'La referencia usada ya se encuentra registrada en esa Ubicación.', 'error');
 				break;
 			
 			// Si todo está bien, se realizan los cambios en el front-end.
@@ -352,7 +352,7 @@ botonAñadirMovimiento.addEventListener('click', function(e) {
 	let formulario = $('#añadirMovimientoForm');
 
 	// Si el formulario tiene algún campo incorrecto, lanzar error.
-	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
 	// Si todos los campos son correctos, Bloquear el botón de envío de data.
 	botonAñadirMovimiento.disabled = true;
@@ -407,20 +407,17 @@ $('#tabla tbody').on( 'click', '.eliminarStock', function () {
 
 	let id = $(this).data("id");
 
-	swal({
-		title: "¿Estás seguro?",
-		text: "Recuerda que puedes volver a añadir el stock luego.",
-		icon: "warning",
-		buttons: [
-			'No',
-			'Si'
-		],
-		dangerMode: true,
-	}).then((isConfirm) => {
+	Swal.fire({
+		title: '¿Estás seguro?',
+		text: 'Recuerda que puedes volver a añadir el stock luego.',
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: 'Si',
+		cancelButtonText: 'No',
+	}).then((result) => {
+		if (result.value) {
 
-		if (isConfirm) {
-
-			// Quitando el elemento del backend.
+			// Eliminando del backend.
 			$.get(`backend/api/stock/eliminar.php?id=${id}`);
 
 			// Datatable => Quitando el elemento del frontend.
@@ -428,11 +425,8 @@ $('#tabla tbody').on( 'click', '.eliminarStock', function () {
 
 			// Mostrando Notificación de éxito.
 			toastNotifications('fas fa-trash', 'text-danger', '¡Eliminado!', 'El stock ha sido eliminado satisfactoriamente.');
-			
-		} else {
-			swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
-		}
 
+		}
 	});
 
 });

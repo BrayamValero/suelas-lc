@@ -4,14 +4,14 @@
 include 'components/header.php';
 include 'components/components.php';
 
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'): 
+// Agregamos los roles que se quiere que usen esta página.
+$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
 
-// Agarrar toda la producción que se encuentre "PENDIENTE".
-require_once "backend/api/db.php";
-$sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.NOMBRE AS CLIENTE_NOMBRE, C.TIPO AS CLIENTE_TIPO FROM PEDIDOS P JOIN CLIENTES C ON P.CLIENTE_ID = C.ID WHERE P.ESTADO IN ('PENDIENTE');";
-
-$result = db_query($sql);
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
 
 ?>
 
@@ -39,6 +39,13 @@ $result = db_query($sql);
             </thead>
             <tbody>
             <?php
+
+            require_once "backend/api/db.php";
+
+            // Agarrar toda la producción que se encuentre "PENDIENTE".
+            $sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.NOMBRE AS CLIENTE_NOMBRE, C.TIPO AS CLIENTE_TIPO FROM PEDIDOS P JOIN CLIENTES C ON P.CLIENTE_ID = C.ID WHERE P.ESTADO IN ('PENDIENTE');";
+            $result = db_query($sql);
+
             foreach ($result as $row) {
                 echo "<tr>";
 
@@ -47,7 +54,7 @@ $result = db_query($sql);
                 echo "<td>" . mb_convert_case($row['CLIENTE_TIPO'], MB_CASE_TITLE, "UTF-8") . "</td>";
                 echo "<td>" . mb_convert_case($row['FORMA_PAGO'], MB_CASE_TITLE, "UTF-8") . "</td>";
                 echo "<td>" . date('d-m-Y', strtotime($row['FECHA_ESTIMADA'])) . "</td>";
-                echo "<td><a href='#' data-toggle='modal' data-target='#showDispatchedOrders' data-id='{$row['ID']}'><i class='fas fa-eye icon-color'></i></a></td>";
+                echo "<td><a href='#' data-toggle='modal' data-target='#verOrdenesDespachadas' data-id='{$row['ID']}'><i class='fas fa-eye icon-color'></i></a></td>";
 
                 echo "</tr>";
             }
@@ -56,72 +63,15 @@ $result = db_query($sql);
         </table>
     </div>
     <!-- End of Table -->
-    
-    <?php
-        if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'): 
-    ?>
-    <hr>
 
-    <!-- Informacion Inferior -->
-    <div class="pt-3">
-        <div class="row">
-            <div class="col-md-12 col-lg-10">
-                <h6 class="pb-2 text-info font-weight-bold">Registro de Peso</h6>
-                <!-- Tabla -->
-                <div class="table-responsive-lg">
-                    <table class="table table-bordered text-center" id="tabla2">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Pedido ID</th>
-                            <th scope="col">Marca</th>
-                            <th scope="col">Talla</th>
-                            <th scope="col">Color</th>
-                            <th scope="col">Cantidad</th>
-                            <th scope="col">Estado</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <?php
-                        $sql = "SELECT PE.ID, SU.MARCA, SU.TALLA, CO.COLOR, PRO.POR_PESAR, PRO.ID AS PRODUCCION_ID FROM PEDIDOS PE JOIN PRODUCCION PRO ON PE.ID = PRO.PEDIDO_ID JOIN SUELAS SU ON SU.ID = PRO.SUELA_ID JOIN COLOR CO ON CO.ID = PRO.COLOR_ID WHERE PE.ESTADO IN ('PENDIENTE');";
-                        $result = db_query($sql, array());
-
-                        foreach ($result as $row) {
-                            if ($row['POR_PESAR'] > 0) {
-                                echo "<tr>";
-
-                                echo "<th>{$row['ID']}</th>";
-                                echo "<td>" . mb_convert_case($row['MARCA'], MB_CASE_TITLE, "UTF-8") . "</td>";
-                                echo "<td>" . mb_convert_case($row['TALLA'], MB_CASE_TITLE, "UTF-8") . "</td>";
-                                echo "<td>" . mb_convert_case($row['COLOR'], MB_CASE_TITLE, "UTF-8") . "</td>";
-                                echo "<td>" . mb_convert_case($row['POR_PESAR'], MB_CASE_TITLE, "UTF-8") . "</td>";
-                                echo "<td><a href='#' class='btn btn-sm btn-main' onclick='registrarPeso({$row['PRODUCCION_ID']}, {$row['POR_PESAR']})'>Registrar Peso</a></td>";
-
-                                echo "</tr>";
-                            }
-                        }
-                        ?>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Fin de Tabla -->
-            </div>
-        </div>
-    </div>
-    <!-- Fin de Informacion Inferior -->
-
-    <?php 
-        endif;
-    ?>
-
-    <!-- Modal de Mostrar Orderes Despachadas -->
-    <div class="modal fade" id="showDispatchedOrders" tabindex="-1" role="dialog"
-            aria-labelledby="showDispatchedOrders" aria-hidden="true">
+    <!-- Modal de Ver Orderes Despachadas -->
+    <div class="modal fade" id="verOrdenesDespachadas" tabindex="-1" role="dialog"
+            aria-labelledby="verOrdenesDespachadas" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
 
                 <!-- Form -->
-                <form action="backend/api/pedidos/despachar.php" method="POST" id="form_checkboxes">
+                <form action="backend/api/pedidos/despachar.php" method="POST" id="verificarCheckBoxes">
 
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel"><i
@@ -197,75 +147,7 @@ const tabla = $('#tabla').DataTable({
     }
 });
 
-// DataTables Plugin: https://datatables.net/
-const tabla_1 = $('#tabla2').DataTable({
-    info: false,
-    dom: "lrtip",
-    // searching: false,
-    lengthChange: false,
-    pageLength: 5,
-    order: [[0, 'desc']],
-    columnDefs: [{
-        targets: 4,
-        searchable: true,
-        orderable: true,
-        className: "align-middle", "targets": "_all"
-    }],
-    language: {
-        "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
-    }
-});
-
-function registrarPeso(id, cantidad) {
-
-    swal({
-        title: "Despachos",
-        text: `Ingrese el peso correspondiente a los ${cantidad} pares de suelas`,
-        content: "input",
-    }).then((peso) => {
-
-        if ( peso > 0 && peso !== null ) {
-
-            swal({
-                title: "¿Estás seguro?",
-                text: `El peso a registrar es de ${peso} Kgs por (${cantidad}) pares de suelas.`,
-                icon: "warning",
-                buttons: [
-                    'No',
-                    'Si'
-                ],
-                dangerMode: true,
-            }).then(function (isConfirm) {
-                if (isConfirm && cantidad != null) {
-                    swal({
-                        title: '¡Empaquetado!',
-                        text: 'El pedido ha sido enviado a despacho.',
-                        icon: 'success'
-                    }).then(function () {
-                        $.get("backend/api/pedidos/editar-produccion.php", {
-                                id: id,
-                                estado: 'PESADO',
-                                pares: cantidad,
-                                peso: peso
-                            },
-                            function (data, status) {
-                                if (status === "success") {
-                                    window.location.reload();
-                                }
-                            });
-                    });
-                } else {
-                    swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
-                }
-            });
-
-        }
-        
-    });
-            
-}
-
-$('#showDispatchedOrders').on('show.bs.modal', function (e) {
+$('#verOrdenesDespachadas').on('show.bs.modal', function (e) {
 
     let pedidoId = $(e.relatedTarget).data('id');
 
@@ -296,39 +178,35 @@ $('#showDispatchedOrders').on('show.bs.modal', function (e) {
                 }
 
                 tabla.append(`<tr>
-                                <td>${row.SUELA_MARCA.toProperCase()}</td>
-                                <td>${row.SUELA_TALLA}</td>
-                                <td>${row.SUELA_COLOR.toProperCase()}</td>
-                                <td>${row.CANTIDAD}</td>
-                                <td>${row.DISPONIBLE}</td>
-                                <td>${row.DESPACHADO}</td>
-                                <td>
-                                    ${row.ESTADO}
-                                </td>
-                            </tr>`);
+                    <td>${row.SUELA_MARCA.toProperCase()}</td>
+                    <td>${row.SUELA_TALLA}</td>
+                    <td>${row.SUELA_COLOR.toProperCase()}</td>
+                    <td>${row.CANTIDAD}</td>
+                    <td>${row.DISPONIBLE}</td>
+                    <td>${row.DESPACHADO}</td>
+                    <td>
+                        ${row.ESTADO}
+                    </td>
+                </tr>`);
             });
         }
     });
+
 }).on('submit', function (e) {
-    if ($('#form_checkboxes input[type=checkbox]:checked').length == 0) {
+
+    console.log($('#verificarCheckBoxes input[type=checkbox]:checked').length);
+
+    if ($('#verificarCheckBoxes input[type=checkbox]:checked').length === 0) {
+
         e.preventDefault();
-        swal("Whoops", "Debes marcar un pedido primero.", "warning");
+
+        return Swal.fire("Whoops", "Debes marcar un pedido primero.", "warning");
+
     }
+
 });
+
 </script>
 
 <!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
-?>

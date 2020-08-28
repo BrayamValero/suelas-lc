@@ -351,25 +351,20 @@ document.getElementById('botonAprobarPedido').addEventListener('click', function
 
     if(verif_disponibilidad.includes(false)){
 
-        return swal('Error','Estás superando los valores permitidos del stock y/o pedido.', 'error');
+        return Swal.fire('Error','Estás superando los valores permitidos del stock y/o pedido.', 'error');
 
     } else {
 
-        event.preventDefault();
-
-        swal({
-            title: "¿Estás seguro?",
-            text: "Si cambias el estado del pedido no podrás editarlo.",
-            icon: "warning",
-            buttons: [
-                'No',
-                'Si'
-            ],
-            dangerMode: true,
-        }).then(function (isConfirm) {
-
-            if (isConfirm) {
-                swal({
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Si cambias el estado del pedido no podrás editarlo.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+        }).then((result) => {
+            if (result.value) {
+                Swal.fire({
                     title: '¡Pendiente!',
                     text: 'El pedido ya pasó a producción.',
                     icon: 'success'
@@ -432,12 +427,8 @@ document.getElementById('botonAprobarPedido').addEventListener('click', function
                     window.location = `backend/api/pedidos/confirmar.php?id=${pedido_id}`
                     
                 });
-
-            } else {
-                swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
             }
         });
-
 
     }
    

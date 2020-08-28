@@ -265,27 +265,25 @@ document.getElementById('asignarOperarioSubmit').addEventListener('click', funct
 			for (let i = 0; i < result.length; i++) {
 				
 				if((inputTurno.value == result[i].TURNO) && (inputMaterial.value == result[i].MATERIAL)){
-                    return swal('Error', 'No puedes asignar (2) operarios en el mismo turno.', 'error');
+                    return Swal.fire('Error', 'No puedes asignar (2) operarios en el mismo turno.', 'error');
 				}
 
 			}
 
-			swal({
-			title: "¿Estás seguro?",
-			text: "Recuerda que puedes intercambiar al opeario luego.",
-			icon: "warning",
-			buttons: [
-				'No',
-				'Si'
-			],
-			dangerMode: true,
-			}).then(function(isConfirm) {
-				if (isConfirm) {
-					swal({
-					title: 'Asignado!',
-					text: 'El opeario ha sido asignado satisfactoriamente.',
-					icon: 'success'
-					}).then(function() {
+			Swal.fire({
+				title: '¿Estás seguro?',
+				text: 'Recuerda que puedes intercambiar al opeario luego.',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Si',
+				cancelButtonText: 'No',
+			}).then((result) => {
+				if (result.value) {
+					Swal.fire({
+						title: 'Asignado!',
+						text: 'El opeario ha sido asignado satisfactoriamente.',
+						icon: 'success'
+					}).then(function () {
 
 						$.post("backend/api/operarios/asignar.php", {
 							data: JSON.stringify({
@@ -298,12 +296,8 @@ document.getElementById('asignarOperarioSubmit').addEventListener('click', funct
 							window.location = window.location.href;
 
 						});
-						
+
 					});
-				} else {
-
-					swal("Cancelado", "Cuando termines puedes intentarlo de nuevo.", "error");
-
 				}
 			});
 

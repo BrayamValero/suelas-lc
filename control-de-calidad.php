@@ -601,71 +601,74 @@ var numero;
 const selectMaquinariaBSwap = document.getElementById('id-maquinaria-modal-swap');
 const botoneraCasilleros = document.getElementById('botonera-casilleros');
 
-// DataTables Plugin: https://datatables.net/
-const tabla = $('#tabla').DataTable({
-    info: false,
-    dom: "lrtip",
-    // searching: false,
-    lengthChange: false,
-    pageLength: 5,
-    order: [[0, 'desc']],
-    columnDefs: [{
-        targets: 3,
-        searchable: true,
-        orderable: true,
-        className: "align-middle", "targets": "_all"
-    }],
-    language: {
-        "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
-    }
-});
-
 // Marcar Empaquetado (Control de Calidad)
 function marcarEmpaquetado(id, restante) {
 
-     swal({
-        title: "Control de Calidad",
-        text: "Ingrese la cantidad de pares de suelas empaquetadas.",
-        content: "input",
-    })
-    .then((cantidad) => {
+    let cantidad, pesado;
 
-        if ((cantidad <= restante) && (cantidad !== null) && (cantidad >= 1)) {
+    Swal.mixin({
+        input: 'number',
+        confirmButtonText: 'Siguiente &rarr;',
+        showCancelButton: true,
+        progressSteps: ['1', '2']
+    }).queue([
+        {
+            title: 'Primer Paso',
+            text: 'Ingrese la cantidad de pares de suelas.',
+            preConfirm: function(value){
+                if((value <= restante) && (value !== null) && (value > 0)){
+                    return cantidad = value;
+                } else {
+                    Swal.showValidationMessage('Error, verifique el campo.');
+                }
+            }
+        },
+        {
+            title: 'Segundo Paso',
+            text: 'Ingrese el peso correspondiente.',
+            preConfirm: function(value){
+                if((value > 0) && (value !== null)){
+                    return pesado = value;
+                } else {
+                    Swal.showValidationMessage('Error, verifique el campo.');
+                }
+            }
+        }
+    ]).then((result) => {
+        if (result.value) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                html: `
+                ¿Deseas enviar ${cantidad} pares de suelas, los cuales pesan ${pesado} Kgs?
+                `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Si',
+                cancelButtonText: 'No'
+            }).then((result) => {
+                if (result.value) {
 
-            swal({
-                title: "¿Estás seguro?",
-                text: `Vas a enviar (${cantidad}) pares de suelas.`,
-                icon: "warning",
-                buttons: [
-                    'No',
-                    'Si'
-                ],
-                dangerMode: true,
-            }).then(function (isConfirm) {
-                if (isConfirm) {
-                    swal({
+                    Swal.fire({
                         title: '¡Empaquetado!',
-                        text: 'El pedido ha sido enviado a despacho.',
+                        text: 'El paquete ha sido enviado a despachos.',
                         icon: 'success'
                     }).then(function () {
+
                         $.get("backend/api/pedidos/editar-produccion.php", {
-                                id: id,
-                                estado: 'POR PESAR',
-                                pares: cantidad
-                            },
-                            function (data, status) {
-                                if (status === "success") {
-                                    window.location.reload();
-                                }
-                            });
+                            id: id,
+                            pesado: pesado,
+                            cantidad: cantidad
+                        }, function (data, status) {
+                            if (status === "success") {
+                                window.location.reload();
+                            }
+                        });
+                        
                     });
-                } else {
-                    swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
+                    
                 }
             });
-
         }
-
     });
 
 }
@@ -673,30 +676,24 @@ function marcarEmpaquetado(id, restante) {
 // Habilitar Casillero previamente Deshabilitado.
 $('.habilitarCasillero').on('click', function (e) {
 
-    event.preventDefault();
-
     let casilleroId = $(e.target.parentElement.parentElement.parentElement).data('id');
 
-    swal({
-        title: "¿Deseas habilitar el casillero?",
-        text: "Descuida, puedes deshabilitarlo luego.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
-        if (isConfirm) {
-            swal({
+    Swal.fire({
+        title: '¿Deseas habilitar el casillero?',
+        text: 'Descuida, puedes deshabilitarlo luego.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Habilitado!',
                 text: 'El casillero ha sido habilitado.',
                 icon: 'success'
             }).then(function () {
                 window.location = `backend/api/maquinarias/habilitar-casillero.php?id=${casilleroId}&maquinaria=<?= $id; ?>`
             });
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
     });
 
@@ -707,28 +704,23 @@ $('.vaciarCasillero').on('click', function (e) {
 
     let casilleroId = $(e.target.parentElement.parentElement.parentElement).data('id');
 
-    swal({
-        title: "¿Deseas vaciar el casillero?",
-        text: "Descuida, puedes agregar referencias luego.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
-        if (isConfirm) {
-            swal({
+    Swal.fire({
+        title: '¿Deseas vaciar el casillero?',
+        text: 'Descuida, puedes agregar referencias luego.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Éxito!',
                 text: 'El casillero se encuentra vacio.',
                 icon: 'success'
             }).then(function () {
                 window.location = `backend/api/maquinarias/vaciar-casillero.php?id=${casilleroId}&maquinaria=<?= $id; ?>`
             });
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
-
     });
 
 });
@@ -738,28 +730,25 @@ $('.deshabilitarCasillero').on('click', function (e) {
 
     let casilleroId = $(e.target.parentElement.parentElement.parentElement).data('id');
 
-    swal({
-        title: "¿Deseas deshabilitar el casillero?",
-        text: "Descuida, puedes habilitarlo luego.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
-        if (isConfirm) {
-            swal({
+    Swal.fire({
+        title: '¿Deseas deshabilitar el casillero?',
+        text: 'Descuida, puedes habilitarlo luego',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Deshabilitado!',
                 text: 'El casillero ha sido deshabilitado.',
                 icon: 'success'
             }).then(function () {
                 window.location = `backend/api/maquinarias/deshabilitar-casillero.php?id=${casilleroId}&maquinaria=<?= $id; ?>`
             });
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
     });
+    
 });
 
 // Deshabilitar Máquina
@@ -767,18 +756,16 @@ $('.deshabilitarMaquina').on('click', function (e) {
     
     let casilleroId = $(e.target.parentElement.parentElement.parentElement).data('id');
 
-    swal({
-        title: "¿Deseas deshabilitar la máquina",
-        text: "Descuida, puedes habilitarla luego.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
-        if (isConfirm) {
-            swal({
+    Swal.fire({
+        title: '¿Deseas deshabilitar la máquina?',
+        text: 'Descuida, puedes habilitarla luego',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Deshabilitada!',
                 text: 'La máquina ha sido deshabilitada.',
                 icon: 'success'
@@ -789,10 +776,9 @@ $('.deshabilitarMaquina').on('click', function (e) {
                 form.submit();
                 
             });
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
     });
+
 });
 
 //  Modal de Asignar Referencias
@@ -915,7 +901,7 @@ $(selectMaquinariaBSwap).on('change', function () {
 
 $('#submit-swap-modal').click(function () {
     if (!$("input[name='id-casillero-b']:checked").val()) {
-        swal("Whoops", "Debes seleccionar un casillero primero.", "warning");
+        Swal.fire("Whoops", "Debes seleccionar un casillero primero.", "warning");
         return false;
     }
 });
@@ -927,7 +913,7 @@ $('#submit-swap-modal').click(function () {
 
 if (isset($_SESSION['casillero_suela']) && $_SESSION['casillero_suela'] == true) {
 
-    echo "<script>swal('Error', 'Ya hay un casillero usando esa referencia.', 'error');</script>";
+    echo "<script>Swal.fire('Error', 'Ya hay un casillero usando esa referencia.', 'error');</script>";
 
     unset($_SESSION['casillero_suela']);
     $_SESSION['casillero_suela'] = null;

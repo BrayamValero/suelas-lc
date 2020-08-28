@@ -59,7 +59,7 @@
     }
 
     if (isset($_GET['deslogueado']) && $_GET['deslogueado'] == '1') {
-        echo "<script>swal('Aviso', 'Se ha cerrado su sesión previa.','warning');</script>";
+        echo "<script>Swal.fire('Aviso', 'Se ha cerrado su sesión previa.','warning');</script>";
     }
     ?>
 
@@ -72,7 +72,7 @@
     <script>
 
     // SweetAlert - Aviso de error.
-    swal({
+    Swal.fire({
         title: "Error",
         text: "Usuario o contraseña inválidos.",
         icon: "error",

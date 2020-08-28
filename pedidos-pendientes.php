@@ -192,18 +192,16 @@ $('.eliminarPedido').on('click', function (e) {
 
     let id = $(e.target.parentElement).data('id');
 
-    swal({
-        title: "¿Estás seguro?",
-        text: "Si eliminas el pedido tendrás que añadirlo de nuevo.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
-        if (isConfirm) {
-            swal({
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Si eliminas el pedido tendrás que añadirlo de nuevo.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Eliminado!',
                 text: 'El pedido ha sido eliminado.',
                 icon: 'success'
@@ -217,10 +215,7 @@ $('.eliminarPedido').on('click', function (e) {
                 });
 
             });
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
-
     });
 
 });
@@ -230,18 +225,16 @@ $('.cancelarPedido').on('click', function (e) {
     // Pedido_id
     let id = $(e.target.parentElement).data('id');
 
-    swal({
-        title: "¿Estás seguro?",
-        text: "Todas las suelas producidas pasaran al INVENTARIO, además, las suelas sacadas del stock volverán a su destino.",
-        icon: "warning",
-        buttons: [
-            'No',
-            'Si'
-        ],
-        dangerMode: true,
-    }).then(function (isConfirm) {
-        if (isConfirm) {
-            swal({
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Todas las suelas producidas pasaran al INVENTARIO, además, las suelas sacadas del stock volverán a su destino.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.value) {
+            Swal.fire({
                 title: '¡Eliminado!',
                 text: 'El pedido ha sido eliminado.',
                 icon: 'success'
@@ -252,22 +245,12 @@ $('.cancelarPedido').on('click', function (e) {
 
                     let htmlElem = document.getElementById(id);
                     htmlElem.parentNode.removeChild(htmlElem);
-              
-                    // // Datatable => Quitando el elemento del frontend.
-                    // tabla.row($(this).parents('tr')).remove().draw(false);
-
-                    // // Mostrando Notificación de éxito.
-                    // toastNotifications('fas fa-trash', 'text-danger', '¡Eliminado!', 'El pedido ha sido cancelado satisfactoriamente.');
 
                 });
 
             });
-        } else {
-            swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
         }
-
     });
-
 
 });
 </script>

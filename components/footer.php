@@ -7,12 +7,12 @@
 
 $(document).ready(function () {
     
-    // Custom Scroll Bar
+    // Custom Scroll Bar.
     $("#sidebar").mCustomScrollbar({
         theme: "minimal-dark"
     });
 
-    // Toggle .active classes
+    // Toggle .active classes.
     $('.sidebarCollapse').on('click', function () {
         $('#sidebar, #contenido').toggleClass('active');
     });
@@ -22,10 +22,16 @@ $(document).ready(function () {
         theme: "bootstrap4",
     });
 
-    // Datatables => Buscador Personalizado
-    document.getElementById('searchInput').addEventListener('keyup', function () {
-        tabla.search(this.value).draw();
-    });
+    let searchInput = document.getElementById('searchInput');
+
+    // Datatables => Search Input Personalizado.
+    if(searchInput){
+
+        searchInput.addEventListener('keyup', function () {
+            tabla.search(this.value).draw();
+        });
+
+    } 
 
 });
 

@@ -318,7 +318,7 @@ botonAñadirSerie.addEventListener('click', function () {
         var verif = datosSeries.some(serie => serie.SERIE_ID === serieId && serie.COLOR_ID === colorId);
 
         if(verif){
-            return swal("Whoops", "No puedes asignar la misma serie con el mismo color.", "warning");
+            return Swal.fire("Whoops", "No puedes asignar la misma serie con el mismo color.", "warning");
         }
 
         datosSeries.push(agregarSerie);
@@ -448,7 +448,7 @@ botonFinalizarPedido.addEventListener("click", function(){
     // Comprobar que haya alguna serie ingresada en el sistema.
     if (Object.entries(datosSeries).length === 0) {
         event.preventDefault();
-        return swal("Error", "Debes agregar al menos (1) serie al pedido.", "warning");
+        return Swal.fire("Error", "Debes agregar al menos (1) serie al pedido.", "warning");
     }
 
 });

@@ -219,7 +219,7 @@ botonAñadirColor.addEventListener('click', function () {
 	let formulario = $('#añadirColorForm');
 
 	// Si el formulario tiene algún campo incorrecto, lanzar error.
-	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
 	// Si todos los campos son correctos, Bloquear el botón de envío de data.
 	botonAñadirColor.disabled = true;
@@ -231,7 +231,7 @@ botonAñadirColor.addEventListener('click', function () {
 
 			case 'ERROR':
 				botonAñadirColor.disabled = false;
-				return swal('Error', 'El color ya se encuentra registrado.', 'error');
+				return Swal.fire('Error', 'El color ya se encuentra registrado.', 'error');
 				break;
 
 			default:
@@ -274,7 +274,7 @@ botonEditarColor.addEventListener('click', function () {
 	let formulario = $('#editarColorForm');
 
 	// Si el formulario tiene algún campo incorrecto, lanzar error.
-	if(!formulario[0].checkValidity()) return swal('Error', 'Por favor verifica todos los campos.', 'error');
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
 	// Si todos los campos son correctos, Bloquear el botón de envío de data.
 	botonEditarColor.disabled = true;
@@ -286,7 +286,7 @@ botonEditarColor.addEventListener('click', function () {
 			
 			case 'ERROR':
 				botonEditarColor.disabled = false;
-				return swal('Error', 'El color ya se encuentra registrado.', 'error');
+				return Swal.fire('Error', 'El color ya se encuentra registrado.', 'error');
 				break;
 
 			default:

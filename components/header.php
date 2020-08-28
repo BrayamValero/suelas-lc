@@ -37,6 +37,8 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/select2.css">
     <link rel="stylesheet" href="css/select2-bootstrap4.css">
+    <link rel="stylesheet" href="css/select2-bootstrap4.css">
+    <link rel="stylesheet" href="css/sweetalert2.min.css">
 
     <!-- JS -->
     <script src="js/jquery.min.js"></script>
@@ -50,9 +52,8 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
     <script src="datatables/buttons.print.min.js"></script>
     <script src="datatables/dataTables.bootstrap4.min.js"></script>
     <script src="js/select2.full.js"></script>
-    <script src="js/sweetalert.min.js"></script>
     <script src="js/jscolor.js"></script>
-
+    <script src="js/sweetalert2.all.min.js"></script>
     <!-- Título -->
     <title>Industria de Suelas</title>
 

@@ -488,10 +488,6 @@ document.getElementById('entregarMaterial').addEventListener('click', function (
 		
 	}
 
-	// Mostramos la data a comparar.
-	// console.clear();
-	// console.log(datosEnviar);
-
 	let cantidadesIngresadas = [];
 
 	datosEnviar.forEach(function(e) {
@@ -510,31 +506,24 @@ document.getElementById('entregarMaterial').addEventListener('click', function (
 			success: function (data) {
 
 				let datosRecetas = JSON.parse(data);
-				// console.clear();
-				// console.log("Comparasión final:");
-				// console.log(JSON.stringify(datosRecetas, null, 2));
 
 				for(let i = 0; i < cantidadesTotales; i++){
 
 					if(parseInt(cantidadesIngresadas[i]) > parseInt(datosRecetas[i].MATERIAL_EXISTENCIA)){
-						return swal("Error", "Ingresaste una cantidad mayor a la disponible en el inventario.", "error");
+						return Swal.fire("Error", "Ingresaste una cantidad mayor a la disponible en el inventario.", "error");
 					}
 
 				}
 
-				// Luego de verificar todo hacemos la pregunta.
-				swal({
-					title: "¿Estás seguro?",
-					text: "Recuerda que podrás editar el monto hasta el cambio de turno.",
-					icon: "warning",
-					buttons: [
-						'No',
-						'Si'
-					],
-					dangerMode: true,
-					}).then(function(isConfirm) {
-					if (isConfirm) {
-					
+				Swal.fire({
+					title: '¿Estás seguro?',
+					text: 'Recuerda que podrás editar el monto hasta el cambio de turno.',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Si',
+					cancelButtonText: 'No',
+				}).then((result) => {
+					if (result.value) {
 						$.post("backend/api/entrega_material/crear.php", {
 							data: JSON.stringify({
 								formulaId: inputFormulaAdd.value,
@@ -544,73 +533,19 @@ document.getElementById('entregarMaterial').addEventListener('click', function (
 							materiales: JSON.stringify(datosEnviar)
 							}
 						).done(data => {
-
 							if(JSON.parse(data) == 'asignar_operario'){
-								return swal('Error','Debes asignar un operario primero para entregarle material.','error');
+								return Swal.fire('Error','Debes asignar un operario primero para entregarle material.','error');
 							}
-							
 							window.location.reload();
-
-							// data = JSON.parse(data);
-
-							// // data[0] es el id de la entrega recien creada
-							// // data[1] es el nombre del operario que estaba de turno al momento de crearse la entrega
-							// // data[2] es el ID del operario que estaba de turno al momento de crearse la entrega
-
-							// const add = $('#appendMateriaPrima');
-
-							// let date,
-							// 	time,
-							// 	dateTime,
-							// 	today = new Date();
-
-
-							// // Get Full date with leading zeros
-							// date = ('0' + today.getDate()).slice(-2) + '-' + ('0' + (today.getMonth()+1)).slice(-2) + '-' +  today.getFullYear();
-
-							// // Get Full Time with leading zeros
-							// time = ('0' + today.getHours()).slice(-2) + ":" + ('0' + today.getMinutes()).slice(-2) + ":" + ('0' + today.getSeconds()).slice(-2);
-
-							// let btnConfirmar;
-
-							// if (data[2] == '<?= $_SESSION['USUARIO']['ID'] ?>') {
-							// 	btnConfirmar = `<button class='btn btn-sm btn-main' onclick='confirmar_entrega(${data[0]})'>Pendiente</button>`;
-							// } else {
-							// 	btnConfirmar = `<button class='btn btn-sm btn-main' disabled>Pendiente</button>`;
-							// }
-
-							// // DataTables => https://datatables.net/examples/api/add_row.html
-							// var rowNode = tabla.row.add([
-							// 	`${data[0]}`,
-							// 	`${date}`,
-							// 	`${inputTurnoAdd.value.toProperCase()}`,
-							// 	`${inputMaterialAdd.value.toProperCase()}`,
-							// 	`${data[1].toProperCase()}`,
-							// 	btnConfirmar,
-							// 	`<a href='#' data-toggle='modal' data-target='#editarMaterialEntregadoModal' data-id='${data[0]}'>
-							// 		<i class='fas fa-edit icon-color'></i>
-							// 	</a>
-							// 	<a href='#' data-toggle='modal' data-target='#mostrarMaterialEntregadoModal' data-id='${data[0]}'>
-							// 		<i class='fas fa-eye icon-color'></i>
-							// 	</a>`
-							// ]).draw(false).node();
-
-							// // Añadiendo clases a DataTables.
-							// $(rowNode).find('td').eq(0).addClass('font-weight-bold');
-					
-							// // Ocultando el modal.
-							// // $('#entregarMaterialModal').modal('hide');
-					
 						});
-					} else {
-						swal("Cancelado", "Cuando termines puedes intentarlo de nuevo.", "error");
+
 					}
 				});
 			}
 		});
 		
 	} else {
-		return swal("Whoops", "Rellene todos los campos.", "warning");
+		return Swal.fire("Whoops", "Rellene todos los campos.", "warning");
 	}
 
 });
@@ -737,32 +672,28 @@ document.getElementById('entregarMaterialEdit').addEventListener('click', functi
 			success: function (data) {
 
 				let datosRecetas = JSON.parse(data);
-				// console.clear();
-				// console.log(JSON.stringify(datosRecetas, null, 2));
 
 				for(var i = 0; i < editarCantidades; i++){
 
 					if(parseInt(cantidadesIngresadas[i]) > parseInt(datosRecetas[i].MATERIAL_EXISTENCIA)){
-						return swal("Error", "Ingresaste una cantidad mayor a la disponible en el inventario.", "error");
+						return Swal.fire("Error", "Ingresaste una cantidad mayor a la disponible en el inventario.", "error");
 					}
 
 				}
-				
-				swal({
-					title: "¿Estás seguro?",
-					text: "Recuerda que podrás editar el monto hasta el cambio de turno.",
-					icon: "warning",
-					buttons: [
-						'No',
-						'Si'
-					],
-					dangerMode: true,
-					}).then(function(isConfirm) {
-					if (isConfirm) {
-						swal({
-						title: 'Editado!',
-						text: 'Las cantidades han sido editadas satisfactoriamente.',
-						icon: 'success'
+
+				Swal.fire({
+					title: '¿Estás seguro?',
+					text: 'Recuerda que podrás editar el monto hasta el cambio de turno.',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonText: 'Si',
+					cancelButtonText: 'No',
+				}).then((result) => {
+					if (result.value) {
+						Swal.fire({
+							title: 'Editado!',
+							text: 'Las cantidades han sido editadas satisfactoriamente.',
+							icon: 'success'
 						}).then(function() {
 							$.post("backend/api/entrega_material/editar.php", {
 								'entrega-material-id': rowEdit,
@@ -772,15 +703,14 @@ document.getElementById('entregarMaterialEdit').addEventListener('click', functi
 								$('#editarMaterialEntregadoModal').modal('hide');
 							});
 						});
-					} else {
-						swal("Cancelado", "Cuando termines puedes intentarlo de nuevo.", "error");
 					}
 				});
+
 			}
 		});
 		
 	} else {
-		return swal("Whoops", "Rellene todos los campos.", "warning");
+		return Swal.fire("Whoops", "Rellene todos los campos.", "warning");
 	}
 
 });
@@ -847,28 +777,26 @@ $('#mostrarMaterialEntregadoModal').on('show.bs.modal', function (e) {
 
 // Confirmar la entrega de PENDIENTE => CHECK
 function confirmar_entrega(id) {
-	swal({
-		title: "¿Estás seguro?",
-		text: "Luego de verificar el material no podrá ser editado.",
-		icon: "warning",
-		buttons: [
-			'No',
-			'Si'
-		],
-		dangerMode: true,
-	}).then(function (isConfirm) {
-		if (isConfirm) {
-			swal({
+
+	Swal.fire({
+		title: '¿Estás seguro?',
+		text: 'Luego de verificar el material no podrá ser editado..',
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonText: 'Si',
+		cancelButtonText: 'No',
+	}).then((result) => {
+		if (result.value) {
+			Swal.fire({
 				title: '¡Recibido!',
 				text: 'El material ha sido recibido satisfactoriamente.',
 				icon: 'success'
 			}).then(function () {
 				window.location = `backend/api/entrega_material/aprobar.php?id=${id}`
 			});
-		} else {
-			swal("Cancelado", "Descuida, puedes volver a intentarlo luego.", "error");
 		}
 	});
+
 };
 
 </script>
