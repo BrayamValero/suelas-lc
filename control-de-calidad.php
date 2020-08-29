@@ -95,7 +95,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 $sql = "SELECT * FROM CASILLEROS WHERE MAQUINARIA_ID = ?;";
                 $casilleros = db_query($sql, array($id));
-                $repetidos = array();
+                // $repetidos = array();
 
                 ?>
                 
@@ -502,20 +502,21 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                 <select name="suela-id" id="inputReferenciaModal" class="form-control dropdown-select2">
 
                                     <?php
+
                                     $material = $maquinaria_selected[0]['MATERIAL'];
                                     $sql = "SELECT * FROM SUELAS WHERE MATERIAL = ?;";
-                                    $data = array($material);
-                                    
-                                    $result = db_query($sql, $data);
+                                    $result = db_query($sql, array($material));
+
+                                    print_r($result);
 
                                     if($result == null){
                                         echo "<option>No hay Referencias</option>";
+                                    } else {
+                                        foreach ($result as $row) {
+                                            echo "<option value='{$row['ID']}'>" . mb_convert_case($row['MARCA'], MB_CASE_TITLE, "UTF-8") . " - {$row['TALLA']}</option>";
+                                        }
                                     }
-                                    
-                                    foreach ($result as $row) {
-                                        echo "<option value='{$row['ID']}'>" . mb_convert_case($row['MARCA'], MB_CASE_TITLE, "UTF-8") . " - {$row['TALLA']}</option>";
-                                    }
-
+                        
                                     ?>
 
                                 </select>

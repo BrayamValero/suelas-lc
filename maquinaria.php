@@ -111,6 +111,7 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
                             <div class="form-group col-sm-3">
                                 <label for="inputAñadirMaterial-modal">Material</label>
                                 <select id="inputAñadirMaterial-modal" class="form-control filter-select2" name="material">
+                                    <option value="EXPANSO & PVC">Expanso & PVC</option>
                                     <option value="EXPANSO" selected>Expanso</option>
                                     <option value="PVC">PVC</option>
                                     <option value="PU">PU</option>
