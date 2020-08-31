@@ -4,7 +4,7 @@ require_once "db.php";
 // http://localhost/php/suelas-lc/backend/api/script.php
 
 
-// // 2. SCRIPT => Agregar inventario al stock (Automático)
+// 2. SCRIPT => Agregar inventario al stock (Automático)
 // $sql = "SELECT SUE.ID AS SUELA_ID, COL.ID AS COLOR_ID, IMP.CANTIDAD 
 //         FROM IMPORTAR_INVENTARIO IMP
 //             JOIN COLOR COL
