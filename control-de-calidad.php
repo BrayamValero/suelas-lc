@@ -503,12 +503,19 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                                     <?php
 
+                                    // Obtenemos el material.
                                     $material = $maquinaria_selected[0]['MATERIAL'];
-                                    $sql = "SELECT * FROM SUELAS WHERE MATERIAL = ?;";
-                                    $result = db_query($sql, array($material));
-
-                                    print_r($result);
-
+                                    
+                                    // Si el material es EXPANSO/PVC obtenemos TODAS las suelas.
+                                    if($material === 'EXPANSO/PVC'){
+                                        $sql = "SELECT ID, REFERENCIA, MARCA, TALLA FROM SUELAS;";
+                                        $result = db_query($sql);
+                                    // De lo contrario solo seleccionamos la que corresponda al material.
+                                    } else {
+                                        $sql = "SELECT ID, REFERENCIA, MARCA, TALLA FROM SUELAS WHERE MATERIAL = ?;";
+                                        $result = db_query($sql, array($material));
+                                    }
+                                    
                                     if($result == null){
                                         echo "<option>No hay Referencias</option>";
                                     } else {
