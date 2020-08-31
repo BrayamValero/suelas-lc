@@ -240,7 +240,7 @@ $.ajax({
                 { 
                     data: 'ID',
                     title: "Opciones", render: function(value, type, row) {
-                        return `<a href='javascript:void(0)' data-id='${value}' class='eliminarStock'>
+                        return `<a href='javascript:void(0)' data-id='${value}' class='eliminarStock-disabled'>
 									<i class='fas fa-trash icon-color mr-1'></i>
 								</a>
 								<a href='javascript:void(0)' data-id='${value}' data-operacion='+' data-toggle='modal' data-target='#añadirMovimientoModal'>
