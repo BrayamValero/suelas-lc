@@ -5,7 +5,7 @@ include 'components/header.php';
 include 'components/components.php';
 
 // Agregamos los roles que se quiere que usen esta página.
-$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
+$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO', 'PRODUCCION');
 
 if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     include 'components/error.php';
