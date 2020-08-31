@@ -1,19 +1,21 @@
 <?php
 
 // Incluimos el header.php y components.php
+$title = 'Inicio';
 include 'components/header.php';
 include 'components/components.php';
+require_once 'backend/api/utils.php';
 
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' ||
-    $_SESSION['USUARIO']['CARGO'] == 'VENTAS' ||
-    $_SESSION['USUARIO']['CARGO'] == 'MOLINERO' ||
-    $_SESSION['USUARIO']['CARGO'] == 'OPERARIO' ||
-    $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION' ||
-    $_SESSION['USUARIO']['CARGO'] == 'DESPACHO' ||
-    $_SESSION['USUARIO']['CARGO'] == 'CONTROL' ||
-    $_SESSION['USUARIO']['CARGO'] == 'NORSAPLAST' ||
-    $_SESSION['USUARIO']['CARGO'] == 'CLIENTE'):
+// Agregamos los roles que se quiere que usen esta página.
+// 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
+$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE');
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
+
 ?>
 
 <!-- Incluimos el sidebar.php -->
@@ -34,16 +36,3 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' ||
 
 <!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
-?>

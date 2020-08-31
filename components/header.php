@@ -54,8 +54,16 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
     <script src="js/select2.full.js"></script>
     <script src="js/jscolor.js"></script>
     <script src="js/sweetalert2.all.min.js"></script>
+
     <!-- Título -->
-    <title>Industria de Suelas</title>
+
+    <?php  if(isset($title)): ?>
+
+        <title>Suelas LC | <?php echo $title; ?></title>
+
+    <?php endif; ?>
+
+    <title>Suelas LC</title>
 
     <script>
 

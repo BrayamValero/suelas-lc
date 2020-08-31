@@ -1,11 +1,20 @@
 <?php
 
 // Incluimos el header.php y components.php
+$title = 'Operarios';
 include 'components/header.php';
 include 'components/components.php';
+require_once 'backend/api/utils.php';
 
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION'): 
+// Agregamos los roles que se quiere que usen esta página.
+// 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
+$roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION');
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
 
 ?>
 
@@ -365,16 +374,3 @@ document.getElementById('intercambiarOperarioSubmit').addEventListener('click', 
 
 <!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
-?>

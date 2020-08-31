@@ -1,24 +1,27 @@
 <?php
 
 // Incluimos el header.php y components.php
+$title = 'Control de Calidad';
 include 'components/header.php';
 include 'components/components.php';
 require_once 'backend/api/utils.php';
 
-$sql = "SELECT SUM(CAPACIDAD) AS CAPACIDAD_TOTAL FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
-$capacidad_total = db_query($sql);
-
-if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
-    $capacidad_total[0]['CAPACIDAD_TOTAL'] = 0;
-}
-
 // Agregamos los roles que se quiere que usen esta página.
+// 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION', 'CONTROL');
 
 if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     include 'components/error.php';
     include_once 'components/footer.php';
     exit();
+}
+
+// Chequear capacidad total del sistema.
+$sql = "SELECT SUM(CAPACIDAD) AS CAPACIDAD_TOTAL FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
+$capacidad_total = db_query($sql);
+
+if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
+    $capacidad_total[0]['CAPACIDAD_TOTAL'] = 0;
 }
 
 ?>

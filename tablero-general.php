@@ -1,21 +1,28 @@
 <?php
 
 // Incluimos el header.php y components.php
+$title = 'Tablero General';
 include 'components/header.php';
 include 'components/components.php';
-
-// Esto solo se ejecuta la primera vez que se inicia el sistema es para rellenar la tabla suelas.
 require_once 'backend/api/utils.php';
 
+// Agregamos los roles que se quiere que usen esta página.
+// 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
+$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'PRODUCCION');
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+    include 'components/error.php';
+    include_once 'components/footer.php';
+    exit();
+}
+
+// Chequeamos la capacidad total.
 $sql = "SELECT SUM(CAPACIDAD) AS CAPACIDAD_TOTAL FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
 $capacidad_total = db_query($sql);
 
 if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
     $capacidad_total[0]['CAPACIDAD_TOTAL'] = 0;
 }
-
-// Filtramos la página para que solo los cargos correspondientes puedan usarla.
-if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION'): 
 
 ?>
 
@@ -361,16 +368,3 @@ if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CA
 
 <!-- Incluimos el footer.php & agregamos una comprobacion de casillero repetido -->
 <?php include_once 'components/footer.php'; ?>
-
-<!-- En Caso de no poseer derechos, incluir error.php-->
-<?php 
-    else:
-    include 'components/error.php';
-    include_once 'components/footer.php';
-    exit();
-?>
-
-<!-- Fin del filtro -->
-<?php
-    endif;
-?>

@@ -11,7 +11,7 @@
     <!-- JavaScript -->
     <script src="js/sweetalert.min.js"></script>
     <!-- Title -->
-    <title>Industria de Suelas | Iniciar Sesión</title>
+    <title>Suelas LC | Iniciar Sesión</title>
 </head>
 <body>
 <div class="container-fluid">

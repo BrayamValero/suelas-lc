@@ -1,11 +1,13 @@
 <?php
 
 // Incluimos el header.php y components.php
+$title = 'Aprobar Pedido';
 include 'components/header.php';
 include 'components/components.php';
 require_once 'backend/api/utils.php';
 
 // Agregamos los roles que se quiere que usen esta página.
+// 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
 
 if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
