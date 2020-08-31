@@ -226,7 +226,8 @@ if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CAR
                             <div class="form-group col-sm-5">
                                 <label for="inputEditarMaterialAvanzada-modal">Material</label>
                                 <select id="inputEditarMaterialAvanzada-modal" class="form-control" name="material" required>
-                                    <option value="EXPANSO">Expanso</option>
+                                    <option value="EXPANSO" selected>EXPANSO</option>
+                                    <option value="EXPANSO/PVC">EXPANSO/PVC</option>
                                     <option value="PVC">PVC</option>
                                     <option value="PU">PU</option>
                                 </select>
@@ -372,7 +373,8 @@ $('.mostrarCampos').click(function () {
         $('#inputAñadirColor-modal').attr('required', ''); 
         $('#inputAñadirDureza-modal').attr('required', '');
         $('#inputAñadirMaterial-modal').append(`
-            <option value="EXPANSO">Expanso</option>
+            <option value="EXPANSO" selected>EXPANSO</option>
+            <option value="EXPANSO/PVC">EXPANSO/PVC</option>
             <option value="PVC">PVC</option>
             <option value="PU">PU</option>
         `);
@@ -405,12 +407,12 @@ $('#editarMateriaPrima-modal').on('show.bs.modal', function (e) {
 // Modal de Editar Materia Prima Avanzada
 $('#editarMateriaPrimaAvanzada-modal').on('show.bs.modal', function (e) {
 
-    let rowid = $(e.relatedTarget).data('id');
+    let id = $(e.relatedTarget).data('id');
 
     $.ajax({
         type: 'post',
         url: 'backend/api/utils.php?fun=obtenerMateriaPrimaId',
-        data: 'id=' + rowid,
+        data: 'id=' + id,
         dataType: 'json',
         success: function (data) {
 
@@ -420,14 +422,12 @@ $('#editarMateriaPrimaAvanzada-modal').on('show.bs.modal', function (e) {
             $('#inputEditarCantidadAvanzada-modal').val(data[0].EXISTENCIA);
             $('#inputEditarDurezaAvanzada-modal').val(data[0].DUREZA);
 
-
-            if (data[0].MATERIAL === "EXPANSO") {
-                inputEditarMaterialAvanzada.selectedIndex = 0;
-            } else if (data[0].MATERIAL === "PVC") {
-                inputEditarMaterialAvanzada.selectedIndex = 1;
-            } else {
-                inputEditarMaterialAvanzada.selectedIndex = 2;
-            }
+            $("#inputEditarMaterialAvanzada-modal > option").each(function() {
+                if( data[0].MATERIAL == this.value ){
+                    $(this).prop("selected", true);
+                    return false;
+                }
+            });
 
         }
     });

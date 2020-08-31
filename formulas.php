@@ -196,11 +196,10 @@ if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CAR
                             <div class="form-group col-sm-4">
                                 <label for="editarMaterial">Material</label>
                                 <select id="editarMaterial" class="form-control" name="material">
-                                    <option value="EXPANSO">Expanso</option>
+                                    <option value="EXPANSO/PVC">EXPANSO/PVC</option>
+                                    <option value="EXPANSO">EXPANSO</option>
                                     <option value="PVC">PVC</option>
                                     <option value="PU">PU</option>
-                                    <option value="EVA">Eva</option>
-                                    <option value="CAUCHO">Caucho</option>
                                 </select>
                             </div>
                         </div>
