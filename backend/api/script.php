@@ -5,26 +5,30 @@ require_once "db.php";
 
 
 // 2. SCRIPT => Agregar inventario al stock (Automático)
-// $sql = "SELECT SUE.ID AS SUELA_ID, COL.ID AS COLOR_ID, IMP.CANTIDAD 
-//         FROM IMPORTAR_INVENTARIO IMP
-//             JOIN COLOR COL
-//                 ON IMP.COLOR = COL.COLOR
-//             JOIN SUELAS SUE
-//                 ON IMP.MARCA = SUE.MARCA AND IMP.TALLA = SUE.TALLA;";
+$sql = "SELECT SUE.ID AS SUELA_ID, COL.ID AS COLOR_ID, IMP.CANTIDAD 
+        FROM IMPORTAR_INVENTARIO IMP
+            JOIN COLOR COL
+                ON IMP.COLOR = COL.COLOR
+            JOIN SUELAS SUE
+                ON IMP.MARCA = SUE.MARCA AND IMP.TALLA = SUE.TALLA;";
 
-// $inventario = db_query($sql);
+$inventario = db_query($sql);
 
-// // echo '<pre>'; print_r($inventario); echo '</pre>';
+// echo '<pre>'; print_r($inventario); echo '</pre>';
 
-// foreach ($inventario as $key => $item) {
+foreach ($inventario as $key => $item) {
 
-//     $sql = "INSERT INTO STOCK VALUES(NULL, ?, ?, ?, ?);";
-//     $data = array(19, $item['SUELA_ID'], $item['COLOR_ID'], $item['CANTIDAD']);
-//     $result = db_query($sql, $data);
+    $sql = "INSERT INTO STOCK VALUES(NULL, ?, ?, ?, ?);";
+    $data = array(19, $item['SUELA_ID'], $item['COLOR_ID'], $item['CANTIDAD']);
+    $result = db_query($sql, $data);
 
-// }
+    if(!empty($result)){
+        echo $item['SUELA_ID'] . " - " . $item['COLOR_ID'] . " - " . $item['CANTIDAD']  . "<br>";
+    }
 
-// echo "Done";
+}
+
+echo "Done";
 
 // // SCRIPT => Crear tabla GRUPO_SERIES (Automático)
 // $sql = "SELECT * FROM SERIES;";
