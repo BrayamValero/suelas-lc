@@ -607,27 +607,6 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 <!-- Inline JavaScript -->
 <script>
 
-// DataTables Plugin: https://datatables.net/
-const tabla = $('#tabla').DataTable({
-    info: false,
-    dom: "lrtip",
-    // searching: false,
-    lengthChange: false,
-    pageLength: 5,
-    order: [[0, 'desc']],
-    columnDefs: [{
-        targets: 4,
-        searchable: true,
-        orderable: true,
-        className: "align-middle", "targets": "_all"
-    }],
-    language: {
-        "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
-    }
-});
-
-
-
 // Declaramos las Variables y Constantes
 var numero;
 const selectMaquinariaBSwap = document.getElementById('id-maquinaria-modal-swap');
