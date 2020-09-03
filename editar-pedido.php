@@ -53,7 +53,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-6">
                     <label for="editarNombre">Nombre</label>
-                    <select id="editarNombre" name="nombre" class="form-control filter-select2" required>
+                    <select id="editarNombre" name="nombre" class="form-control dropdown-select2" required>
                         <?php
                             foreach ($result as $row) {
                                 
@@ -76,7 +76,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-3">
                     <label for="editarPago">Forma de Pago</label>
-                    <select id="editarPago" class="form-control filter-select2" name="pago" required>
+                    <select id="editarPago" class="form-control dropdown-select2" name="pago" required>
                         <?php
                             foreach (FORMAS_PAGO as $forma_pago) {
                                 if ($result_get[0]['FORMA_PAGO'] == $forma_pago) {
@@ -101,7 +101,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-6">
                     <label for="editarReferencia">Serie</label>
-                    <select id="editarReferencia" class="form-control filter-select2" name="serie" required>
+                    <select id="editarReferencia" class="form-control dropdown-select2" name="serie" required>
                         <?php
                             $sql = "SELECT * FROM SERIES;";
                             $result = db_query($sql);
@@ -117,7 +117,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-3">
                     <label for="editarColor">Color</label>
-                    <select id="editarColor" class="form-control filter-select2" name="color" required>
+                    <select id="editarColor" class="form-control dropdown-select2" name="color" required>
                         <?php
                             $sql = "SELECT * FROM COLOR;";
                             $result = db_query($sql);

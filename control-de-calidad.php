@@ -98,7 +98,7 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 
                 $sql = "SELECT * FROM CASILLEROS WHERE MAQUINARIA_ID = ?;";
                 $casilleros = db_query($sql, array($id));
-                // $repetidos = array();
+                $repetidos = array();
 
                 ?>
                 
@@ -109,7 +109,7 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 
     <!-- Mostramos las tablas con la información correspondiente -->
     <div class="table-responsive text-center">
-        <table class="table table-bordered text-center" id="tabla">
+        <table class="table table-bordered text-center">
 
             <!-- Primer <TH> -->
             <thead class="thead-dark">
@@ -171,7 +171,7 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 
                             foreach ($result as $row) {
 
-                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+                                if (!in_array($row['SUELA_ID'], $repetidos)) {
 
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
                                         
@@ -197,13 +197,13 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
                                         
                                         echo "</td>";
 
-                                        // array_push($repetidos, $row['SUELA_ID']);
+                                        array_push($repetidos, $row['SUELA_ID']);
 
                                         $casillero_impreso = true;
 
                                     }
 
-                                // }
+                                }
 
                             }
 
@@ -276,7 +276,7 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 
                             foreach ($result as $row) {
 
-                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+                                if (!in_array($row['SUELA_ID'], $repetidos)) {
 
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
 
@@ -302,13 +302,13 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 
                                         echo "</td>";
 
-                                        // array_push($repetidos, $row['SUELA_ID']);
+                                        array_push($repetidos, $row['SUELA_ID']);
 
                                         $casillero_impreso = true;
                                         
                                     }
 
-                                // }
+                                }
 
                             }
 
@@ -361,7 +361,7 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 
                             foreach ($result as $row) {
 
-                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+                                if (!in_array($row['SUELA_ID'], $repetidos)) {
 
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
 
@@ -388,14 +388,14 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 
                                         echo "</td>";
 
-                                        // array_push($repetidos, $row['SUELA_ID']);
+                                        array_push($repetidos, $row['SUELA_ID']);
                                         
                                         $casillero_impreso = true;
 
                                     
                                     }
 
-                                // }
+                                }
 
                             }
 

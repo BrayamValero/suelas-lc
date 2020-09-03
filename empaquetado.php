@@ -152,7 +152,7 @@ $.ajax({
                         return `<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='${value}'>
                             <i class='fas fa-eye icon-color'></i>
                         </a>
-                        <a href='javascript:void(0)' data-toggle='modal' data-target='#imprimirEtiquetas' data-id='${value}'>
+                        <a href='ver-etiquetas.php?id=${value}'>
                             <i class='fas fa-print icon-color'></i>
                         </a>`;
                     }
@@ -171,14 +171,6 @@ $.ajax({
         // Datatables => Paginación
         $.fn.DataTable.ext.pager.numbers_length = 5;
         
-        // Datatables => Buscador Personalizado
-        $('#customInput').on('keyup', function () {
-            tabla.search(this.value).draw();
-        });
-
-    },   
-    error: function(error) {
-        console.log("No hay data para mostrar: " + error);
     }
 
 });
@@ -245,14 +237,8 @@ $('#imprimirEtiquetas').on('show.bs.modal', function (e) {
 });
 
 function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
+    var printContents = document.getElementById(divName).innerHTML;
+    window.print();
 }
 
 // Ver Pedido
@@ -361,8 +347,6 @@ $('#verPedido').on('show.bs.modal', function (e) {
         datosPedido.some(elem => {
 
             if (elem.SUELA_ID == $(this).data('suela-id') && elem.COLOR_ID == $(this).data('color-id')) {
-
-
 
                return this.value = elem.CANTIDAD;
 
