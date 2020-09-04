@@ -648,14 +648,18 @@ function obtenerPedidosEnProceso(){
 }
 
 function obtenerPedidosParaEmpaquetar(){
-    $sql = "SELECT PROD.PEDIDO_ID AS PEDIDO_ID, SUE.MARCA AS MARCA, COL.COLOR AS COLOR, SUE.TALLA AS TALLA, PROD.CANTIDAD AS CANTIDAD, SUE.CAP_EMPAQUETADO AS CAP_EMPAQUETADO
+    $sql = "SELECT PROD.PEDIDO_ID AS PEDIDO_ID, CLI.NOMBRE, SUE.MARCA AS MARCA, COL.COLOR AS COLOR, SUE.TALLA AS TALLA, PROD.CANTIDAD AS CANTIDAD, SUE.CAP_EMPAQUETADO AS CAP_EMPAQUETADO
         FROM PRODUCCION PROD
             LEFT JOIN SUELAS SUE
                 ON PROD.SUELA_ID = SUE.ID
             LEFT JOIN COLOR COL
                 ON PROD.COLOR_ID = COL.ID
+            LEFT JOIN PEDIDOS PED
+                ON PED.ID = ?
+            LEFT JOIN CLIENTES CLI
+                ON CLI.ID = PED.CLIENTE_ID
         WHERE PROD.PEDIDO_ID = ?;";
-    $result = db_query($sql, array($_POST['pedido_id']));
+    $result = db_query($sql, array($_POST['pedido_id'],$_POST['pedido_id']));
     echo json_encode($result);
 }
 

@@ -154,7 +154,12 @@ td a, td a:visited, td a:hover, td a:active {
     border-bottom-left-radius: .3rem;
 }
 
-
+@media (min-width: 576px){
+  .modal-dialog {
+    max-width: 650px;
+    margin: 1.5rem auto;
+  }
+}
 /* ---------------------------------------------------
     7. FORMS
 ----------------------------------------------------- */
