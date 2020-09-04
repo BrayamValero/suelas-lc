@@ -87,16 +87,25 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                     if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
 
                         if ($row['ESTADO'] === 'EN ANALISIS') {
-                            echo "<a href='editar-pedido.php?id={$row['ID']}'><i class='fas fa-edit icon-color'></i></a>";
-                            echo "<a href='#' class='ml-1 eliminarPedido' data-id='{$row['ID']}'><i class='fas fa-trash icon-color'></i></a>";                     
-                            echo "<a class='ml-1' href='#' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'><i class='fas fa-eye icon-color'></i></a>";
-                        } else {
-                            echo "<a class='ml-1' href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
+                            echo "<a href='editar-pedido.php?id={$row['ID']}' class='mr-1'>
+                                <i class='fas fa-edit icon-color'></i>
+                            </a>";
+                            echo "<a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='{$row['ID']}'>
+                                <i class='fas fa-trash icon-color'></i>
+                            </a>";                     
+                            echo "<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
                                 <i class='fas fa-eye icon-color'></i>
                             </a>";
-                            echo "<a href='javascript:void(0)' class='ml-1 cancelarPedido' data-id='{$row['ID']}'>
+                        } else {
+                            // echo "<a href='alimentar-pedido.php?id={$row['ID']}' class='mr-1'>
+                            //     <i class='fas fa-dolly-flatbed icon-color'></i>
+                            // </a>";
+                            echo "<a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='{$row['ID']}'>
                                 <i class='fas fa-ban icon-color'></i>
-                            </a>";  
+                            </a>";
+                            echo "<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
+                                <i class='fas fa-eye icon-color'></i>
+                            </a>";
                         }
 
                     } 
@@ -196,8 +205,8 @@ $('.eliminarPedido').on('click', function (e) {
     let id = $(e.target.parentElement).data('id');
 
     Swal.fire({
-        title: '¿Estás seguro?',
-        text: 'Si eliminas el pedido tendrás que añadirlo de nuevo.',
+        title: '¿Deseas eliminar el pedido?',
+        text: 'Si eliminas el pedido tendrás que agregarlo nuevamente.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Si',
@@ -229,8 +238,8 @@ $('.cancelarPedido').on('click', function (e) {
     let id = $(e.target.parentElement).data('id');
 
     Swal.fire({
-        title: '¿Estás seguro?',
-        text: 'Todas las suelas producidas pasaran al INVENTARIO, además, las suelas sacadas del stock volverán a su destino.',
+        title: '¿Deseas cancelar el pedido?',
+        text: 'Todas las suelas producidas pasaran al inventario. Además, las suelas sacadas del stock volverán a su destino.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Si',

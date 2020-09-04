@@ -53,6 +53,14 @@ td {
     white-space: nowrap !important;
 }
 
+button:focus { 
+  outline:0;
+}
+
+td a, td a:visited, td a:hover, td a:active {
+  text-decoration:none;
+}
+
 /* ---------------------------------------------------
     3. TEXTOS
 ----------------------------------------------------- */

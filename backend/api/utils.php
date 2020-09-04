@@ -183,6 +183,10 @@ if (isset($_GET['fun'])) {
         case 'obtenerPedidoId':
             obtenerPedidoId();
             break;
+
+        case 'obtenerPedidoAlimentarId':
+            obtenerPedidoAlimentarId();
+            break;
             
         case 'obtenerPedidos':
             obtenerPedidos();
@@ -611,12 +615,21 @@ function obtenerDureza(){
 }
 
 function obtenerPedidoId(){
-    $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, CANTIDAD, URGENTE 
+    $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, CANTIDAD, URGENTE
         FROM PRODUCCION 
         WHERE PEDIDO_ID = ?;";
     $result = db_query($sql, array($_POST['pedido_id']));
     echo json_encode($result);
 }
+
+function obtenerPedidoAlimentarId(){
+    $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, RESTANTE, URGENTE
+        FROM PRODUCCION 
+        WHERE PEDIDO_ID = ?;";
+    $result = db_query($sql, array($_POST['pedido_id']));
+    echo json_encode($result);
+}
+
 
 function obtenerPedidos(){
     $sql = "SELECT * FROM PEDIDOS;";
