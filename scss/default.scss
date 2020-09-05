@@ -156,10 +156,15 @@ td a, td a:visited, td a:hover, td a:active {
 
 @media (min-width: 576px){
   .modal-dialog {
-    max-width: 650px;
+    max-width: 800px;
     margin: 1.5rem auto;
   }
 }
+
+.select2-container {
+  z-index: 99999;
+}
+
 /* ---------------------------------------------------
     7. FORMS
 ----------------------------------------------------- */

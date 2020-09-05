@@ -502,7 +502,7 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
                             <input type="hidden" name="casillero-color" id="colorCasillero" value="<?= $maquinaria_selected[0]['COLOR'] ?>">
                             <div class="form-group col-md-10">
                                 <label for="inputReferenciaModal">Referencia</label>
-                                <select name="suela-id" id="inputReferenciaModal" class="form-control dropdown-select2">
+                                <select name="suela-id" id="inputReferenciaModal" class="form-control dropdown-select2-show">
 
                                     <?php
 
@@ -792,8 +792,20 @@ $('.deshabilitarMaquina').on('click', function (e) {
 
 });
 
+$(document).ready(function () {
+    
+    // select2 => Aplicando el dropdown.
+    $('.dropdown-select2-show').select2({
+        theme: "bootstrap4",
+        dropdownParent: $('#asignarReferenciaModal'),
+    });
+
+});
+
 //  Modal de Asignar Referencias
 $('#asignarReferenciaModal').on('show.bs.modal', function (e) {
+
+    // $('.dropdown-select2-show').select2('open');
 
     // Obtenemos el ID del Casillero
     const casilleroId = $(e.relatedTarget.parentElement.parentElement.parentElement).data('id');

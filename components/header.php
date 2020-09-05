@@ -68,6 +68,11 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
 
     <script>
 
+    // Fix Select2 with MODAL
+    $(document).ready(function () {
+        $.fn.modal.Constructor.prototype._enforceFocus = function () { };
+    });
+
     Date.prototype.toDateInputValue = (function() {
         const local = new Date(this);
         local.setMinutes(this.getMinutes() - this.getTimezoneOffset());

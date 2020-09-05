@@ -41,9 +41,11 @@ $.ajax({
 
         const result = JSON.parse(data);
 
-        console.log(result.length);
+        for (let index = 0; index < result.length; index++) {
 
-        result.forEach(row => {
+            console.log(index);
+
+            result.forEach(row => {
             
             let cantidad =  parseInt(row.CANTIDAD);
             let capacidad = parseInt(row.CAP_EMPAQUETADO);
@@ -54,6 +56,8 @@ $.ajax({
                 <div class="col-6 mb-4">
                     <div class="card">
                         <div class="text-center pt-4 pb-2">
+                            <p>${index} de a ${result.length}</p>
+                            
                             <div class="btn btn-lg btn-dark mb-2">PEDIDO ${row.PEDIDO_ID}</div>
                             <h1 class="font-weight-bold">${row.NOMBRE.toUpperCase()}</h1>
                             <h3>${row.MARCA.toProperCase()} ${row.COLOR.toProperCase()}</h3>
@@ -74,6 +78,7 @@ $.ajax({
             <div class="col-6 mb-4">
                 <div class="card">
                     <div class="text-center pt-4 pb-2">
+                        <p>${index} de b ${result.length}</p>
                         <div class="btn btn-lg btn-dark mb-2">PEDIDO ${row.PEDIDO_ID}</div>
                         <h1 class="font-weight-bold">${row.NOMBRE.toUpperCase()}</h1>
                         <h3>${row.MARCA.toProperCase()} ${row.COLOR.toProperCase()}</h3>
@@ -86,7 +91,11 @@ $.ajax({
             </div>
             `);
 
+            index++;
+
         });
+            
+        }
 
     }
 });
