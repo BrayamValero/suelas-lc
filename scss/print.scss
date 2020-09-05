@@ -13,10 +13,18 @@
     }
     
     .page-break {
-        page-break-after: always; /* depreciating, use break-after */
+        display: block !important;
+        page-break-after: auto;
         break-after: page;
         height: 0px;
-        display: block !important;
     }
+
+    // .contenedorEtiquetas{
+    //     display: flex;
+    //     flex-wrap: wrap;
+    //     margin-right: -15px;
+    //     margin-left: -15px;
+
+    // }
 
 }
