@@ -1,7 +1,11 @@
 @media print {
 
-    @page {
-        margin: 0.60cm ;
+
+    @page { 
+        margin: 0; 
+    }
+    body { 
+        margin: 1.6cm; 
     }
 
     html, body{
@@ -19,4 +23,10 @@
         height: 0px;
     }
 
+    
+
+}
+
+.mb-30{
+    margin-bottom: 28rem !important;
 }
