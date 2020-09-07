@@ -326,3 +326,8 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.borde-etiqueta{
+  display: inline;
+  border-bottom: 10px solid black;
+}
