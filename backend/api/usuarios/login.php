@@ -3,8 +3,8 @@ session_start();
 $action = strtoupper(trim($_GET['action']));
 
 if ($action == 'UNLOGIN') {
-    session_destroy();
 
+    session_destroy();
     unset($_SESSION['USUARIO']);
     $_SESSION['USUARIO'] = null;
 
@@ -28,7 +28,6 @@ if (isset($_POST['correo']) && isset($_POST['contrasena'])) {
 
         $sql = "SELECT * FROM USUARIOS WHERE CORREO = ?";
         $data = array($correo);
-
         $result = db_query($sql, $data);
 
         if (empty($result)) {
@@ -56,8 +55,8 @@ if (isset($_POST['correo']) && isset($_POST['contrasena'])) {
             $data = array($session_id, $result[0]['ID']);
             db_query($sql, $data);
 
-
             header("Location: ../../../index.php");
+            
         }
     } elseif ($action == "REGISTER") {
         echo "registrar";

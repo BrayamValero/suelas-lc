@@ -51,73 +51,72 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                 $result = db_query($sql);
 
                 foreach ($result as $row) {
-                    echo "<tr id='{$row['ID']}'>";
-                    echo "<th scope='col'>{$row['ID']}</th>";
-                    echo "<td>" . mb_convert_case($row['CLIENTE_NOMBRE'], MB_CASE_TITLE, "UTF-8") . "</td>";
-                    echo "<td>" . mb_convert_case($row['CLIENTE_TIPO'], MB_CASE_TITLE, "UTF-8") . "</td>";
-                    echo "<td>" . mb_convert_case($row['FORMA_PAGO'], MB_CASE_TITLE, "UTF-8") . "</td>";
-                    echo "<td>" . date('d-m-Y', strtotime($row['FECHA_ESTIMADA'])) . "</td>";
 
+                    echo "<tr id='{$row['ID']}'>
+                            <th scope='col'>{$row['ID']}</th>
+                            <td>{$row['CLIENTE_NOMBRE']}</td>
+                            <td>{$row['CLIENTE_TIPO']}</td>
+                            <td>{$row['FORMA_PAGO']}</td>
+                            <td>" . date('d-m-Y', strtotime($row['FECHA_ESTIMADA'])) . "</td>";
+
+                    // Estado => Pedidos Pendientes
                     if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
                        
                         if ($row['ESTADO'] === 'EN ANALISIS') {
-                            
                             echo "<td> 
                                     <a href='aprobar-pedido.php?id={$row['ID']}' class='btn btn-sm btn-main'>Aprobar Pedido</a>
                                 </td>";
-
                         } else {
                             echo "<td>Pendiente</td>";
                         }
+
                     } else {
-
-                        if ($row['ESTADO'] === 'EN ANALISIS') {
-
-                            echo "<td>En analisis</td>";
-
-                        } else {
-
-                            echo "<td>Pendiente</td>";
-
-                        }
+                        $row['ESTADO'] == 'EN ANALISIS' ? print "<td>En analisis</td>" : print "<td>Pendiente</td>";
                     }
 
+                    // Opciones => Pedidos Pendientes.
                     echo "<td>";
-                    
+
                     if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
 
                         if ($row['ESTADO'] === 'EN ANALISIS') {
+
                             echo "<a href='editar-pedido.php?id={$row['ID']}' class='mr-1'>
-                                <i class='fas fa-edit icon-color'></i>
-                            </a>";
-                            echo "<a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='{$row['ID']}'>
-                                <i class='fas fa-trash icon-color'></i>
-                            </a>";                     
-                            echo "<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
-                                <i class='fas fa-eye icon-color'></i>
-                            </a>";
+                                    <i class='fas fa-edit icon-color'></i>
+                                </a>
+                                <a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='{$row['ID']}'>
+                                    <i class='fas fa-trash icon-color'></i>
+                                </a>";
+
                         } else {
-                            // echo "<a href='alimentar-pedido.php?id={$row['ID']}' class='mr-1'>
-                            //     <i class='fas fa-dolly-flatbed icon-color'></i>
-                            // </a>";
+
                             echo "<a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='{$row['ID']}'>
-                                <i class='fas fa-ban icon-color'></i>
-                            </a>";
-                            echo "<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
+                                    <i class='fas fa-ban icon-color'></i>
+                                </a>";
+
+                        }
+
+                        echo "<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
                                 <i class='fas fa-eye icon-color'></i>
                             </a>";
-                        }
 
-                    } 
-
-                    if ($_SESSION['USUARIO']['CARGO'] == 'VENTAS') {
-                        if ($row['ESTADO'] === 'EN ANALISIS') {
-                            echo "<a href='editar-pedido.php?id={$row['ID']}'><i class='fas fa-edit icon-color'></i></a>";
-                        }
                     }
 
-                    echo "</td>";
-                    echo "</tr>";
+                    if ($_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO') {
+
+                        if ($row['ESTADO'] === 'EN ANALISIS') {
+                            echo "<a href='editar-pedido.php?id={$row['ID']}'>
+                                    <i class='fas fa-edit icon-color'></i>
+                                </a>";
+                        }
+
+                        echo "<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
+                                <i class='fas fa-eye icon-color'></i>
+                            </a>";
+
+                    }
+
+                    echo "</td></tr>";
 
                 }
 

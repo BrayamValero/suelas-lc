@@ -37,7 +37,6 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/select2.css">
     <link rel="stylesheet" href="css/select2-bootstrap4.css">
-    <link rel="stylesheet" href="css/select2-bootstrap4.css">
     <link rel="stylesheet" href="css/sweetalert2.min.css">
     <link rel="stylesheet" type="text/css" media="print" href="css/print.css">
 
