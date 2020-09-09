@@ -53,9 +53,9 @@ if (isset($_GET['fun'])) {
             obtenerSuelaId();
             break;
         
-    case 'obtenerMateriaPrima':
-        obtenerMateriaPrima();
-        break;
+        case 'obtenerMateriaPrima':
+            obtenerMateriaPrima();
+            break;
 
         case 'obtenerMateriaPrimaId':
             obtenerMateriaPrimaId();
@@ -190,6 +190,10 @@ if (isset($_GET['fun'])) {
             
         case 'obtenerPedidos':
             obtenerPedidos();
+            break;
+
+        case 'obtenerPedidosPendientes':
+            obtenerPedidosPendientes();
             break;
 
         case 'obtenerPedidosEnProceso':
@@ -636,6 +640,17 @@ function obtenerPedidos(){
     $result = db_query($sql);
     echo json_encode($result);
 }
+
+function obtenerPedidosPendientes(){
+    $sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE 
+            FROM PEDIDOS P 
+                JOIN CLIENTES C 
+                    ON P.CLIENTE_ID = C.ID 
+            WHERE P.ESTADO IN ('EN ANALISIS', 'PENDIENTE');";
+    $result = db_query($sql);
+    echo json_encode($result);
+}
+
 
 function obtenerPedidosEnProceso(){
     $sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE 

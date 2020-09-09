@@ -3,9 +3,9 @@ session_start();
 require_once "../db.php";
 
 // Si se ejecuta un Request, ya sea GET o POST se ejecuta el código.
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
-    $pedido_id = test_input($_POST["pedido_id"]);
+    $pedido_id = $_GET['id'];
     $cliente_id = 19;
 
     // Verificamos que cada campo haya sido ingresado, de lo contrario, lanzar ERROR.

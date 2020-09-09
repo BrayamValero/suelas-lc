@@ -28,103 +28,27 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     <?php get_navbar('Ventas', 'Pedidos Pendientes'); ?>
 
     <!-- Mostramos la tabla con la información correspondiente -->
-    <div class="table-responsive-lg">
-        <table class="table table-bordered text-center" id="tabla">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Cliente</th>
-                    <th scope="col">Tipo de Cliente</th>
-                    <th scope="col">Forma de Pago</th>
-                    <th scope="col">Fecha de Entrega</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Opciones</th>
-                </tr>
-            </thead>
-            <tbody>
+	<div class="table-responsive text-center" style="width:100%">
+		<div id="spinner" class="spinner-border text-center" role="status">
+			<span class="sr-only">Cargando...</span>
+		</div>
+		<table class="table table-bordered text-center" id="tabla">
+			<thead class="thead-dark"></thead>
+		</table>
+	</div>
+	<!-- Fin de Tabla -->
 
-                <?php
-                require_once "backend/api/db.php";
-                require_once "backend/api/utils.php";
-
-                $sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE FROM PEDIDOS P JOIN CLIENTES C ON P.CLIENTE_ID = C.ID WHERE P.ESTADO IN ('EN ANALISIS', 'PENDIENTE');";
-                $result = db_query($sql);
-
-                foreach ($result as $row) {
-
-                    echo "<tr id='{$row['ID']}'>
-                            <th scope='col'>{$row['ID']}</th>
-                            <td>{$row['CLIENTE_NOMBRE']}</td>
-                            <td>{$row['CLIENTE_TIPO']}</td>
-                            <td>{$row['FORMA_PAGO']}</td>
-                            <td>" . date('d-m-Y', strtotime($row['FECHA_ESTIMADA'])) . "</td>";
-
-                    // Estado => Pedidos Pendientes
-                    if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
-                       
-                        if ($row['ESTADO'] === 'EN ANALISIS') {
-                            echo "<td> 
-                                    <a href='aprobar-pedido.php?id={$row['ID']}' class='btn btn-sm btn-main'>Aprobar Pedido</a>
-                                </td>";
-                        } else {
-                            echo "<td>Pendiente</td>";
-                        }
-
-                    } else {
-                        $row['ESTADO'] == 'EN ANALISIS' ? print "<td>En analisis</td>" : print "<td>Pendiente</td>";
-                    }
-
-                    // Opciones => Pedidos Pendientes.
-                    echo "<td>";
-
-                    if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
-
-                        if ($row['ESTADO'] === 'EN ANALISIS') {
-
-                            echo "<a href='editar-pedido.php?id={$row['ID']}' class='mr-1'>
-                                    <i class='fas fa-edit icon-color'></i>
-                                </a>
-                                <a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='{$row['ID']}'>
-                                    <i class='fas fa-trash icon-color'></i>
-                                </a>";
-
-                        } else {
-
-                            echo "<a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='{$row['ID']}'>
-                                    <i class='fas fa-ban icon-color'></i>
-                                </a>";
-
-                        }
-
-                        echo "<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
-                                <i class='fas fa-eye icon-color'></i>
-                            </a>";
-
-                    }
-
-                    if ($_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO') {
-
-                        if ($row['ESTADO'] === 'EN ANALISIS') {
-                            echo "<a href='editar-pedido.php?id={$row['ID']}'>
-                                    <i class='fas fa-edit icon-color'></i>
-                                </a>";
-                        }
-
-                        echo "<a href='javascript:void(0)' data-toggle='modal' data-target='#verPedido' data-id='{$row['ID']}'>
-                                <i class='fas fa-eye icon-color'></i>
-                            </a>";
-
-                    }
-
-                    echo "</td></tr>";
-
-                }
-
-                ?>
-            </tbody>
-        </table>
-    </div>
-    <!-- / Fin de tabla -->
+	<!-- Toast => Alertas (data-delay="700" data-autohide="false") --> 
+	<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+		<div class="toast-header">
+			<i class="toast-icon"></i>
+			<strong class="mr-auto toast-title"></strong>
+			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="toast-body"></div>
+	</div>
 
     <!-- Añadimos el botón de Añadir Pedido -->
     <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS'): ?>
@@ -133,9 +57,8 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
         </div>
     <?php endif; ?>
     
-    <!-- Modal de ver pedido -->
-    <div class="modal fade" id="verPedido" tabindex="-1" role="dialog" aria-labelledby="verPedido"
-            aria-hidden="true">
+    <!-- Modal de Ver Pedido -->
+    <div id="verPedidoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="verPedidoModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <form>
@@ -145,30 +68,9 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body contenedorPedidos">
+                    <div class="modal-body" id="detallesPedido">
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-    <!-- / Fin de Modal -->
-
-    <!-- Modal de Aprobar Pedido -->
-    <div class="modal fade" id="aprobarPedido" tabindex="-1" role="dialog" aria-labelledby="aprobarPedido"
-            aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-check icon-color"></i> Aprobar Pedido</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body contenedorPedidosAprobar">
-                    </div>
-                </form>
-
             </div>
         </div>
     </div>
@@ -179,29 +81,96 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 <!-- Inline JavaScript -->
 <script>
-// DataTables Plugin: https://datatables.net/
-const tabla = $('#tabla').DataTable({
-    info: false,
-    dom: "lrtip",
-    // searching: false,
-    lengthChange: false,
-    pageLength: 5,
-    order: [[0, 'desc']],
-    columnDefs: [{
-        targets: 4,
-        searchable: true,
-        orderable: true,
-        className: "align-middle", "targets": "_all"
-    }],
-    language: {
-        "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
+
+// VARIABLES => Declarando Variables Globales.
+var tabla;
+var posicionTabla;
+
+// DATATABLES => Mostrando la tabla PEDIDOS_PENDIENTES.
+$.ajax({
+    type: 'get',
+    url: 'backend/api/utils.php?fun=obtenerPedidosPendientes',
+    async: false,
+    success: function (data) {
+
+        const result = JSON.parse(data);
+        console.table(result);
+
+        tabla = $('#tabla').DataTable({
+            "initComplete": function(settings, json) {
+                $("#spinner").css('visibility', 'hidden');
+            },
+            "info": false,
+            "dom": "lrtip",
+            "pageLength": 6,
+            "lengthChange": false,
+            "order": [[0, 'desc']],
+            "data": result,
+            "columns": [
+                { data: "ID", title: "#" },
+				{ data: "CLIENTE_NOMBRE", title: "Cliente" },
+                { data: "CLIENTE_TIPO", title: "Tipo" },
+                { data: "FORMA_PAGO", title: "Forma Pago" },
+				{ data: "FECHA_ESTIMADA", title: "Fecha Estimada" },
+				{ data: "ESTADO", title: "Estado", 
+					render: function(value, type, row) {
+						if ( row.ESTADO === 'EN ANALISIS') {
+                            return `<a href='aprobar-pedido.php?id=${row.ID}' class='btn btn-sm btn-main'>Aprobar Pedido</a>`;
+                        } else {
+                            return `Pendiente`;
+                        }
+					}
+				},
+                { data: 'ID', title: "Opciones",
+					render: function(value, type, row) {
+                        
+                        if ( row.ESTADO === 'EN ANALISIS') {
+                            return `<a href='editar-pedido.php?id=${row.ID}' class='mr-1'>
+                                    <i class='fas fa-edit icon-color'></i>
+                                </a>
+                                <a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='${row.ID}'>
+                                    <i class='fas fa-trash icon-color'></i>
+                                </a>
+                                <a href='javascript:void(0)' class='verPedido' data-id='${row.ID}'>
+                                    <i class='fas fa-eye icon-color'></i>
+                                </a>`;
+                        } else {
+                            return `<a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
+                                    <i class='fas fa-ban icon-color'></i>
+                                </a>
+                                <a href='javascript:void(0)' class='verPedido' data-id='${row.ID}'>
+                                    <i class='fas fa-eye icon-color'></i>
+                                </a>`;
+                        }
+                	}
+                },
+            ],
+            "columnDefs": [{
+                searchable: true,
+                orderable: true,
+                className: "align-middle", "targets": "_all"
+            }],
+            "language": {
+                "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
+            }
+        });
+
+        // DATATABLES => Paginación
+        $.fn.DataTable.ext.pager.numbers_length = 5;
+	   
     }
+
 });
 
-// Eliminar pedidos.
-$('.eliminarPedido').on('click', function (e) {
+// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar un Elemento)
+$('#tabla tbody').on( 'click', 'tr', function () { 
+	posicionTabla = this;
+});
 
-    let id = $(e.target.parentElement).data('id');
+// ELIMINAR => Eliminando un Pedido.
+$('#tabla tbody').on( 'click', '.eliminarPedido', function () { 
+
+    let id = $(this).data("id");
 
     Swal.fire({
         title: '¿Deseas eliminar el pedido?',
@@ -212,29 +181,25 @@ $('.eliminarPedido').on('click', function (e) {
         cancelButtonText: 'No',
     }).then((result) => {
         if (result.value) {
-            Swal.fire({
-                title: '¡Eliminado!',
-                text: 'El pedido ha sido eliminado.',
-                icon: 'success'
-            }).then(function () {
 
-                $.get(`backend/api/pedidos/delete.php?id=${id}`, function () {
+            // Eliminando del backend.
+            $.get(`backend/api/pedidos/eliminar.php?id=${id}`);
 
-                    let htmlElem = document.getElementById(id);
-                    htmlElem.parentNode.removeChild(htmlElem);
+            // Datatable => Quitando el elemento del frontend.
+            tabla.row($(this).parents('tr')).remove().draw(false);
 
-                });
+            // Mostrando Notificación de éxito.
+            toastNotifications('fas fa-trash', 'text-danger', '¡Eliminado!', 'El pedido ha sido eliminado.');
 
-            });
         }
     });
 
 });
 
-$('.cancelarPedido').on('click', function (e) {
+// CANCELAR => Cancelando un Pedido.
+$('#tabla tbody').on( 'click', '.cancelarPedido', function () { 
 
-    // Pedido_id
-    let id = $(e.target.parentElement).data('id');
+    let id = $(this).data("id");
 
     Swal.fire({
         title: '¿Deseas cancelar el pedido?',
@@ -245,29 +210,47 @@ $('.cancelarPedido').on('click', function (e) {
         cancelButtonText: 'No',
     }).then((result) => {
         if (result.value) {
-            Swal.fire({
-                title: '¡Eliminado!',
-                text: 'El pedido ha sido eliminado.',
-                icon: 'success'
-            }).then(function () {
 
-                // $.post => Añadiendo el elemento al backend.
-                $.post( 'backend/api/pedidos/cancelar.php', { 'pedido_id': id }, function() {
+            // Eliminando del backend.
+            $.get(`backend/api/pedidos/cancelar.php?id=${id}`);
 
-                    let htmlElem = document.getElementById(id);
-                    htmlElem.parentNode.removeChild(htmlElem);
+            // Datatable => Quitando el elemento del frontend.
+            tabla.row($(this).parents('tr')).remove().draw(false);
 
-                });
+            // Mostrando Notificación de éxito.
+            toastNotifications('fas fa-trash', 'text-danger', '¡Cancelado!', 'El pedido ha sido cancelado.');
 
-            });
         }
     });
 
 });
+
+// VER => Ver un Pedido.
+$('#tabla tbody').on( 'click', '.verPedido', function () { 
+    
+    let id = $(this).data("id");
+
+    $.ajax({
+        type: 'post',
+        url: 'backend/api/pedidos/ver.php',
+        data: 'pedido_id=' + id,
+        async: false,
+        success: function (data) {
+
+            $('#detallesPedido').html(data);
+            $('#verPedidoModal').modal('show');
+
+        }
+
+    });
+
+
+});
+
 </script>
 
 <!-- COMPONENTE = > Ver Pedido -->
-<script src="js/ver-pedido.js"></script>
+<!-- <script src="js/ver-pedido.js"></script> -->
 
 <!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
