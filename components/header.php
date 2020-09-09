@@ -1,7 +1,6 @@
 <?php
-
 session_start();
-define('BASE_URL', "http://" . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER["REQUEST_URI"] . '?') . '/');
+define('BASE_URL', "https://" . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER["REQUEST_URI"] . '?') . '/');
 
 function check_user( $session_id, $user_id ) {
     require_once 'backend/api/db.php';
@@ -27,7 +26,7 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
 
     <!-- CSS -->
     <link rel="stylesheet" href="css/bootstrap.css">
