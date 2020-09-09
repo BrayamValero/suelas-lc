@@ -167,6 +167,28 @@ $('#tabla tbody').on( 'click', 'tr', function () {
 	posicionTabla = this;
 });
 
+
+// VER => Ver un Pedido.
+$('#tabla tbody').on( 'click', '.verPedido', function () { 
+    
+    let id = $(this).data("id");
+
+    $.ajax({
+        type: 'post',
+        url: 'backend/api/pedidos/ver.php',
+        data: 'pedido_id=' + id,
+        async: false,
+        success: function (data) {
+
+            document.getElementById('detallesPedido').innerHTML = data;
+            $('#verPedidoModal').modal('show');
+
+        }
+
+    });
+
+});
+
 // ELIMINAR => Eliminando un Pedido.
 $('#tabla tbody').on( 'click', '.eliminarPedido', function () { 
 
@@ -225,32 +247,7 @@ $('#tabla tbody').on( 'click', '.cancelarPedido', function () {
 
 });
 
-// VER => Ver un Pedido.
-$('#tabla tbody').on( 'click', '.verPedido', function () { 
-    
-    let id = $(this).data("id");
-
-    $.ajax({
-        type: 'post',
-        url: 'backend/api/pedidos/ver.php',
-        data: 'pedido_id=' + id,
-        async: false,
-        success: function (data) {
-
-            $('#detallesPedido').html(data);
-            $('#verPedidoModal').modal('show');
-
-        }
-
-    });
-
-
-});
-
 </script>
-
-<!-- COMPONENTE = > Ver Pedido -->
-<!-- <script src="js/ver-pedido.js"></script> -->
 
 <!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
