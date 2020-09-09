@@ -47,6 +47,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Segundo Bucle => Datos de las REFERENCIAS que van dentro de las series.
             foreach ($grupo_series as $key => $referencia) {
+
+                if(!isset($cantidad)){
+                    $cantidad = 0;
+                }
                 
                 $suela_id = $referencia['SUELA_ID'];
                 $marca = $referencia['MARCA'];
