@@ -54,14 +54,18 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     <div id ="verDespachosModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="verDespachosModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <form action="backend/api/pedidos/despachar.php" method="POST" id="verificarCheckBoxes">
+                <form action="backend/api/despachos/despachar.php" method="POST" name="pedidosDespachadosForm" id="verifCheckbox">
                     <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-shopping-bag icon-color"></i> Pedidos Despachados</h5>
+                        <h5 class="modal-title"><i class="fas fa-truck icon-color"></i> Pedidos Despachados</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div id="detallesDespachos" class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-outline-dark mr-auto" id="marcarCheckbox" data-status="off">Marcar Todos</button>
+                        <button type="button" class="btn btn-sm btn-main" id="botonDespacharPedido">Despachar Pedido</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -76,7 +80,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 // VARIABLES => Declarando Variables Globales.
 var tabla;
-var posicionTabla;
+var marcarCheckbox = document.getElementById('marcarCheckbox')
 
 // DATATABLES => Mostrando la tabla DESPACHOS_PARCIALES.
 $.ajax({
@@ -130,13 +134,6 @@ $.ajax({
 
 });
 
-// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar un Elemento)
-$('#tabla tbody').on( 'click', 'tr', function () { 
-	posicionTabla = this;
-});
-
-
-
 // VER => Ver un Pedido.
 $('#tabla tbody').on( 'click', '.verDespachos', function () { 
     
@@ -158,66 +155,57 @@ $('#tabla tbody').on( 'click', '.verDespachos', function () {
 
 });
 
+// Comprobar que se está enviando data al backend.
+document.getElementById('botonDespacharPedido').onclick = function() {
 
-// $('#verOrdenesDespachadas').on('show.bs.modal', function (e) {
+    let checked = document.querySelectorAll("#verifCheckbox input[type=checkbox]:checked").length;
 
-//     let pedidoId = $(e.relatedTarget).data('id');
+    if (checked === 0) return Swal.fire("Whoops", "Debes seleccionar un pedido primero.", "warning");
+    
+    // Se envia el formulario.
+    document.forms["pedidosDespachadosForm"].submit();
 
-//     $.ajax({
-//         type: 'post',
-//         url: 'backend/api/utils.php?fun=obtenerProduccionReferencia',
-//         data: 'pedido_id=' + pedidoId,
-//         success: function (data) {
+};
 
-//             const result = JSON.parse(data);
-//             const tabla = $('#tabla-modal > tbody:last-child');
-//             tabla.empty();
+// Marcar y Desmarcar Checkboxes.
+marcarCheckbox.addEventListener('click', function(e){
 
-//             result.forEach(row => {
+    let status = e.target.getAttribute('data-status');
 
-//                 if (row.ESTADO === 'COMPLETADO') {
-//                     row.ESTADO = `
-//                     <div class="form-check p-0">
-//                         <i class="fas fa-check"></i>
-//                     </div>
-//                     `;
-//                 } else {
-//                     row.ESTADO = `
-//                     <div class="form-check">
-//                         <input class="form-check-input" type="checkbox" name="producción-id-${row.ID}" value="${row.ID}">
-//                     </div>
-//                     `;
-//                 }
+    let checkboxes = document.querySelectorAll("#verifCheckbox input[type=checkbox]");
 
-//                 tabla.append(`<tr>
-//                     <td>${row.SUELA_MARCA.toProperCase()}</td>
-//                     <td>${row.SUELA_TALLA}</td>
-//                     <td>${row.SUELA_COLOR.toProperCase()}</td>
-//                     <td>${row.CANTIDAD}</td>
-//                     <td>${row.DISPONIBLE}</td>
-//                     <td>${row.DESPACHADO}</td>
-//                     <td>
-//                         ${row.ESTADO}
-//                     </td>
-//                 </tr>`);
-//             });
-//         }
-//     });
+    if (status == 'off') {
 
-// }).on('submit', function (e) {
+        marcarCheckbox.innerHTML = 'Desmarcar Todos';
 
-//     console.log($('#verificarCheckBoxes input[type=checkbox]:checked').length);
+        for (let checkbox of checkboxes) {
+            checkbox.checked = true;
+        }
 
-//     if ($('#verificarCheckBoxes input[type=checkbox]:checked').length === 0) {
+        marcarCheckbox.setAttribute("data-status", 'on');
 
-//         e.preventDefault();
+    } else {
 
-//         return Swal.fire("Whoops", "Debes marcar un pedido primero.", "warning");
+        marcarCheckbox.innerHTML = 'Marcar Todos';
 
-//     }
+        for (let checkbox of checkboxes) {
+            checkbox.checked = false;
+        }
 
-// });
+        marcarCheckbox.setAttribute("data-status", 'off');
 
+    }
+
+});
+
+// Quitar Checkboxes al cerrar el modal.
+$('#verDespachosModal').on('hidden.bs.modal', function (e) {
+
+    marcarCheckbox.innerHTML = 'Marcar Todos';
+    marcarCheckbox.setAttribute("data-status", 'off');
+
+});
+    
 </script>
 
 <!-- Incluimos el footer.php -->
