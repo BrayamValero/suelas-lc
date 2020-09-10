@@ -300,13 +300,8 @@ option[hover]{
     // box-shadow:0 0 2pt 1pt rgb(23, 77, 255);  /* Outline when checkbox is focused/tabbed to */
     color: white;
     background:  #28a745;
-    border: #28a745;
+    border-color: #28a745;
 }
-
-// .badge-checkboxes .checkbox input[type="checkbox"]:focus + .badge,
-// .badge-checkboxes label.checkbox-inline input[type="checkbox"]:focus + .badge {
-//     box-shadow:0 0 2pt 1pt #999;  /* Outline when checkbox is focused/tabbed to */
-// }
 
 .badge-checkboxes .checkbox input[type="checkbox"] + .badge,
 .badge-checkboxes label.checkbox-inline input[type="checkbox"] + .badge {
@@ -318,16 +313,6 @@ option[hover]{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-}
-
-/* Give badges for disabled checkboxes an opacity of 50% */
-.badge-checkboxes .checkbox input[type="checkbox"]:disabled + .badge,
-.badge-checkboxes label.checkbox-inline input[type="checkbox"]:disabled + .badge {
-//   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-//   filter: alpha(opacity=50);
-//   -moz-opacity: 0.5;
-//   -khtml-opacity: 0.5;
-//   opacity: 0.5;   
 }
 
 /* Remove badge background-color and set text color for not checked options */

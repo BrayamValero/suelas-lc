@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class='checkbox'>
                                         <label>
                                             <input type='checkbox' name='producción-id-$prod_id' value='$prod_id'>
-                                            <span class='badge'>Disp: $disponible</span>
+                                            <span class='badge'>Disponible: $disponible</span>
                                         </label>
                                     </div>
                                 </div>";

@@ -62,10 +62,17 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                         </button>
                     </div>
                     <div id="detallesDespachos" class="modal-body"></div>
+
+                    <!-- Fin de Modal de Editar Materia Prima Avanzada -->
+                    <?php if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'): ?>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-outline-dark mr-auto" id="marcarCheckbox" data-status="off">Marcar Todos</button>
                         <button type="button" class="btn btn-sm btn-main" id="botonDespacharPedido">Despachar Pedido</button>
                     </div>
+
+                    <?php endif; ?>
+
                 </form>
             </div>
         </div>
