@@ -199,7 +199,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                             <div class="form-group col-sm-6">
                                 <label for="inputEditarCargo-modal">Cargo</label>
-                                <select id="inputEditarCargo-modal" class="form-control filter-select2" name="cargo">
+                                <select id="inputEditarCargo-modal" class="form-control" name="cargo">
                                     <option value="ADMINISTRADOR">Administrador</option>
                                     <option value="VENTAS">Ventas</option>
                                     <option value="MOLINERO">Molinero</option>
@@ -321,7 +321,6 @@ $(document).ready(function () {
 
 // Variables Inicializadas para Editar.
 const inputEditarId = document.getElementById("inputEditarId-modal");
-const inputEditarCargo = document.getElementById('inputEditarCargo-modal');
 const inputEditarCedula = document.getElementById("inputEditarCedula-modal");
 const inputEditarNombre = document.getElementById('inputEditarNombre-modal');
 const inputEditarCorreo = document.getElementById('inputEditarCorreo-modal');
@@ -331,42 +330,36 @@ const inputEditarContraseña = document.getElementById('inputEditarContraseña-m
 // Editar Usuarios.
 $('#editarUsuario-modal').on('show.bs.modal', function (e) {
 
-    let rowid = $(e.relatedTarget).data('id');
+    let id = $(e.relatedTarget).data('id');
 
     $.ajax({
         type: 'post',
         url: 'backend/api/utils.php?fun=obtenerUsuarioId',
-        data: 'id=' + rowid,
+        data: 'id=' + id,
         success: function (data) {
 
-            const res = JSON.parse(data);
-           
-            if (res[0].CARGO === 'ADMINISTRADOR') {
-                inputEditarCargo.selectedIndex = 0
-            } else if (res[0].CARGO === 'VENTAS') {
-                inputEditarCargo.selectedIndex = 1
-            } else if (res[0].CARGO === 'MOLINERO') {
-                inputEditarCargo.selectedIndex = 2
-            } else if (res[0].CARGO === 'OPERARIO') {
-                inputEditarCargo.selectedIndex = 3
-            } else if (res[0].CARGO === 'PRODUCCION') {
-                inputEditarCargo.selectedIndex = 4
-            } else if (res[0].CARGO === 'NORSAPLAST') {
-                inputEditarCargo.selectedIndex = 5
-            } else if (res[0].CARGO === 'DESPACHO') {
-                inputEditarCargo.selectedIndex = 6
-            } else if (res[0].CARGO === 'CLIENTE') {
-                inputEditarCargo.selectedIndex = 7
-            } else { 
-                inputEditarCargo.selectedIndex = 8
-            }
+            const result = JSON.parse(data);
 
+            console.log(result);
 
-            inputEditarId.value = res[0].ID;
-            inputEditarCedula.value = res[0].CEDULA;
-            inputEditarNombre.value = res[0].NOMBRE.toProperCase();
-            inputEditarTelefono.value = res[0].TELEFONO;
-            inputEditarCorreo.value = res[0].CORREO.toLowerCase();
+            $("#inputEditarCargo-modal > option").each(function() {
+
+                if( result[0].CARGO == this.value ){
+
+                    $(this).prop("selected", true);
+                    
+                    return false;
+
+                }
+
+            });
+
+            inputEditarId.value = result[0].ID;
+            inputEditarCedula.value = result[0].CEDULA;
+            inputEditarNombre.value = result[0].NOMBRE;
+            inputEditarTelefono.value = result[0].TELEFONO;
+            inputEditarCorreo.value = result[0].CORREO;
+
         }
     });
 });
