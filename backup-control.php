@@ -16,13 +16,13 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     exit();
 }
 
-// // Chequear capacidad total del sistema.
-// $sql = "SELECT SUM(CAPACIDAD) AS CAPACIDAD_TOTAL FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
-// $capacidad_total = db_query($sql);
+// Chequear capacidad total del sistema.
+$sql = "SELECT SUM(CAPACIDAD) AS CAPACIDAD_TOTAL FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
+$capacidad_total = db_query($sql);
 
-// if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
-//     $capacidad_total[0]['CAPACIDAD_TOTAL'] = 0;
-// }
+if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
+    $capacidad_total[0]['CAPACIDAD_TOTAL'] = 0;
+}
 
 ?>
 
@@ -98,7 +98,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 $sql = "SELECT * FROM CASILLEROS WHERE MAQUINARIA_ID = ?;";
                 $casilleros = db_query($sql, array($id));
-                // $repetidos = array();
+                $repetidos = array();
 
                 ?>
                 
@@ -109,7 +109,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
     <!-- Mostramos las tablas con la información correspondiente -->
     <div class="table-responsive text-center">
-        <table class="table table-bordered text-center" id="tabla">
+        <table class="table table-bordered text-center">
 
             <!-- Primer <TH> -->
             <thead class="thead-dark">
@@ -171,7 +171,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                             foreach ($result as $row) {
 
-                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+                                if (!in_array($row['SUELA_ID'], $repetidos)) {
 
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
                                         
@@ -197,13 +197,13 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                         
                                         echo "</td>";
 
-                                        // array_push($repetidos, $row['SUELA_ID']);
+                                        array_push($repetidos, $row['SUELA_ID']);
 
                                         $casillero_impreso = true;
 
                                     }
 
-                                // }
+                                }
 
                             }
 
@@ -276,7 +276,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                             foreach ($result as $row) {
 
-                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+                                if (!in_array($row['SUELA_ID'], $repetidos)) {
 
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
 
@@ -302,13 +302,13 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                                         echo "</td>";
 
-                                        // array_push($repetidos, $row['SUELA_ID']);
+                                        array_push($repetidos, $row['SUELA_ID']);
 
                                         $casillero_impreso = true;
                                         
                                     }
 
-                                // }
+                                }
 
                             }
 
@@ -361,7 +361,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                             foreach ($result as $row) {
 
-                                // if (!in_array($row['SUELA_ID'], $repetidos)) {
+                                if (!in_array($row['SUELA_ID'], $repetidos)) {
 
                                     if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
 
@@ -388,14 +388,14 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                                         echo "</td>";
 
-                                        // array_push($repetidos, $row['SUELA_ID']);
+                                        array_push($repetidos, $row['SUELA_ID']);
                                         
                                         $casillero_impreso = true;
 
                                     
                                     }
 
-                                // }
+                                }
 
                             }
 
@@ -502,7 +502,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                             <input type="hidden" name="casillero-color" id="colorCasillero" value="<?= $maquinaria_selected[0]['COLOR'] ?>">
                             <div class="form-group col-md-10">
                                 <label for="inputReferenciaModal">Referencia</label>
-                                <select name="suela-id" id="inputReferenciaModal" class="form-control dropdown-select2">
+                                <select name="suela-id" id="inputReferenciaModal" class="form-control dropdown-select2-show">
 
                                     <?php
 
@@ -606,27 +606,6 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 <!-- Inline JavaScript -->
 <script>
-
-// DataTables Plugin: https://datatables.net/
-const tabla = $('#tabla').DataTable({
-    info: false,
-    dom: "lrtip",
-    // searching: false,
-    lengthChange: false,
-    pageLength: 5,
-    order: [[0, 'desc']],
-    columnDefs: [{
-        targets: 4,
-        searchable: true,
-        orderable: true,
-        className: "align-middle", "targets": "_all"
-    }],
-    language: {
-        "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
-    }
-});
-
-
 
 // Declaramos las Variables y Constantes
 var numero;
@@ -813,8 +792,20 @@ $('.deshabilitarMaquina').on('click', function (e) {
 
 });
 
+$(document).ready(function () {
+    
+    // select2 => Aplicando el dropdown.
+    $('.dropdown-select2-show').select2({
+        theme: "bootstrap4",
+        dropdownParent: $('#asignarReferenciaModal'),
+    });
+
+});
+
 //  Modal de Asignar Referencias
 $('#asignarReferenciaModal').on('show.bs.modal', function (e) {
+
+    // $('.dropdown-select2-show').select2('open');
 
     // Obtenemos el ID del Casillero
     const casilleroId = $(e.relatedTarget.parentElement.parentElement.parentElement).data('id');
@@ -844,7 +835,7 @@ $('#swapReferenceModal').on('show.bs.modal', function (e) {
                 let string = "";
 
                 if (index + 1 == numero) {
-                    string = `<label class='btn btn-sm btn-outline-dark custom-width'>
+                    string = `<label class='btn btn-sm btn-warning custom-width'>
                                     <input disabled type='radio' name='id-casillero-b' value='${index + 1}'>${index + 1}
                                 </label>
                                 `;

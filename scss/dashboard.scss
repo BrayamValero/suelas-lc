@@ -322,9 +322,32 @@ option[hover]{
     color:#999;
 }
 
+.casillero{
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #dee2e6;
+    border-radius: .25rem;
+    min-height: 11.5rem;
+}
+
+.casillero-header{
+    padding: .8rem 1.2rem;
+    border-bottom: 1px solid #dee2e6 ;
+    background-color: #343a40 ;
+    color: white;
+    border-top-left-radius: .10rem;
+    border-top-right-radius: .10rem;
+}
+
+.casillero-content{
+    padding: 1rem;
+    flex: 1 1 auto;
+}
+
 /* ---------------------------------------------------
   MEDIAQUERIES
 ----------------------------------------------------- */
+
 
 @media (max-width: 1000px) {
     #sidebar {
@@ -338,6 +361,13 @@ option[hover]{
     }
     #contenido.active {
         width: calc(100% - 260px);
+    }
+}
+
+@media (min-width: 992px){
+    .col-lg-2 {
+        flex: 0 0 20%;
+        max-width: 20%;
     }
 }
 

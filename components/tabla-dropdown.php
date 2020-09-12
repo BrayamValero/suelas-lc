@@ -1,12 +1,12 @@
 <div class="d-inline dropdown show">
-    <a href="#" class="p-1" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-ellipsis-v text-white"></i>
+    <a href="javascript:void(0)" class="pl-1" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fas fa-cog text-white"></i>
     </a>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
         <?php
         if (isset($i) && isset($casilleros) && $casilleros[$i]['ACTIVO'] == 1) {
             echo "<a class='dropdown-item' data-toggle='modal' data-target='#asignarReferenciaModal' href='javascript:void(0)'>Asignar Referencia</a>";
-            echo "<a class='dropdown-item' data-toggle='modal' data-target='#swapReferenceModal' href='javascript:void(0)'>Intercambiar Referencias</a>";
+            echo "<a class='dropdown-item' data-toggle='modal' data-target='#intercambiarReferenciaModal' href='javascript:void(0)'>Intercambiar Referencias</a>";
             echo "<div class='dropdown-divider'></div>";
         }
         ?>
