@@ -234,18 +234,6 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
         <h6>No hay maquinarias</h6>
     <?php endif; ?>
 
-
-    <!-- Small modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button>
-
-    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-            ...
-            </div>
-        </div>
-    </div>
-
     <!-- Modal de Asignar Referencia -->
     <div class="modal fade" id="asignarReferenciaModal" tabindex="-1" role="dialog" aria-labelledby="asignarReferenciaModal"
             aria-hidden="true">
