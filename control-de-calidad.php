@@ -233,11 +233,23 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     <?php else: ?>
         <h6>No hay maquinarias</h6>
     <?php endif; ?>
-    
+
+
+    <!-- Small modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button>
+
+    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+            ...
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de Asignar Referencia -->
     <div class="modal fade" id="asignarReferenciaModal" tabindex="-1" role="dialog" aria-labelledby="asignarReferenciaModal"
             aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <form action="backend/api/maquinarias/casillero.php?redir=cc" method="POST">
                     <div class="modal-header">
@@ -298,7 +310,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     <!-- Modal de Intercambiar Referencia -->
     <div class="modal fade" id="intercambiarReferenciaModal" tabindex="-1" role="dialog" aria-labelledby="intercambiarReferenciaModal"
             aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <form action="backend/api/maquinarias/swap.php" method="POST">
                     <div class="modal-header">

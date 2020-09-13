@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fontawesome-all.min.css">
     <link rel="stylesheet" href="css/sweetalert2.min.css">
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/login.min.css">
 
     <!-- JavaScript -->
     <script src="js/jquery.min.js"></script>
@@ -46,6 +46,19 @@
 <?php
 session_start();
 require_once 'backend/api/db.php';
+
+// 1. Comprobamos si hay al menos un usuario administrador.
+$sql = "SELECT COUNT(*) AS CONTEO FROM USUARIOS;";
+$result = db_query($sql);
+
+// Si no hay ni 1 cuenta creada se crea un usuario ADMINISTRADOR.
+if ($result[0]['CONTEO'] == 0) {
+
+    $sql = "INSERT INTO USUARIOS VALUES (NULL, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 'SI', NULL);";
+    $data = array('ADMINISTRADOR', '123456789', 'admin@suelaslc.com', '123456789', password_hash('admin123*', PASSWORD_DEFAULT), 'ADMINISTRADOR');
+    db_query($sql, $data);
+
+}
 
 // Si hay un usuario en SESSION -> Enviar a index.php
 if (isset($_SESSION['USUARIO'])) {

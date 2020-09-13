@@ -154,7 +154,7 @@ td a, td a:visited, td a:hover, td a:active {
     border-bottom-left-radius: .3rem;
 }
 
-@media (min-width: 576px){
+@media (max-width: 1100px){
   .modal-dialog {
     max-width: 800px;
     margin: 1.5rem auto;

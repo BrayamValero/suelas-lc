@@ -1,4 +1,3 @@
-  
 -- Dureza.
 INSERT INTO DUREZA VALUES
 ('1', 65);

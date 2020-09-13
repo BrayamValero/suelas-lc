@@ -1,6 +1,8 @@
 <?php
 session_start();
-define('BASE_URL', "https://" . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER["REQUEST_URI"] . '?') . '/');
+
+$protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
+define('BASE_URL', $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER["REQUEST_URI"] . '?') . '/');
 
 function check_user( $session_id, $user_id ) {
     require_once 'backend/api/db.php';
@@ -33,11 +35,11 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
     <link rel="stylesheet" href="css/fontawesome-all.min.css">
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="datatables/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.min.css">
     <link rel="stylesheet" href="css/select2.css">
     <link rel="stylesheet" href="css/select2-bootstrap4.css">
     <link rel="stylesheet" href="css/sweetalert2.min.css">
-    <link rel="stylesheet" type="text/css" media="print" href="css/print.css">
+    <link rel="stylesheet" type="text/css" media="print" href="css/print.min.css">
 
     <!-- JS -->
     <script src="js/jquery.min.js"></script>

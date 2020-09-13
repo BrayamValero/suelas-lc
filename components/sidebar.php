@@ -82,13 +82,6 @@
                 </a>
             </li>
 
-            <li class='sidebar-dropdown'>
-                <a href='new.php'>
-                    <i class="fas fa-bars"></i>
-                    <span class='sidebar-menu-text'>New</span>
-                </a>
-            </li>
-
             <!-- Producción -->
             <?php
                 if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO' || $_SESSION['USUARIO']['CARGO'] == 'OPERARIO' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION' || $_SESSION['USUARIO']['CARGO'] == 'CONTROL'):
