@@ -49,9 +49,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Segundo Bucle => Datos de las REFERENCIAS que van dentro de las series.
             foreach ($grupo_series as $key => $referencia) {
                 
-                $prod_id = $disponible = 0;
-                $despachado = '&#9940;';
-                $estado = 'PENDIENTE';
+                $prod_id = $disponible = $estado = null;
+                $despachado = '<i class="fas fa-ban text-danger"></i>';
 
                 // Tercer Bucle => Obtenemos los datos correspondientes al pedido.
                 foreach ($datosPedido as $key => $pedido) {
@@ -59,33 +58,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if($referencia['SUELA_ID'] == $pedido['SUELA_ID'] && $color_id == $pedido['COLOR_ID']){
                         
                         $prod_id = $pedido['PROD_ID'];
-                        $despachado = $pedido['DESPACHADO'];
                         $disponible =  $pedido['DISPONIBLE'];
+                        $despachado = $pedido['DESPACHADO'];
                         $estado = $pedido['ESTADO'];
                         
                     }
 
                 }
-                      
-                if($estado == 'COMPLETADO'){
-                    $status = "<i class='fas fa-check-circle icon-check-pedido'></i>";
-                } else {
-                    $status = "<div class='badge-checkboxes mt-2'>
-                                    <div class='checkbox'>
-                                        <label>
-                                            <input type='checkbox' name='producción-id-$prod_id' value='$prod_id'>
-                                            <span class='badge'>Disp: $disponible</span>
-                                        </label>
-                                    </div>
-                                </div>";
-                }
 
-                $append .= "
-                    <div class='form-group col mb-0'>
-                        <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
-                        <input class='form-control input-cantidades' type='text' value='$despachado' readonly>
-                        $status
-                    </div>";
+
+                if($disponible != 0){
+
+                    $status = "
+                    
+                    <div class='badge-checkboxes mt-2'>
+                        <div class='checkbox'>
+                            <label>
+                                <input type='checkbox' name='producción-id-$prod_id' value='$prod_id'>
+                                <span class='badge'>Disp: $disponible</span>
+                            </label>
+                        </div>
+                    </div>
+                        
+                    ";
+
+                } else {
+
+                    $status = "";
+
+                }
+                
+                if($estado == 'COMPLETADO'){
+
+                    $append .= "
+                        <div class='form-group col mb-0'>
+                            <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
+                            <div class='form-control input-cantidades'>
+                                <i class='fas fa-check text-success'></i>
+                            </div>
+                            $status
+                        </div>";
+
+                } else {
+
+                    $append .= "
+                        <div class='form-group col mb-0'>
+                            <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
+                            <div class='form-control input-cantidades'>$despachado</div>
+                            $status
+                        </div>";
+
+                }
 
                 unset($despachado, $disponible, $prod_id);
 

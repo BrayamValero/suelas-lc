@@ -25,7 +25,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Ventas', 'Aprobar Pedido #' . htmlspecialchars($_GET['id'])); ?>
+    <?php get_navbar('Ventas', "Aprobar Pedido <span class='badge badge-danger'>" . $_GET['id'] . "</span>"); ?>
 
     <!-- Form -->
     <form>
@@ -68,7 +68,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-3">
                     <label for="fecha">Fecha de Entrega</label>
-                    <input id="fecha" name="fecha" type="date" class="form-control dropdown-select2" value="<?php echo $result_get[0]['FECHA_ESTIMADA']; ?>" >
+                    <input id="fecha" name="fecha" type="date" class="form-control" value="<?php echo $result_get[0]['FECHA_ESTIMADA']; ?>" >
                 </div>
 
                 <div class="form-group col-lg-3">

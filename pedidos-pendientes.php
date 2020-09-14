@@ -63,7 +63,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
             <div class="modal-content">
                 <form>
                     <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-shopping-bag icon-color"></i> Datos del Pedido</h5>
+                        <h5 class="modal-title"><i class="fas fa-shopping-bag icon-color"></i> Datos del Pedido <span class="badge badge-danger" id="ordenPedidoId"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -94,7 +94,6 @@ $.ajax({
     success: function (data) {
 
         const result = JSON.parse(data);
-        console.table(result);
 
         tabla = $('#tabla').DataTable({
             "initComplete": function(settings, json) {
@@ -179,7 +178,8 @@ $('#tabla tbody').on( 'click', '.verPedido', function () {
         data: 'pedido_id=' + id,
         async: false,
         success: function (data) {
-
+            
+            document.getElementById('ordenPedidoId').innerHTML = id;
             document.getElementById('detallesPedido').innerHTML = data;
             $('#verPedidoModal').modal('show');
 

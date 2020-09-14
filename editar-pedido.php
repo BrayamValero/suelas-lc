@@ -25,7 +25,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Pedido', 'Editar Pedido #' . $_GET['id']); ?>
+    <?php get_navbar('Pedido', "Editar Pedido <span class='badge badge-danger'>" . $_GET['id'] . "</span>"); ?>
 
     <!-- Form -->
     <form action="backend/api/pedidos/editar.php?id=<?= $_GET['id']; ?>" method="POST">

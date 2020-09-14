@@ -13,8 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $output = '';
 
         // 1. Primero buscamos el PEDIDO dependiendo del ID dado.
-        $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, CANTIDAD, URGENTE FROM PRODUCCION WHERE PEDIDO_ID = ?;";
+        $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, CANTIDAD - DESPACHADO AS DESPACHADO, DISPONIBLE, ESTADO, URGENTE FROM PRODUCCION WHERE PEDIDO_ID = ?;";
         $datosPedido = db_query($sql, array($pedido_id));
+        // echo '<pre>'; print_r($datosPedido); echo '</pre>';
 
         // 2. Ahora filtramos las SERIE_ID y COLOR_ID.
         $sql = "SELECT SERIE_ID, COLOR_ID FROM PRODUCCION WHERE PEDIDO_ID = ?;";
@@ -47,29 +48,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Segundo Bucle => Datos de las REFERENCIAS que van dentro de las series.
             foreach ($grupo_series as $key => $referencia) {
-
-                if(!isset($cantidad)){
-                    $cantidad = 0;
-                }
                 
-                $suela_id = $referencia['SUELA_ID'];
-                $marca = $referencia['MARCA'];
-                $talla = $referencia['TALLA'];
+                $prod_id = $disponible = 0;
+                $despachado = '&#9940;';
+                $estado = 'PENDIENTE';
 
-                // Tercer Bucle => Obtenemos la cantidad correspondiente al pedido.
+                // Tercer Bucle => Obtenemos los datos correspondientes al pedido.
                 foreach ($datosPedido as $key => $pedido) {
-                    if($suela_id == $pedido['SUELA_ID'] && $color_id == $pedido['COLOR_ID']){
-                        $cantidad = $pedido['CANTIDAD'];
+
+                    if($referencia['SUELA_ID'] == $pedido['SUELA_ID'] && $color_id == $pedido['COLOR_ID']){
+                        
+                        $prod_id = $pedido['PROD_ID'];
+                        $despachado = $pedido['DESPACHADO'];
+                        $disponible =  $pedido['DISPONIBLE'];
+                        $estado = $pedido['ESTADO'];
+                        
                     }
+
+                }
+                      
+                if($estado == 'COMPLETADO'){
+                    $status = "<i class='fas fa-check-circle icon-check-pedido'></i>";
+                } else {
+                    $status = "<div class='badge-checkboxes mt-2'>
+                                    <div class='checkbox'>
+                                        <label>
+                                            <input type='checkbox' name='producción-id-$prod_id' value='$prod_id'>
+                                            <span class='badge'>Disp: $disponible</span>
+                                        </label>
+                                    </div>
+                                </div>";
                 }
 
                 $append .= "
                     <div class='form-group col mb-0'>
-                        <label class='label-cantidades' for='cantidades'>$talla</label>
-                        <div class='form-control input-cantidades'>$cantidad</div>
+                        <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
+                        <input class='form-control input-cantidades' type='text' value='$despachado' readonly>
+                        $status
                     </div>";
 
-                $cantidad = '<i class="fas fa-ban text-danger"></i>';
+                unset($despachado, $disponible, $prod_id);
 
             }
 

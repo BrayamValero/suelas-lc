@@ -1,6 +1,7 @@
 
 
 {
+	"noResults": "No hay resultados.",
 	"sProcessing": "<div class='spinner-border text-primary' role='status'><span class='sr-only'>Cargando...</span></div>",
 	"sLengthMenu": "Mostrar _MENU_ registros",
 	"sZeroRecords": "No se encontraron resultados",

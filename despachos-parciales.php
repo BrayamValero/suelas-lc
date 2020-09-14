@@ -56,7 +56,10 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
             <div class="modal-content">
                 <form action="backend/api/despachos/despachar.php" method="POST" name="pedidosDespachadosForm" id="verifCheckbox">
                     <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-truck icon-color"></i> Pedidos Despachados</h5>
+                        <h5 class="modal-title">
+                            <i class="fas fa-truck icon-color"></i> 
+                                Datos del Pedido <span class="badge badge-danger" id="ordenPedidoId"></span>
+                        </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -153,6 +156,7 @@ $('#tabla tbody').on( 'click', '.verDespachos', function () {
         async: false,
         success: function (data) {
 
+            document.getElementById('ordenPedidoId').innerHTML = id;
             document.getElementById('detallesDespachos').innerHTML = data;
             $('#verDespachosModal').modal('show');
 

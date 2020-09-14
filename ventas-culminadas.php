@@ -54,19 +54,18 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
         <button class="btn btn-sm btn-main mx-auto">Exportar Reporte</button>
     </div>
 
-    <!-- Modal de ver pedido -->
-    <div class="modal fade" id="verPedido" tabindex="-1" role="dialog" aria-labelledby="verPedido"
-            aria-hidden="true">
+    <!-- Modal de Ver Pedido -->
+    <div id="verPedidoModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="verPedidoModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <form>
                     <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-shopping-bag icon-color"></i> Datos del Pedido</h5>
+                        <h5 class="modal-title"><i class="fas fa-shopping-bag icon-color"></i> Datos del Pedido <span class="badge badge-danger" id="ordenPedidoId"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body contenedorPedidos">
+                    <div class="modal-body" id="detallesPedido">
                     </div>
                 </form>
             </div>
@@ -91,7 +90,6 @@ $.ajax({
     success: function (data) {
 
         const result = JSON.parse(data);
-        console.log(result);
 
         tabla = $('#tabla').DataTable({
             "initComplete": function(settings, json) {
@@ -112,9 +110,9 @@ $.ajax({
                 { 
                     data: 'ID',
                     title: "Opciones", render: function(value, type, row) {
-                        return `<a href='javascript:void(0)' data-id='${value}' data-toggle='modal' data-target='#verPedido'>
-									<i class='fas fa-eye icon-color mr-1'></i>
-								</a>`;
+                        return ` <a href='javascript:void(0)' class='verPedido' data-id='${value}'>
+                                    <i class='fas fa-eye icon-color'></i>
+                                </a>`;
                     }
                 },
             ],
@@ -135,10 +133,29 @@ $.ajax({
 
 });
 
-</script>
+// VER => Ver un Pedido.
+$('#tabla tbody').on( 'click', '.verPedido', function () { 
+    
+    let id = $(this).data("id");
 
-<!-- COMPONENTE = > Ver Pedido -->
-<script src="js/ver-pedido.js"></script>
+    $.ajax({
+        type: 'post',
+        url: 'backend/api/pedidos/ver.php',
+        data: 'pedido_id=' + id,
+        async: false,
+        success: function (data) {
+            
+            document.getElementById('ordenPedidoId').innerHTML = id;
+            document.getElementById('detallesPedido').innerHTML = data;
+            $('#verPedidoModal').modal('show');
+
+        }
+
+    });
+
+});
+
+</script>
 
 <!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
