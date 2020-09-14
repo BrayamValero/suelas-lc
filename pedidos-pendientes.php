@@ -84,7 +84,6 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 // VARIABLES => Declarando Variables Globales.
 var tabla;
-var posicionTabla;
 
 // DATATABLES => Mostrando la tabla PEDIDOS_PENDIENTES.
 $.ajax({
@@ -160,12 +159,6 @@ $.ajax({
     }
 
 });
-
-// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar un Elemento)
-$('#tabla tbody').on( 'click', 'tr', function () { 
-	posicionTabla = this;
-});
-
 
 // VER => Ver un Pedido.
 $('#tabla tbody').on( 'click', '.verPedido', function () { 
