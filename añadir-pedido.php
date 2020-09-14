@@ -153,13 +153,6 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 <!-- Inline JavaScript -->
 <script>
 
-// select2 plugin: https://github.com/select2
-$(document).ready(function () {
-    $('.filter-select2').select2({
-        theme: "bootstrap4",
-    });
-});
-
 // Datos del cliente.
 var i = 0;
 var j = 0;
@@ -178,7 +171,6 @@ const botonFinalizarPedido = document.getElementById('botonFinalizarPedido');
 // Asignando la fecha al input fecha.
 añadirFecha.min = new Date().toDateInputValue();
 añadirFecha.value = new Date().toDateInputValue();
-
 
 // Botón de añadir Serie al Pedido
 botonAñadirSerie.addEventListener('click', function () {
