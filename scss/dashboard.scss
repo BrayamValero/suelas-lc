@@ -327,7 +327,6 @@ option[hover]{
     background-clip: border-box;
     border: 1px solid #dee2e6;
     border-radius: .25rem;
-    min-height: 11.5rem;
 }
 
 .casillero-header{
@@ -341,7 +340,7 @@ option[hover]{
 
 .casillero-content{
     padding: 1rem;
-    flex: 1 1 auto;
+    min-height: 180px;
 }
 
 /* ---------------------------------------------------
