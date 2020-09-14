@@ -25,7 +25,7 @@
     <div class="form-container">
         <form action="backend/api/usuarios/login.php?action=LOGIN" method="POST">
             <h1 class="text-center text-title">Bienvenido</h1>
-            <p class="text-center text-subtitle">Industria de Suelas LC</p>
+            <p class="text-center text-subtitle">Suelas LC</p>
             <div class="form-group pt-3">
                 <input type="text" name="correo" class="form-control" id="inputUsuario" placeholder="Correo" required>
             </div>

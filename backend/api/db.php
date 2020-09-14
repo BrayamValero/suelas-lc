@@ -7,11 +7,19 @@ setlocale(LC_TIME, 'es_ES.UTF-8');
 setlocale(LC_TIME, '');
 
 // Archivo de configuración y conexión a la base de datos
-define('DB', array(
-    'dsn' => 'mysql:host=localhost;dbname=SUELAS;charset=utf8',
-    'user' => 'root',
-    'pass' => ''
-));
+if(strtoupper(substr(PHP_OS, 0 ,3)) == 'WIN'){
+    define('DB', array(
+        'dsn' => 'mysql:host=localhost;dbname=SUELAS;charset=utf8',
+        'user' => 'root',
+        'pass' => ''
+    ));
+} else{
+    define('DB', array(
+        'dsn' => 'mysql:host=localhost;dbname=sabbcizw_suelas;charset=utf8',
+        'user' => 'sabbcizw_admin',
+        'pass' => 'Suelaslc2020*'
+    ));
+}
 
 function db_connect(){
     $dsn = DB['dsn'];
