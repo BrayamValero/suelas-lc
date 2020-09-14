@@ -42,7 +42,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-6 col-md-6">
                     <label for="añadirNombre">Nombre</label>
-                    <select id="añadirNombre" name="nombre" class="form-control filter-select2" required>
+                    <select id="añadirNombre" name="nombre" class="form-control dropdown-select2" required>
                         <?php
                             require_once "backend/api/db.php";
                             $sql = "SELECT * FROM CLIENTES WHERE ACTIVO = 'SI';";
@@ -64,7 +64,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-3 col-md-3">
                     <label for="añadirPago">Forma de Pago</label>
-                    <select id="añadirPago" class="form-control filter-select2" name="pago" required>
+                    <select id="añadirPago" class="form-control dropdown-select2" name="pago" required>
                         <option value="CREDITO" selected>Credito</option>   
                         <option value="EFECTIVO">Efectivo</option>
                         <option value="CHEQUE">Cheque</option>
@@ -85,7 +85,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-6 col-md-6">
                     <label for="añadirSerie">Serie</label>
-                    <select id="añadirSerie" class="form-control filter-select2" name="serie" required>
+                    <select id="añadirSerie" class="form-control dropdown-select2" name="serie" required>
                         <?php
                             require_once "backend/api/db.php";
                             $sql = "SELECT * FROM SERIES;";
@@ -102,7 +102,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-3 col-md-3">
                     <label for="añadirColor">Color</label>
-                    <select id="añadirColor" class="form-control filter-select2" name="color" required>
+                    <select id="añadirColor" class="form-control dropdown-select2" name="color" required>
                         <?php
                             require_once "backend/api/db.php";
                             $sql = "SELECT * FROM COLOR;";

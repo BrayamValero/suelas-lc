@@ -53,7 +53,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-6">
                     <label for="clienteNombre">Nombre</label>
-                    <select id="clienteNombre" name="nombre" class="form-control filter-select2">
+                    <select id="clienteNombre" name="nombre" class="form-control dropdown-select2">
                         <?php
                             foreach ($result as $row) {
                                 
@@ -68,12 +68,12 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                 <div class="form-group col-lg-3">
                     <label for="fecha">Fecha de Entrega</label>
-                    <input id="fecha" name="fecha" type="date" class="form-control filter-select2" value="<?php echo $result_get[0]['FECHA_ESTIMADA']; ?>" >
+                    <input id="fecha" name="fecha" type="date" class="form-control dropdown-select2" value="<?php echo $result_get[0]['FECHA_ESTIMADA']; ?>" >
                 </div>
 
                 <div class="form-group col-lg-3">
                     <label for="pago">Forma de Pago</label>
-                    <select id="pago" class="form-control filter-select2" name="pago">
+                    <select id="pago" class="form-control dropdown-select2" name="pago">
                         <?php
                             foreach (FORMAS_PAGO as $forma_pago) {
                                 if ($result_get[0]['FORMA_PAGO'] == $forma_pago) {

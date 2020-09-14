@@ -90,7 +90,7 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
     <!-- Modal de Añadir Maquinaria -->
     <div class="modal fade" id="añadirMaquinaria-modal" tabindex="-1" role="dialog" aria-labelledby="añadirMaquinaria-modal"
             aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
 
                 <form action="backend/api/maquinarias/crear.php" method="POST">
@@ -113,13 +113,13 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
 
                             <div class="form-group col-sm-6">
                                 <label for="inputAñadirColor-modal">Color</label>
-                                <select id="inputAñadirColor-modal" name="color" class="form-control filter-select2">
+                                <select id="inputAñadirColor-modal" name="color" class="form-control dropdown-select2">
                                 </select>
                             </div>
 
                             <div class="form-group col-sm-3">
                                 <label for="inputAñadirMaterial-modal">Material</label>
-                                <select id="inputAñadirMaterial-modal" class="form-control filter-select2" name="material">
+                                <select id="inputAñadirMaterial-modal" class="form-control dropdown-select2" name="material">
                                     <option value="EXPANSO/PVC">EXPANSO/PVC</option>
                                     <option value="EXPANSO" selected>EXPANSO</option>
                                     <option value="PVC">PVC</option>
@@ -168,7 +168,7 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
 
     <!-- Modal de Editar Maquinaria -->
     <div class="modal fade" id="editarMaquinaria-modal" tabindex="-1" role="dialog" aria-labelledby="editarMaquinaria-modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
 
                 <form action="backend/api/maquinarias/editar.php" method="POST">
@@ -194,7 +194,7 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
 
                             <div class="form-group col-sm-6">
                                 <label for="inputEditarColor-modal">Color</label>
-                                <select id="inputEditarColor-modal" name="color" class="form-control filter-select2">
+                                <select id="inputEditarColor-modal" name="color" class="form-control dropdown-select2">
                                 </select>
                             </div>
 
@@ -326,7 +326,7 @@ $('#editarMaquinaria-modal').on('show.bs.modal', function (e) {
             inputEditarCasillas.value = res[0].CASILLEROS;
             inputEditarCapacidad.value = res[0].CAPACIDAD;
             inputEditarNombre.value = res[0].NOMBRE.toProperCase();
-            inputEditarMaterial.value = res[0].MATERIAL.toProperCase();
+            inputEditarMaterial.value = res[0].MATERIAL;
 
             // Borramos las Opciones de los colores.
             while(inputEditarColor.firstChild)

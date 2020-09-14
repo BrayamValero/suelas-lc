@@ -96,7 +96,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                             <div class="form-group col-sm-6">
                                 <label for="inputAñadirCargo-modal">Cargo</label>
-                                <select id="inputAñadirCargo-modal" class="form-control filter-select2" name="cargo">
+                                <select id="inputAñadirCargo-modal" class="form-control dropdown-select2" name="cargo">
                                     <option value="ADMINISTRADOR">Administrador</option>
                                     <option value="VENTAS">Ventas</option>
                                     <option value="MOLINERO">Molinero</option>
@@ -199,7 +199,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                             <div class="form-group col-sm-6">
                                 <label for="inputEditarCargo-modal">Cargo</label>
-                                <select id="inputEditarCargo-modal" class="form-control" name="cargo">
+                                <select id="inputEditarCargo-modal" class="form-control dropdown-select2" name="cargo">
                                     <option value="ADMINISTRADOR">Administrador</option>
                                     <option value="VENTAS">Ventas</option>
                                     <option value="MOLINERO">Molinero</option>
@@ -310,13 +310,6 @@ const tabla = $('#tabla').DataTable({
 // Custom Search DataTables
 $('#customInput').on( 'keyup', function () {
 	tabla.search( this.value ).draw();
-});
-
-// select2 plugin: https://github.com/select2
-$(document).ready(function () {
-    $('.filter-select2').select2({
-        theme: "bootstrap4",
-    });
 });
 
 // Variables Inicializadas para Editar.

@@ -137,7 +137,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-8">
                                 <label for="añadirItem">Item</label>
-                                <select id="añadirItem" class="select-filter" name="item">
+                                <select id="añadirItem" class="form-control dropdown-select2" name="item">
 
                                     <?php
 
@@ -215,7 +215,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-8">
                                 <label for="editarItem">Item</label>
-                                <select  id="editarItem" class="form-control select-filter" name="item">
+                                <select  id="editarItem" class="form-control dropdown-select2" name="item">
                                 </select>
                             </div>
                             <div class="form-group col-sm-2">

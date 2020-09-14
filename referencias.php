@@ -82,7 +82,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                             <div class="form-group col-sm-4">
                                 <label for="añadirMaterial">Material</label>
-                                <select id="añadirMaterial" class="form-control" name="material" required>
+                                <select id="añadirMaterial" class="form-control dropdown-select2" name="material" required>
                                     <option value="EXPANSO" selected>EXPANSO</option>
                                     <option value="EXPANSO/PVC">EXPANSO/PVC</option>
                                     <option value="PVC">PVC</option>
@@ -169,7 +169,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                             <div class="form-group col-sm-4">
                                 <label for="editarMaterial">Material</label>
-                                <select id="editarMaterial" class="form-control" name="material" required>
+                                <select id="editarMaterial" class="form-control dropdown-select2" name="material" required>
                                     <option value="EXPANSO" selected>EXPANSO</option>
                                     <option value="EXPANSO/PVC">EXPANSO/PVC</option>
                                     <option value="PVC">PVC</option>

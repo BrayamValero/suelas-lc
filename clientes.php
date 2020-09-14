@@ -76,7 +76,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 							
 							<div class="form-group col-sm-6">
 								<label for="añadirTipoCliente">Tipo de Cliente</label>
-								<select name="tipo_cliente" id="añadirTipoCliente" class="form-control" required>
+								<select name="tipo_cliente" id="añadirTipoCliente" class="form-control dropdown-select2" required>
 									<option value="Externo">Externo</option>
 									<option value="Interno">Interno</option>
 								</select>
@@ -84,7 +84,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 							<div class="form-group col-sm-6">
 								<label for="añadirTipoDocumento">Tipo Documento</label>
-								<select name="tipo_documento" id="añadirTipoDocumento" class="form-control" required>
+								<select name="tipo_documento" id="añadirTipoDocumento" class="form-control dropdown-select2" required>
 									<option value="CC">CC</option>
 									<option value="CE">CE</option>
 									<option value="PA">PA</option>
@@ -191,7 +191,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 							<div class="form-group col-sm-6">
 								<input type="hidden" name="id" id="editarId">
 								<label for="editarTipoCliente">Tipo de Cliente</label>
-								<select name="tipo_cliente" id="editarTipoCliente" class="form-control">
+								<select name="tipo_cliente" id="editarTipoCliente" class="form-control dropdown-select2">
 									<option value="Externo">Externo</option>
 									<option value="Interno">Interno</option>
 								</select>
@@ -199,7 +199,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 							<div class="form-group col-sm-6">
 								<label for="editarTipoDocumento">Tipo Documento</label>
-								<select name="tipo_documento" id="ieditarTipoDocumento" class="form-control">
+								<select name="tipo_documento" id="ieditarTipoDocumento" class="form-control dropdown-select2">
 									<option value="CC">CC</option>
 									<option value="CE">CE</option>
 									<option value="PA">PA</option>
