@@ -231,7 +231,12 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
     <!-- En caso de que no haya MAQUINARIA ACTIVA, mostrar el siguiente mensaje. -->
     <?php else: ?>
-        <h6>No hay maquinarias</h6>
+        <div class="container mt-4 text-center">
+            <i class="fas fa-cog fa-5x icon-color mb-2"></i>
+            <h4 class="font-weight-bold">¡Whoops!</h4>
+            <p class="mb-2">No se encuentran máquinas activas o puede que no estén creadas aun.</p>
+            <small class="text-secondary">Prueba activando una máquina.</small>
+        </div>
     <?php endif; ?>
 
     <!-- Modal de Asignar Referencia -->
