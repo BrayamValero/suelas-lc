@@ -1,27 +1,19 @@
 <?php
 
 // Incluimos el header.php y components.php
-$title = 'Tablero General';
-include 'components/header.php';
-include 'components/components.php';
+$title = 'Panel de Producción';
+include_once 'components/header.php';
+include_once 'components/components.php';
 require_once 'backend/api/utils.php';
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
-$roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'PRODUCCION');
+$roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION', 'CONTROL');
 
 if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
-    include 'components/error.php';
+    include_once 'components/error.php';
     include_once 'components/footer.php';
     exit();
-}
-
-// Chequeamos la capacidad total.
-$sql = "SELECT SUM(CAPACIDAD) AS CAPACIDAD_TOTAL FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
-$capacidad_total = db_query($sql);
-
-if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
-    $capacidad_total[0]['CAPACIDAD_TOTAL'] = 0;
 }
 
 ?>
@@ -31,340 +23,209 @@ if (is_null($capacidad_total[0]['CAPACIDAD_TOTAL'])) {
 
 <!-- Incluimos el contenido --> 
 <div id="contenido">
-        
-    <!-- Header Content -->
-    <div class="header-body py-3">
-        <div class="row align-items-end">
-            <div class="col">
-                <h6 class="text-title">Tablero General</h6>
-                
-                <?php
-                $sql = "SELECT * FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
-                $maquinarias = db_query($sql);
-                $first = false;
-
-                if (!isset($_GET['id'])) {
-                    $sql = "SELECT MIN(ID) AS ID FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
-                    $id = db_query($sql)[0]['ID'];
-                } else {
-                    $id = $_GET['id'];
-                }
-                ?>
-
-                <?php
-                if (!empty($maquinarias)):
-                $sql = "SELECT * FROM MAQUINARIAS WHERE ID = ?;";
-                $maquinaria_selected = db_query($sql, array($id));
-                ?>
-
-                <div class="row">
-                    <div class="col">
-                        <button type="button" class="align-middle sidebarCollapse btn btn-main btn-sm mb-2">
-                            <i class="fas fa-bars"></i>
-                        </button>
-                        <!-- Rotativas -->
-                        <?php
-                        foreach ($maquinarias as $maquinaria) {
-                            if ($maquinaria['ID'] == $id) {
-                                echo "<a href='tablero-general.php?id={$maquinaria['ID']}' class='btn btn-main btn-sm mr-1 mb-2'>" . mb_convert_case($maquinaria['NOMBRE'], MB_CASE_TITLE, "UTF-8") . "</a>";
-                                $first = true;
-                            } else {
-                                echo "<a href='tablero-general.php?id={$maquinaria['ID']}' class='btn btn-sm btn-outline-dark mr-1 mb-2'>" . mb_convert_case($maquinaria['NOMBRE'], MB_CASE_TITLE, "UTF-8") . "</a>";
-                            }
-                        }
-                        ?>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    <!-- End of Header Content -->
-
-    <!-- Table -->
 
     <?php
-    $sql = "SELECT ID FROM COLOR WHERE COLOR = ?;";
-    $color = db_query($sql, array($maquinaria_selected[0]['COLOR']));
 
-    $sql = "SELECT S.REFERENCIA AS SUELA_REFERENCIA, S.ID AS SUELA_ID, S.MARCA AS MARCA, S.TALLA AS TALLA FROM PRODUCCION P JOIN SUELAS S ON P.SUELA_ID = S.ID WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ?;";
-    $result = db_query($sql, array($color[0]['ID']));
+    // 1. Seleccionamos las máquinas activas.
+    $sql = "SELECT * FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
+    $maquinarias_activas = db_query($sql);
 
-    $sql = "SELECT S.ID, SUM(P.CANTIDAD) AS TOTAL_PRODUCIR FROM PRODUCCION P JOIN SUELAS S ON P.SUELA_ID = S.ID WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ? GROUP BY S.ID";
-    $agrupados = db_query($sql, array($color[0]['ID']));
+    // 2. Si hay al menos una máquina activa, permitimos mostrar toda la vista de las tablas de producción y demás.
+    if( !empty($maquinarias_activas) ):
+        
+        // 3. Ahora, comprobamos que esté el ID setteado en la URL, en caso de no ser así, seleccionamos la primera que se encuentre entre las MAQUINAS ACTIVAS.
+        if ( !isset($_GET['id']) ) {
+            $sql = "SELECT MIN(ID) AS ID FROM MAQUINARIAS WHERE ESTADO = 'ACTIVO';";
+            $maquinaria_id = db_query($sql)[0]['ID'];
+        } else {
+            $maquinaria_id = $_GET['id'];
+        }
 
-    $sql = "SELECT * FROM CASILLEROS WHERE MAQUINARIA_ID = ?;";
-    $casilleros = db_query($sql, array($id));
+        // 4. Ya despues de verificar en la URL, buscamos la máquina seleccionada.
+        $sql = "SELECT * FROM MAQUINARIAS WHERE ID = ?;";
+        $maquinaria_seleccionada = db_query($sql, array($maquinaria_id));
 
-    $repetidos = array();
     ?>
 
-    <div class="table-responsive text-center">
-        <table class="table table-bordered text-center">
-            <!-- First Row -->
-            <thead class="thead-dark">
-            <tr>
-                <?php
-                if ($maquinaria_selected[0]['CASILLEROS'] == 1) {
-                    for ($i = 0; $i < 1; $i++) {
-                        echo "<th scope='col' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>";
-                        echo $i + 1;
-                        echo "</th>";
-                    }
-                } elseif ($maquinaria_selected[0]['CASILLEROS'] == 5) {
-                    for ($i = 0; $i < 5; $i++) {
-                        echo "<th scope='col' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>";
-                        echo $i + 1;
-                        echo "</th>";
-                    }
-                } elseif ($maquinaria_selected[0]['CASILLEROS'] == 10) {
-                    for ($i = 0; $i < 5; $i++) {
-                        echo "<th scope='col' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>";
-                        echo $i + 1;
-                        echo "</th>";
-                    }
-                } elseif ($maquinaria_selected[0]['CASILLEROS'] == 20) {
-                    for ($i = 0; $i < 10; $i++) {
-                        echo "<th scope='col' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>";
-                        echo $i + 1;
-                        echo "</th>";
-                    }
-                } elseif ($maquinaria_selected[0]['CASILLEROS'] == 30) {
-                    for ($i = 0; $i < 10; $i++) {
-                        echo "<th scope='col' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>";
-                        echo $i + 1;
-                        echo "</th>";
-                    }
-                }
-                ?>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <?php
-                foreach ($casilleros as $index => $casillero) {
-                    $casillero_impreso = false;
-
-                    // Primera hilera
-                    if ($casillero['NUMERO'] <= 10) {
-                        foreach ($result as $row) {
-                            if (!in_array($row['SUELA_ID'], $repetidos)) {
-                                if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
-
-                                    echo "<td>";
-        
-                                    echo "<div class='badge badge-main my-2'>Pedidos</div>";
-                                    echo "<div class='font-weight-bold'>" . mb_convert_case($row['MARCA'], MB_CASE_TITLE, 'UTF-8') . " " . $row['TALLA'] . "</div>";
-
-                                    foreach ($agrupados as $agrupado) {
-                                        if ($agrupado['ID'] == $row['SUELA_ID']) {
-                                            echo "<div class='my-2'> {$agrupado['TOTAL_PRODUCIR']} Pares</div>";
-                                        }
-                                    }
-
-                                    echo "</td>";
-
-                                    array_push($repetidos, $row['SUELA_ID']);
-                                    $casillero_impreso = true;
-                                    
-                                }
-                            }
-                        }
-
-                        if ($casillero_impreso == false) {
-                            if ($casillero['SUELA_ID'] != '') {
-                                $sql = "SELECT * FROM SUELAS WHERE ID = ?;";
-
-                                $marca = db_query($sql, array($casillero['SUELA_ID']))[0]['MARCA'];
-                                $talla = db_query($sql, array($casillero['SUELA_ID']))[0]['TALLA'];
-
-                                echo "<td class='align-middle'><div class='badge badge-main mb-2'>Referencia</div><div class='font-weight-bold'>" . mb_convert_case($marca, MB_CASE_TITLE, 'UTF-8') . " " . $talla . "</div></td>";
-                            } elseif ($casillero['ACTIVO'] == 0) {
-                                echo "<td class='align-middle'><i class='fas fa-ban text-danger my-2'></i></td>";
-                            } else {
-                                echo "<td class='align-middle'><div class='badge badge-success my-2'>Vacio</div></td>";
-                            }
-                        }
-                        
-                    }
-                }
-                ?>
-
-            </tr>
-            </tbody>
-            <!-- Second Row -->
-            <thead class="thead-dark">
-            <tr>
-                <?php
-                if ($maquinaria_selected[0]['CASILLEROS'] == 20) {
-                    for ($i = 10; $i < 20; $i++) {
-                        echo "<th scope='col' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>";
-                        echo $i + 1;
-                        echo "</th>";
-                    }
-                } elseif ($maquinaria_selected[0]['CASILLEROS'] == 30) {
-                    for ($i = 10; $i < 20; $i++) {
-                        echo "<th scope='col' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>";
-                        echo $i + 1;
-                        echo "</th>";
-                    }
-                }
-                ?>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <?php
-                foreach ($casilleros as $index => $casillero) {
-                    $casillero_impreso = false;
-
-                    // Segunda hilera
-                    if ($casillero['NUMERO'] > 10 && $casillero['NUMERO'] <= 20) {
-                        foreach ($result as $row) {
-                            if (!in_array($row['SUELA_ID'], $repetidos)) {
-                                if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
-
-                                    echo "<td>";
-        
-                                    echo "<div class='badge badge-main my-2'>Pedidos</div>";
-                                    echo "<div class='font-weight-bold'>" . mb_convert_case($row['MARCA'], MB_CASE_TITLE, 'UTF-8') . " " . $row['TALLA'] . "</div>";
-
-                                    foreach ($agrupados as $agrupado) {
-                                        if ($agrupado['ID'] == $row['SUELA_ID']) {
-                                            echo "<div class='my-2'> {$agrupado['TOTAL_PRODUCIR']} Pares</div>";
-                                        }
-                                    }
-
-                                    echo "</td>";
-
-                                    array_push($repetidos, $row['SUELA_ID']);
-                                    $casillero_impreso = true;
-
-                                }
-                            }
-                        }
-
-                        if ($casillero_impreso == false) {
-                            if ($casillero['SUELA_ID'] != '') {
-                                $sql = "SELECT * FROM SUELAS WHERE ID = ?;";
-
-                                $marca = db_query($sql, array($casillero['SUELA_ID']))[0]['MARCA'];
-                                $talla = db_query($sql, array($casillero['SUELA_ID']))[0]['TALLA'];
-
-                                echo "<td class='align-middle'><div class='badge badge-main mb-2'>Referencia</div><div class='font-weight-bold'>" . mb_convert_case($marca, MB_CASE_TITLE, 'UTF-8') . " " . $talla . "</div></td>";
-                            } elseif ($casillero['ACTIVO'] == 0) {
-                                echo "<td class='align-middle'><i class='fas fa-ban text-danger my-2'></i></td>";
-                            } else {
-                                echo "<td class='align-middle'><div class='badge badge-success my-2'>Vacio</div></td>";
-                            }
-                        }
-                    }
-                }
-                ?>
-            </tr>
-            </tbody>
-
+    <!-- Navbar contenedora de las maquinarias ACTIVAS -->
+    <div class="row mb-4">
+        <!-- Botones Maquinas -->
+        <div class="col-lg-12 px-2">
+            <h6 class="text-title">Control de Calidad</h6>
+            <button type="button"class="align-middle sidebarCollapse btn btn-sm btn-main mb-2">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <?php
-            if ($maquinaria_selected[0]['CASILLEROS'] == 30):
-                ?>
-                <!-- Third Table Head -->
-                <thead class="thead-dark">
-                <tr>
-                    <?php
-                    for ($i = 20; $i < 30; $i++) {
-                        echo "<th scope='col' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>";
-                        echo $i + 1;
-                        echo "</th>";
-                    }
-                    ?>
-                </tr>
-                </thead>
 
-                <!-- Third Table Body -->
-                <tbody>
-                <tr>
-                    <?php
-                    foreach ($casilleros as $index => $casillero) {
-                        $casillero_impreso = false;
+            $url_actual = basename($_SERVER["PHP_SELF"]);
 
-                        // Tercera hilera
-                        if ($casillero['NUMERO'] > 20) {
-                            foreach ($result as $row) {
-                                if (!in_array($row['SUELA_ID'], $repetidos)) {
-                                    if ($casillero['SUELA_ID'] == $row['SUELA_ID']) {
+            // 4. Populamos el navbar de las MAQUINARIAS ACTIVAS.
+            foreach ($maquinarias_activas as $maquinaria) {
 
-                                        echo "<td>";
-        
-                                        echo "<div class='badge badge-main my-2'>Pedidos</div>";
-                                        echo "<div class='font-weight-bold'>" . mb_convert_case($row['MARCA'], MB_CASE_TITLE, 'UTF-8') . " " . $row['TALLA'] . "</div>";
+                if ($maquinaria['ID'] == $maquinaria_id) {
+                    echo "<a href='$url_actual?id={$maquinaria['ID']}' role='button' class='btn btn-sm btn-main mr-1 mb-2'>" . mb_convert_case($maquinaria['NOMBRE'], MB_CASE_TITLE) . "</a>";
+                } else {
+                    echo "<a href='$url_actual?id={$maquinaria['ID']}' role='button' class='btn btn-sm btn-outline-dark mr-1 mb-2'>" . mb_convert_case($maquinaria['NOMBRE'], MB_CASE_TITLE) . "</a>";
+                }
 
-                                        foreach ($agrupados as $agrupado) {
-                                            if ($agrupado['ID'] == $row['SUELA_ID']) {
-                                                echo "<div class='my-2'> {$agrupado['TOTAL_PRODUCIR']} Pares</div>";
-                                            }
-                                        }
-
-                                        echo "</td>";
-
-                                        array_push($repetidos, $row['SUELA_ID']);
-                                        $casillero_impreso = true;
-
-                                    }
-                                }
-                            }
-
-                            if ($casillero_impreso == false) {
-                                if ($casillero['SUELA_ID'] != '') {
-                                    $sql = "SELECT * FROM SUELAS WHERE ID = ?;";
-
-                                    $marca = db_query($sql, array($casillero['SUELA_ID']))[0]['MARCA'];
-                                    $talla = db_query($sql, array($casillero['SUELA_ID']))[0]['TALLA'];
-
-                                    echo "<td class='align-middle'><div class='badge badge-main mb-2'>Referencia</div><div class='font-weight-bold'>" . mb_convert_case($marca, MB_CASE_TITLE, 'UTF-8') . " " . $talla . "</div></td>";
-                                } elseif ($casillero['ACTIVO'] == 0) {
-                                    echo "<td class='align-middle'><i class='fas fa-ban text-danger my-2'></i></td>";
-                                } else {
-                                    echo "<td class='align-middle'><div class='badge badge-success my-2'>Vacio</div></td>";
-                                }
-                            }
-                        }
-                    }
-                    ?>
-                </tr>
-                </tbody>
-            <?php
-            endif;
+            }
+            
             ?>
-
-        </table>
-    </div>
-    <!-- End of Table -->
-
-    <!-- Machine Information -->
-    <div class="card" style="width: 17rem;">
-        <div class="card-body">
-            <h5 class="card-title"><?= mb_convert_case($maquinaria_selected[0]['NOMBRE'], MB_CASE_TITLE, "UTF-8"); ?></h5>
-            <hr>
-            <p class="card-text">
-
-                <?= "<p><span class='font-weight-bold'>&#9642 Color: </span>" . mb_convert_case($maquinaria_selected[0]['COLOR'], MB_CASE_TITLE, "UTF-8") . "</p>"; ?>
-
-                <?= "<p><span class='font-weight-bold'>&#9642 Material: </span>" . mb_convert_case($maquinaria_selected[0]['MATERIAL'], MB_CASE_TITLE, "UTF-8") . "</p>"; ?>
-
-                <?= "<p><span class='font-weight-bold'>&#9642 Capacidad Actual: </span>" . $maquinaria_selected[0]['CAPACIDAD'] . "</p>"; ?>
-
-                <?= "<p><span class='font-weight-bold'>&#9642 Capacidad Disponible: </span>" . $maquinaria_selected[0]['DISPONIBLE'] . "</p>"; ?>
-
-            </p>
         </div>
+
+        <div class="col-lg-6 px-2 mt-1">
+            <input type="text" class="form-control" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" readonly>
+        </div>
+
     </div>
 
+    <?php
+
+    // 5. Obtenemos la producción que se cumpla con los siguientes requisitos
+    // -- ESTADO => PENDIENTE
+    // -- COLOR_ID => MAQ_COLOR_ID
+    // -- ORDER_BY => CREATED_AT
+
+    $sql = "SELECT ID FROM COLOR WHERE COLOR = ?;";
+    $maquinaria_color = db_query($sql, array($maquinaria_seleccionada[0]['COLOR']));
+    
+    // Producción Actual
+    $sql = "SELECT P.*, 
+            S.ID AS SUELA_ID,
+            S.REFERENCIA AS SUELA_REFERENCIA,
+            S.MARCA AS SUELA_MARCA,
+            S.TALLA AS SUELA_TALLA,
+            S.PESO_IDEAL AS SUELA_PESO_IDEAL,
+            S.PESO_MAQUINA AS SUELA_PESO_MAQUINA
+                FROM PRODUCCION P 
+                    JOIN SUELAS S ON P.SUELA_ID = S.ID 
+                        WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ? ORDER BY CREATED_AT ASC;";
+
+    $produccion_actual = db_query($sql, array($maquinaria_color[0]['ID']));
+
+    // Agrupados
+    $sql = "SELECT S.ID,
+            SUM(P.CANTIDAD) AS TOTAL_PRODUCIR
+                FROM PRODUCCION P 
+                    JOIN SUELAS S ON P.SUELA_ID = S.ID 
+                        WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ? GROUP BY S.ID";
+
+    $produccion_agrupada = db_query($sql, array($maquinaria_color[0]['ID']));
+
+    $sql = "SELECT * FROM CASILLEROS WHERE MAQUINARIA_ID = ?;";
+    $casilleros = db_query($sql, array($maquinaria_id));
+
+    ?>
+
+    <!-- Inicio del .row -->
+    <div class="row text-center">
+
+    <?php
+    
+    $output = '';
+    $repetidos = [];
+
+    for ( $i = 0; $i < $maquinaria_seleccionada[0]['CASILLEROS'] ; $i++) {
+      
+        $index = $i + 1;
+          
+        $casillero_impreso = false;
+
+        foreach ($produccion_actual as $produccion) {
+
+            if (!in_array($produccion['SUELA_ID'], $repetidos)) {
+
+                if ($casilleros[$i]['SUELA_ID'] == $produccion['SUELA_ID']) {
+                    
+                    foreach ($produccion_agrupada as $agrupado) {
+
+                        if ($agrupado['ID'] == $produccion['SUELA_ID']) {
+
+                            $resultado = "<div class='my-2'> {$agrupado['TOTAL_PRODUCIR']}</div>";
+
+                        }
+
+                    }
+                    
+                    $output .= "
+                    <div class='casillero-content'>
+                        <div class='badge badge-main badge-casillero mb-2'>Pedido {$produccion['PEDIDO_ID']}</div>
+                        
+                        <div class='font-weight-bold'>{$produccion['SUELA_MARCA']} {$produccion['SUELA_TALLA']}</div>
+
+                        $resultado
+
+                    </div>";
+
+                    array_push($repetidos, $produccion['SUELA_ID']);
+
+                    $casillero_impreso = true;
+
+                }
+
+            }
+
+        }
+        
+        if ($casillero_impreso == false) {
+
+            if ($casilleros[$i]['SUELA_ID'] != '') {
+
+                $sql = "SELECT * FROM SUELAS WHERE ID = ?;";
+                $marca = db_query($sql, array($casilleros[$i]['SUELA_ID']))[0]['MARCA'];
+                $talla = db_query($sql, array($casilleros[$i]['SUELA_ID']))[0]['TALLA'];
+
+                $output .= "<div class='casillero-content'>
+                                <div class='badge badge-main badge-casillero mb-2'>Referencia</div>
+                                <p class='font-weight-bold p-0'>$marca $talla</p>
+                            </div>";
+
+            } elseif ($casilleros[$i]['ACTIVO'] == 0) {
+
+                $output .= "<div class='casillero-content'>
+                                <i class='fas fa-ban fa-casillero text-danger'></i>
+                            </div>";
+
+            } else {
+
+                $output .= "<div class='casillero-content'>
+                                <div class='badge badge-success badge-casillero'>Vacio</div>
+                            </div>";
+
+            }
+            
+        }    
+
+        echo "<div class='col-lg-2 col-md-3 col-sm-4 px-2 numero-casillero'>
+                <div class='casillero shadow mb-3'>
+                    <div class='casillero-header' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>
+                        <span class='font-weight-bold'>$index</span>
+                    </div>
+                    $output
+                </div>
+            </div>";
+
+        $output = '';
+
+    }
+
+    ?>
+
+    <!-- Fin del .row -->
+    </div>
+
+    <!-- En caso de que no haya MAQUINARIA ACTIVA, mostrar el siguiente mensaje. -->
     <?php else: ?>
-        <h6>No hay maquinarias</h6>
+        <div class="container mt-4 text-center">
+            <i class="fas fa-cog fa-5x icon-color mb-2"></i>
+            <h4 class="font-weight-bold">¡Whoops!</h4>
+            <p class="mb-2">No se encuentran máquinas activas o puede que no estén creadas aun.</p>
+            <small class="text-secondary">Prueba activando una máquina.</small>
+        </div>
     <?php endif; ?>
 
 </div>
-<!-- / Fin de Contenido -->
 
-<!-- Incluimos el footer.php & agregamos una comprobacion de casillero repetido -->
+<!-- Incluimos el footer.php -->
 <?php include_once 'components/footer.php'; ?>
