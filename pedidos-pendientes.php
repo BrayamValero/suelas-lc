@@ -136,8 +136,11 @@ $.ajax({
                             return `<a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-ban icon-color'></i>
                                 </a>
-                                <a href='javascript:void(0)' class='verPedido' data-id='${row.ID}'>
+                                <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-eye icon-color'></i>
+                                </a>
+                                <a href='ver-etiquetas.php?id=${row.ID}'>
+                                    <i class='fas fa-print icon-color'></i>
                                 </a>`;
                         }
                 	}

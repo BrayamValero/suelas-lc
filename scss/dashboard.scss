@@ -343,6 +343,33 @@ option[hover]{
     min-height: 180px;
 }
 
+
+/* ---------------------------------------------------
+  ETIQUETAS
+----------------------------------------------------- */
+
+.etiqueta-paquete{
+    font-size: 25px;
+    color: rgb(63, 181, 228);
+}
+
+.etiqueta-cliente{
+    font-size: 46px;
+    font-weight: bold;
+    text-transform: uppercase !important;
+    color: #333 !important;
+}
+
+.etiqueta-cantidad{
+    font-size: 125px !important;
+    color: #333 !important;
+}
+
+.etiqueta-borde{
+    display: inline;
+    border-bottom: 10px solid #333;
+}
+
 /* ---------------------------------------------------
   MEDIAQUERIES
 ----------------------------------------------------- */

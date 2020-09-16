@@ -5,7 +5,7 @@
         margin: 0; 
     }
     body { 
-        margin: 1.6cm; 
+        margin: 0;
     }
 
     html, body{
@@ -16,14 +16,11 @@
         display: none;
     }
 
-    .page-break {
+    .pageBreak {
         display: block !important;
         page-break-after: auto;
         break-after: page;
         height: 0px;
     }
-}
 
-.mb-30{
-    margin-bottom: 35rem !important;
 }
