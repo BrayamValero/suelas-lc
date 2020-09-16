@@ -348,26 +348,65 @@ option[hover]{
   ETIQUETAS
 ----------------------------------------------------- */
 
-.etiqueta-paquete{
-    font-size: 25px;
-    color: rgb(63, 181, 228);
+.card{
+    height: 760px;
+    border: 1px solid #333333;
+}
+
+.centering {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.etiqueta-top-fixed{
+    position: absolute;
+    font-size: 26px;
+    text-decoration: underline;
+    top: 30px;
+    left: 40px;
+}
+
+.etiqueta-pedido{
+    font-weight: bold;
+    font-size: 30px;
+    color: #ff3831;
+    margin-bottom: .5rem;
 }
 
 .etiqueta-cliente{
-    font-size: 46px;
+    font-size: 50px;
     font-weight: bold;
     text-transform: uppercase !important;
-    color: #333 !important;
+    color: #333333 !important;
+}
+
+.etiqueta-marca{
+    color: #818181;
+}
+
+.etiqueta-numeracion{
+    margin-bottom: .5rem;
 }
 
 .etiqueta-cantidad{
-    font-size: 125px !important;
-    color: #333 !important;
+    font-size: 130px !important;
+    color: #333333 !important;
+}
+
+.etiqueta-bottom-fixed{
+    position: absolute;
+    font-size: 20px;
+    font-style: italic;
+    color: #818181;
+    width: 560px;
+    top: 710px;
 }
 
 .etiqueta-borde{
     display: inline;
-    border-bottom: 10px solid #333;
+    border-bottom: 10px solid #333333;
 }
 
 /* ---------------------------------------------------

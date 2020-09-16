@@ -18,7 +18,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 ?>
 
-<div class="container-fluid text-center">
+<div class="text-center">
     
     <button class="btn btn-main hide-on-print my-4" type="button" onclick="imprimirDiv('areaImprimible')">Imprimir Etiquetas</button>
 
@@ -56,7 +56,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
             $restante = $etiqueta['RESTANTE'];
             $cap_empaquetado = $etiqueta['CAP_EMPAQUETADO'];
             $nombre = $etiqueta['NOMBRE'];
-            if(strlen($nombre) > 35) $nombre = substr($nombre, 0, 35).'...';
+            if(strlen($nombre) > 32) $nombre = substr($nombre, 0, 32).'...';
 
             // Si no se usa stock durante el pedido se utiliza solo RESTANTE y CAP_EMPAQUETADO.
             if( $stock == 0 ){
@@ -67,14 +67,14 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                     $pageBreak++;
 
                     $output .= "
-                    <div class='col-6 mb-3'>
+                    <div class='col-6 my-3'>
                         <div class='card'>
-                            <div class='text-center pt-4 pb-2'>
-                                <p class='etiqueta-paquete'>Paquete $count</p>
-                                <div class='btn btn-lg btn-dark mb-2'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
+                            <div class='etiqueta-top-fixed'>Paq $count</div>
+                            <div class='centering'>
+                                <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                 <h1 class='etiqueta-cliente'>$nombre</h1>
-                                <h3 class='etiqueta-marca'>{$etiqueta['MARCA']} {$etiqueta['COLOR']}</h3>
-                                <div class='mt-3'>
+                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                <div class='etiqueta-numeracion'>
                                     <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                         {$etiqueta['TALLA']}
                                     </h1>
@@ -82,7 +82,9 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                         {$etiqueta['CAP_EMPAQUETADO']}
                                     </h1>
                                 </div>
-                                <p class='text-muted'>Producción - " . $date = date('m/d/Y h:i a', time()) . "</p>
+                            </div>
+                            <div class='etiqueta-bottom-fixed'>
+                                <span>Producción - " . $date = date('m/d/Y h:i a', time()) . "</span>
                             </div>
                         </div>  
                     </div>";
@@ -102,14 +104,14 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                     $pageBreak++;
 
                     $output .= "
-                    <div class='col-6 mb-3'>
+                    <div class='col-6 my-3'>
                         <div class='card'>
-                            <div class='text-center pt-4 pb-2'>
-                                <p class='etiqueta-paquete'>Paquete $count</p>
-                                <div class='btn btn-lg btn-dark mb-2'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
+                            <div class='etiqueta-top-fixed'>Paq $count</div>
+                            <div class='centering'>
+                                <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                 <h1 class='etiqueta-cliente'>$nombre</h1>
-                                <h3 class='etiqueta-marca'>{$etiqueta['MARCA']} {$etiqueta['COLOR']}</h3>
-                                <div class='mt-3'>
+                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                <div class='etiqueta-numeracion'>
                                     <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                         {$etiqueta['TALLA']}
                                     </h1>
@@ -117,7 +119,9 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                         $restante
                                     </h1>
                                 </div>
-                                <p class='text-muted'>Producción - " . $date = date('m/d/Y h:i a', time()) . "</p>
+                            </div>
+                            <div class='etiqueta-bottom-fixed'>
+                                <span>Producción - " . $date = date('m/d/Y h:i a', time()) . "</span>
                             </div>
                         </div>  
                     </div>";
@@ -140,14 +144,14 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                         $pageBreak++;
 
                         $output .= "
-                        <div class='col-6 mb-3'>
+                        <div class='col-6 my-3'>
                             <div class='card'>
-                                <div class='text-center pt-4 pb-2'>
-                                    <p class='etiqueta-paquete'>Paquete $count</p>
-                                    <div class='btn btn-lg btn-dark mb-2'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
+                                <div class='etiqueta-top-fixed'>Paq $count</div>
+                                <div class='centering'>
+                                    <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                     <h1 class='etiqueta-cliente'>$nombre</h1>
-                                    <h3 class='etiqueta-marca'>{$etiqueta['MARCA']} {$etiqueta['COLOR']}</h3>
-                                    <div class='mt-3'>
+                                    <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                    <div class='etiqueta-numeracion'>
                                         <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                             {$etiqueta['TALLA']}
                                         </h1>
@@ -155,7 +159,9 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                             {$etiqueta['CAP_EMPAQUETADO']}
                                         </h1>
                                     </div>
-                                    <p class='text-muted'>Stock - " . $date = date('m/d/Y h:i a', time()) . "</p>
+                                </div>
+                                <div class='etiqueta-bottom-fixed'>
+                                    <span>Producción - " . $date = date('m/d/Y h:i a', time()) . "</span>
                                 </div>
                             </div>  
                         </div>";
@@ -175,14 +181,14 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                         $pageBreak++;
 
                         $output .= "
-                        <div class='col-6 mb-3'>
+                        <div class='col-6 my-3'>
                             <div class='card'>
-                                <div class='text-center pt-4 pb-2'>
-                                    <p class='etiqueta-paquete'>Paquete $count</p>
-                                    <div class='btn btn-lg btn-dark mb-2'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
+                                <div class='etiqueta-top-fixed'>Paq $count</div>
+                                <div class='centering'>
+                                    <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                     <h1 class='etiqueta-cliente'>$nombre</h1>
-                                    <h3 class='etiqueta-marca'>{$etiqueta['MARCA']} {$etiqueta['COLOR']}</h3>
-                                    <div class='mt-3'>
+                                    <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                    <div class='etiqueta-numeracion'>
                                         <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                             {$etiqueta['TALLA']}
                                         </h1>
@@ -190,7 +196,9 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                             $stock
                                         </h1>
                                     </div>
-                                    <p class='text-muted'>Stock - " . $date = date('m/d/Y h:i a', time()) . "</p>
+                                </div>
+                                <div class='etiqueta-bottom-fixed'>
+                                    <span>Producción - " . $date = date('m/d/Y h:i a', time()) . "</span>
                                 </div>
                             </div>  
                         </div>";
@@ -210,14 +218,14 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                     $pageBreak++;
 
                     $output .= "
-                    <div class='col-6 mb-3'>
+                    <div class='col-6 my-3'>
                         <div class='card'>
-                            <div class='text-center pt-4 pb-2'>
-                                <p class='etiqueta-paquete'>Paquete $count</p>
-                                <div class='btn btn-lg btn-dark mb-2'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
+                            <div class='etiqueta-top-fixed'>Paq $count</div>
+                            <div class='centering'>
+                                <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                 <h1 class='etiqueta-cliente'>$nombre</h1>
-                                <h3 class='etiqueta-marca'>{$etiqueta['MARCA']} {$etiqueta['COLOR']}</h3>
-                                <div class='mt-3'>
+                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                <div class='etiqueta-numeracion'>
                                     <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                         {$etiqueta['TALLA']}
                                     </h1>
@@ -225,7 +233,9 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                         {$etiqueta['CAP_EMPAQUETADO']}
                                     </h1>
                                 </div>
-                                <p class='text-muted'>Producción - " . $date = date('m/d/Y h:i a', time()) . "</p>
+                            </div>
+                            <div class='etiqueta-bottom-fixed'>
+                                <span>Producción - " . $date = date('m/d/Y h:i a', time()) . "</span>
                             </div>
                         </div>  
                     </div>";
@@ -245,14 +255,14 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                     $pageBreak++;
 
                     $output .= "
-                    <div class='col-6 mb-3'>
+                    <div class='col-6 my-3'>
                         <div class='card'>
-                            <div class='text-center pt-4 pb-2'>
-                                <p class='etiqueta-paquete'>Paquete $count</p>
-                                <div class='btn btn-lg btn-dark mb-2'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
+                            <div class='etiqueta-top-fixed'>Paq $count</div>
+                            <div class='centering'>
+                                <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                 <h1 class='etiqueta-cliente'>$nombre</h1>
-                                <h3 class='etiqueta-marca'>{$etiqueta['MARCA']} {$etiqueta['COLOR']}</h3>
-                                <div class='mt-3'>
+                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                <div class='etiqueta-numeracion'>
                                     <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                         {$etiqueta['TALLA']}
                                     </h1>
@@ -260,11 +270,12 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                         $restante
                                     </h1>
                                 </div>
-                                <p class='text-muted'>Producción - " . $date = date('m/d/Y h:i a', time()) . "</p>
+                            </div>
+                            <div class='etiqueta-bottom-fixed'>
+                                <span>Producción - " . $date = date('m/d/Y h:i a', time()) . "</span>
                             </div>
                         </div>  
-                    </div>
-                    ";
+                    </div>";
 
                     if($pageBreak == 4){
                         $output .= "</div><div class='pageBreak'></div><div class='row'>";

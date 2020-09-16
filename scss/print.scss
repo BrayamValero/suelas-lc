@@ -1,15 +1,7 @@
 @media print {
 
-
-    @page { 
-        margin: 0; 
-    }
-    body { 
-        margin: 0;
-    }
-
-    html, body{
-        color: black !important;
+    @page {
+        margin: .1rem;
     }
 
     .hide-on-print{
@@ -17,10 +9,8 @@
     }
 
     .pageBreak {
-        display: block !important;
         page-break-after: auto;
         break-after: page;
-        height: 0px;
     }
 
 }
