@@ -208,6 +208,10 @@ if (isset($_GET['fun'])) {
             obtenerVentasCulminadas();
             break;
 
+        case 'obtenerAuditoriaControl':
+            obtenerAuditoriaControl();
+            break;
+
     }
 }
 
@@ -684,6 +688,17 @@ function obtenerVentasCulminadas(){
                     JOIN CLIENTES C 
                         ON P.CLIENTE_ID = C.ID 
                 WHERE P.ESTADO = 'COMPLETADO';";
+    $result = db_query($sql);
+    echo json_encode($result);
+}
+
+function obtenerAuditoriaControl(){
+    $sql = "SELECT AC.*, CONCAT (SUE.MARCA, ' '  , SUE.TALLA) AS REFERENCIA, PROD.ESTADO FROM AUDITORIA_CONTROL AC
+                    JOIN PRODUCCION PROD
+                        ON AC.PRODUCCION_ID = PROD.ID
+                    JOIN SUELAS SUE
+                        ON PROD.SUELA_ID = SUE.ID
+                WHERE PROD.ESTADO NOT IN ('COMPLETADO');";
     $result = db_query($sql);
     echo json_encode($result);
 }

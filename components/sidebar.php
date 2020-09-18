@@ -217,37 +217,45 @@
             <li class="sidebar-header-menu">
                <span>Auditorias</span>
             </li> 
-            
+
                 <?php
                     if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
+
+                        echo "<li class='sidebar-dropdown'>
+                        <a href='auditoria-control.php'>
+                            <i class='fas fa-clipboard-check'></i>
+                            <span class='sidebar-menu-text'>Auditoria de Control</span>
+                        </a>
+                    </li>";
+
                         echo "<li class='sidebar-dropdown'>
                         <a href='pedidos-norsaplast.php'>
                             <i class='fas fa-clipboard-check'></i>
                             <span class='sidebar-menu-text'>Pedidos a Norsaplast</span>
                         </a>
                     </li>";
-                    }
-                ?>
+    
+                        echo "<li class='sidebar-dropdown'>
+                        <a href='pedidos-norsaplast.php'>
+                            <i class='fas fa-clipboard-check'></i>
+                            <span class='sidebar-menu-text'>Pedidos a Norsaplast</span>
+                        </a>
+                    </li>";
 
-                <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='pedidos-produccion.php'>
                             <i class='fas fa-clipboard-check'></i>
                             <span class='sidebar-menu-text'>Pedidos a Producción</span>
                         </a>
                     </li>";
-                    }
-                ?>
 
-                <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='norsaplast-inventario.php'>
                             <i class='fas fa-clipboard-check'></i>
                             <span class='sidebar-menu-text'>Norsaplast a Inventario</span>
                         </a>
                     </li>";
+
                     }
                 ?>
 
@@ -420,9 +428,9 @@
                                     <i class='fas fa-users dropdown-hovered'></i>
                                     <span class='sidebar-menu-text dropdown-hovered'>Usuarios</span>
                                 </a>
-                                <a class='dropdown-item' href='dureza.php'>
+                                <a class='dropdown-item' href='modificaciones.php'>
                                     <i class='fas fa-clipboard-list dropdown-hovered'></i>
-                                    <span class='sidebar-menu-text dropdown-hovered'>Dureza</span>
+                                    <span class='sidebar-menu-text dropdown-hovered'>Modificaciones</span>
                                 </a>
                             </div>
                         </div>

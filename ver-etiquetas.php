@@ -68,7 +68,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                     $output .= "
                     <div class='col-6 my-3'>
-                        <div class='card'>
+                        <div class='card etiqueta-card'>
                             <div class='etiqueta-top-fixed'>Paq $count</div>
                             <div class='centering'>
                                 <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
@@ -105,7 +105,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                     $output .= "
                     <div class='col-6 my-3'>
-                        <div class='card'>
+                        <div class='card etiqueta-card'>
                             <div class='etiqueta-top-fixed'>Paq $count</div>
                             <div class='centering'>
                                 <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
@@ -145,7 +145,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                         $output .= "
                         <div class='col-6 my-3'>
-                            <div class='card'>
+                            <div class='card etiqueta-card'>
                                 <div class='etiqueta-top-fixed'>Paq $count</div>
                                 <div class='centering'>
                                     <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
@@ -182,7 +182,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                         $output .= "
                         <div class='col-6 my-3'>
-                            <div class='card'>
+                            <div class='card etiqueta-card'>
                                 <div class='etiqueta-top-fixed'>Paq $count</div>
                                 <div class='centering'>
                                     <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
@@ -219,7 +219,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                     $output .= "
                     <div class='col-6 my-3'>
-                        <div class='card'>
+                        <div class='card etiqueta-card'>
                             <div class='etiqueta-top-fixed'>Paq $count</div>
                             <div class='centering'>
                                 <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
@@ -256,7 +256,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                     $output .= "
                     <div class='col-6 my-3'>
-                        <div class='card'>
+                        <div class='card etiqueta-card'>
                             <div class='etiqueta-top-fixed'>Paq $count</div>
                             <div class='centering'>
                                 <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>

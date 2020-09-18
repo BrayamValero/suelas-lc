@@ -423,7 +423,7 @@ function marcarEmpaquetado(id, restante) {
                         icon: 'success'
                     }).then(function () {
 
-                        $.get("backend/api/pedidos/editar-produccion.php", {
+                        $.get("backend/api/control/editar-produccion.php", {
                             id: id,
                             pesado: pesado,
                             cantidad: cantidad

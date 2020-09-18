@@ -348,7 +348,7 @@ option[hover]{
   ETIQUETAS
 ----------------------------------------------------- */
 
-.card{
+.etiqueta-card{
     height: 760px;
     border: 1px solid #333333;
 }
@@ -469,15 +469,4 @@ option[hover]{
     .pares-casillero{
         font-size: 2rem;
     }
-}
-
-.col-2{
-    flex: 0 0 20% !important;
-    max-width: 20% !important;
-    padding-left: 5px;
-    padding-right: 5px;
-}
-
-.card-body{
-    padding: 0.8rem;
 }

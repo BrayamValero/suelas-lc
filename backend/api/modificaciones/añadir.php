@@ -10,4 +10,4 @@ $dureza = $_POST['dureza'];
 $sql = "INSERT INTO DUREZA VALUES (?, ?);";
 db_query($sql, array($id, $dureza));
 
-header("Location: ../../../dureza.php");
+header("Location: ../../../modificaciones.php");
