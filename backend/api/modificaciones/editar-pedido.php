@@ -15,16 +15,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $cantidad = $pedido['cantidad'];
 
         // Comprobamos que el pedido se tenga que eliminar o actualizar dependiendo del estado de producción.
-        $sql = "SELECT CANTIDAD, RESTANTE, ESTADO FROM PRODUCCION WHERE ID = ?;";
+        $sql = "SELECT CANTIDAD, RESTANTE, DISPONIBLE, ESTADO FROM PRODUCCION WHERE ID = ?;";
         $verificacion = db_query($sql, array($prod_id));
 
         // Si la cantidad introducida es mayor a la actual, es decir si 250 es mayor a 200, quiere decir que se quiere aumentar, de resto, se quiere restar.
         if( $cantidad > $verificacion[0]['RESTANTE'] ){
 
-            // Suma
-            echo 'RESULTADO, ESTO SE SUMA CON CANTIDAD Y RESTANTE' . '<br>';
+            // Se realiza una suma RESTA.
             $suma = $cantidad - $verificacion[0]['RESTANTE'];
-            echo $suma . '<br>';
 
             // Cambiamos los valores de la cantidad y restante.
             $sql = "UPDATE PRODUCCION SET CANTIDAD = CANTIDAD + ?, RESTANTE = RESTANTE + ? WHERE ID = ?;";
@@ -40,32 +38,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $sql = "UPDATE PRODUCCION SET CANTIDAD = CANTIDAD - ?, RESTANTE = RESTANTE - ? WHERE ID = ?;";
                 db_query($sql, array($resta, $resta, $prod_id));
 
-            } elseif ($cantidad == 0 && $verificacion[0]['CANTIDAD'] != $verificacion[0]['RESTANTE'] && $verificacion[0]['ESTADO'] == 'PENDIENTE') {
+            } elseif ($cantidad == 0 && $verificacion[0]['CANTIDAD'] != $verificacion[0]['RESTANTE']) {
 
-                $sql = "UPDATE PRODUCCION SET CANTIDAD = CANTIDAD - ?, RESTANTE = RESTANTE - ?, ESTADO = 'POR DESPACHAR' WHERE ID = ?;";
-                db_query($sql, array($resta, $resta, $prod_id));
+                // Si Disponible = 0 se pasa a COMPLETADO, de lo contrario se pasa a POR DESPACHAR.
+                $verificacion[0]['DISPONIBLE'] == 0 ? $estado = 'COMPLETADO' : $estado = 'POR DESPACHAR';
+                
+                $sql = "UPDATE PRODUCCION SET CANTIDAD = CANTIDAD - ?, RESTANTE = RESTANTE - ?, ESTADO = ? WHERE ID = ?;";
+                db_query($sql, array($resta, $resta, $estado, $prod_id));
+                
+                // Verificador Total => Este script realiza las siguientes evaluaciones.
+                    
+                    # Luego de actualizarse la producción, se debe verificar que todos los pedidos asociados al ID se encuentren en estado = COMPLETADO, de ser así, se cambia el estado del pedido, de lo contrario, se deja igual.
+                     
+                $sql = "SELECT ESTADO FROM PRODUCCION WHERE PEDIDO_ID = ?;";
+                $resultado = db_query($sql, array($pedido_id));
+                $completado = true;
+
+                foreach ($resultado as $elem) {
+                    if ($elem['ESTADO'] == 'PENDIENTE' || $elem['ESTADO'] == 'POR DESPACHAR') {
+                        $completado = false;
+                    }
+                }
+
+                // Si todos las producciones asociadas al pedido estan completadas se marca el pedido como completado.
+                if ($completado) {
+                    $sql = "UPDATE PEDIDOS SET ESTADO = 'COMPLETADO' WHERE ID = ?;";
+                    db_query($sql, array($pedido_id));
+                }
 
             } else {
 
-                $sql = "ALTER TABLE tableName DROP FOREIGN KEY fk; DELETE FROM PRODUCCION WHERE ID = ?;";
-               
+                $sql = "DELETE FROM PRODUCCION WHERE ID = ?;";
                 db_query($sql, array($prod_id));
 
-                echo $prod_id;
+                // Verificador Total => Este script realiza las siguientes evaluaciones.
 
-                echo "Eliminado el pedido individual.";
-
-                $sql = "SELECT ID FROM PRODUCCION WHERE PEDIDO_ID = ?;";
+                    # Verifica que haya al menos una referencia en producción, de no ser así, se elimina el pedido completo. 
+                    # En el caso de que si haya al menos una referencia, se evalua el estado de cada referencia, en caso de que todas concuerden con el estado = COMPLETADO, se pasa el pedido a completado también.
+                    # Esto de cambiar el estado del pedido no se ejecuta si al menos uno de los pedidos en producción se encuentra en PENDIENTE o POR DESPACHAR.
+                    
+                $sql = "SELECT ESTADO FROM PRODUCCION WHERE PEDIDO_ID = ?;";
                 $resultado = db_query($sql, array($pedido_id));
-                
-                echo '<pre>'; print_r($resultado); echo '</pre>';
+                $completado = true;
 
                 // Si no hay producción, eliminar el pedido.
                 if(empty($resultado)){
+
                     $sql = "DELETE FROM PEDIDOS WHERE ID = ?;";
                     db_query($sql, array($pedido_id));
+                    echo "Eliminado el pedido completo.";
+                    
+                } else {
+                                        
+                    foreach ($resultado as $elem) {
+                        if ($elem['ESTADO'] == 'PENDIENTE' || $elem['ESTADO'] == 'POR DESPACHAR') {
+                            $completado = false;
+                        }
+                    }
 
-                    echo "Eliminado el pedido individual.";
+                    // Si todos las producciones asociadas al pedido estan completadas se marca el pedido como completado.
+                    if ($completado) {
+                        $sql = "UPDATE PEDIDOS SET ESTADO = 'COMPLETADO' WHERE ID = ?;";
+                        db_query($sql, array($pedido_id));
+                    }
+
                 }
 
             }
@@ -75,52 +111,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
 }
-
-
-// // Si la cantidad de la producción actual se ve afectada.
-// if($estado[0]['CANTIDAD'] != $estado[0]['RESTANTE']){
-
-//     if($cantidad == 0){
-
-//         // Query para cambiar estado a POR DESPACHAR.
-//         $sql = "UPDATE PRODUCCION SET CANTIDAD = CANTIDAD - ?, RESTANTE = RESTANTE - ?, ESTADO = 'COMPLETADO' WHERE ID = ?;";
-//         db_query($sql, array($cantidad, $cantidad, $prod_id));
-
-//         // Se chequea si todas las producciones asociadas al pedido están listas.
-//         $sql = "SELECT ESTADO FROM PRODUCCION WHERE PEDIDO_ID = ?;";
-//         $resultado = db_query($sql, array($pedido_id));
-//         $completado = true;
-
-//         foreach ($resultado as $elem) {
-//             if ($elem['ESTADO'] == 'PENDIENTE' || $elem['ESTADO'] == 'POR DESPACHAR') {
-//                 $completado = false;
-//             }
-//         }
-
-//         // Si todos las producciones asociadas al pedido estan completadas se marca el pedido como completado.
-//         if ($completado) {
-//             $sql = "UPDATE PEDIDOS SET ESTADO = 'COMPLETADO' WHERE ID = ?;";
-//             db_query($sql, array($pedido_id));
-//         }
-
-
-//     } else {
-//         // Query para actualizar.
-//         $sql = "UPDATE PRODUCCION SET RESTANTE = ?, CANTIDAD = CANTIDAD - RESTANTE WHERE ID = ?;";
-//         db_query($sql, array($cantidad, $cantidad, $prod_id));
-//     }
-
-// // De lo contrario, si no ha habido ningún cambio. 
-// } else {
-
-//     if($cantidad == 0){
-//         // Query para eliminar.
-//         $sql = "DELETE FROM PRODUCCION WHERE ID = ?;";
-//         db_query($sql, array($prod_id));
-//     } else {
-//         // Query para actualizar.
-//         $sql = "UPDATE PRODUCCION SET CANTIDAD = CANTIDAD + ?, RESTANTE = RESTANTE + ? WHERE ID = ?;";
-//         db_query($sql, array($cantidad, $cantidad, $prod_id));
-//     }
-
-// }
