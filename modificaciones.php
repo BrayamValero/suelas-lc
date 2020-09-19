@@ -67,23 +67,6 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
         </div>
 
     </div>
-        
-
-    <div class="card-deck">
-
-        <!-- Dureza -->
-        <div class="card bg-white mb-3">
-            <div class="card-header font-weight-bold">Control de Calidad</div>
-            <div class="card-body">
-                <h5 class="card-title">Revertir Suelas Empaquetadas</h5>
-                <p class="card-text text-muted">Se revierte la cantidad así como el peso que se haya asignado de manera erronea en control de calidad.</p>
-            </div>
-            <div class="card-footer">
-                <button class="btn btn-sm btn-main" data-toggle="modal" data-target="#revertirEmpaquetadoModal">Revertir Empaquetado</button>
-            </div>
-        </div>
-
-    </div>
 
     <!-- Modal de Editar Dureza -->
     <div class="modal fade" id="editarDurezaModal" tabindex="-1" role="dialog" aria-labelledby="editarDurezaModal" aria-hidden="true">
@@ -156,31 +139,6 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
                         <button type="submit" class="btn btn-sm btn-main">Modificar Pedido</button>
-                    </div>
-                </form>
-                <!-- Fin de Form -->
-            </div>
-        </div>
-    </div>
-    <!-- Fin de Modal de Pedido -->
-
-    <!-- Modal de Revertir Empaquetado -->
-    <div class="modal fade" id="revertirEmpaquetadoModal" tabindex="-1" role="dialog" aria-labelledby="revertirEmpaquetadoModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <!-- Form -->
-                <form>
-                    <div class="modal-header">
-                        <h5 class="modal-title">Revertir Empaquetado</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-sm btn-main">Revertir Empaquetado</button>
                     </div>
                 </form>
                 <!-- Fin de Form -->
