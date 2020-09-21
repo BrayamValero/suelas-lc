@@ -6,11 +6,16 @@ include 'components/header.php';
 include 'components/components.php';
 require_once 'backend/api/utils.php';
 
+// Chequeamos el status para evitar ediciones luego de pasar a PENDIENTE.
+$pedido_id = $_GET['id'];
+$sql = "SELECT * FROM PEDIDOS WHERE ID = ?;";
+$status = db_query($sql, array($pedido_id))[0]['ESTADO'];
+
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if( (!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)) || $status == 'PENDIENTE' || $status == 'COMPLETADO'){
     include 'components/error.php';
     include_once 'components/footer.php';
     exit();
@@ -25,10 +30,12 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Pedido', "Editar Pedido <span class='badge badge-danger'>" . $_GET['id'] . "</span>"); ?>
+    <?php get_navbar('Pedido', "Editar Pedido <span class='badge badge-danger'>" . $pedido_id . "</span>"); ?>
+
+    <?php echo $status; ?>
 
     <!-- Form -->
-    <form action="backend/api/pedidos/editar.php?id=<?= $_GET['id']; ?>" method="POST">
+    <form action="backend/api/pedidos/editar.php?id=<?= $pedido_id ?>" method="POST">
 
         <!-- Tabla de Datos -->
         <div class="tablaDatos">
@@ -40,13 +47,11 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
             <?php
                 require_once "backend/api/db.php";
-                $id = $_GET['id'];
-
                 $sql = "SELECT * FROM CLIENTES WHERE ACTIVO = 'SI';";
                 $result = db_query($sql);
 
                 $sql_get = "SELECT * FROM PEDIDOS WHERE ID = ?;";
-                $result_get = db_query($sql_get, array($id));
+                $result_get = db_query($sql_get, array($pedido_id));
             ?>
 
             <div class="form-row mb-4">
@@ -171,7 +176,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 // Declaración de Variables
 var i = 0;
 var j = 0;
-var pedido_id = <?= $id ?>;
+var pedido_id = <?= $pedido_id ?>;
 var datosPedido, datosSeries, obtenerColor, obtenerSerie;
 
 const editarNombre = document.getElementById('editarNombre');

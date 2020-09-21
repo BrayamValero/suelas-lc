@@ -113,7 +113,13 @@ $.ajax({
 				{ data: "ESTADO", title: "Estado", 
 					render: function(value, type, row) {
 						if ( row.ESTADO === 'EN ANALISIS') {
-                            return `<a href='aprobar-pedido.php?id=${row.ID}' class='btn btn-sm btn-main'>Aprobar Pedido</a>`;
+                            return `
+                            <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'): ?>
+                                <a href='aprobar-pedido.php?id=${row.ID}' class='btn btn-sm btn-main'>Aprobar Pedido</a>
+                            <?php else: ?>
+                                Aprobar Pedido
+                            <?php endif; ?> 
+                            `;
                         } else {
                             return `Pendiente`;
                         }
@@ -123,12 +129,15 @@ $.ajax({
 					render: function(value, type, row) {
                         
                         if ( row.ESTADO === 'EN ANALISIS') {
-                            return `<a href='editar-pedido.php?id=${row.ID}' class='mr-1'>
+                            return `
+                            <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS'): ?>
+                                <a href='editar-pedido.php?id=${row.ID}' class='mr-1'>
                                     <i class='fas fa-edit icon-color'></i>
                                 </a>
                                 <a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-trash icon-color'></i>
                                 </a>
+                            <?php endif; ?>
                                 <a href='javascript:void(0)' class='verPedido' data-id='${row.ID}'>
                                     <i class='fas fa-eye icon-color'></i>
                                 </a>`;
@@ -136,8 +145,7 @@ $.ajax({
                         
                         else {
                             return `
-                            
-                            <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'): ?>
+                            <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'): ?>
                                 <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-ban icon-color'></i>
                                 </a>
