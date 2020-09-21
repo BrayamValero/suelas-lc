@@ -248,11 +248,11 @@ $.ajax({
 
         tabla = $('#tabla').DataTable({
             "initComplete": function(settings, json) {
-                $("#spinner").css('visibility', 'hidden');
+                $("#spinner").css('display', 'none');
             },
             "info": false,
             "dom": "lrtip",
-            "pageLength": 6,
+            "pageLength": 10,
             "lengthChange": false,
             "order": [[0, 'desc']],
             "data": result,

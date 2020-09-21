@@ -3,7 +3,7 @@
 // 1. GET_NAVBAR COMPONENT
 function get_navbar($categoria, $titulo) {
 
-echo "<div class='header-body pt-3 pb-3'>
+echo "<div class='header-body pt-3'>
     <div class='row'>
         <div class='col'>
             <nav aria-label='breadcrumb'>
@@ -17,7 +17,7 @@ echo "<div class='header-body pt-3 pb-3'>
                         <li class='breadcrumb-item d-inline font-weight-bold'>$categoria</li>
                         <li class='breadcrumb-item d-inline active' aria-current='page'>$titulo</li>
                     </div>
-                    <div class='col-sm-12 col-md-6 col-lg-5'>
+                    <div class='navbar-breakpoint col-sm-12 col-md-6 col-lg-5 '>
                         <div class='input-group searchInput'>
                             <div class='input-group-prepend'>
                             <div class='input-group-text'><i class='fas fa-search'></i></div>

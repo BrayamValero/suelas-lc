@@ -413,7 +413,6 @@ option[hover]{
   MEDIAQUERIES
 ----------------------------------------------------- */
 
-
 @media (max-width: 1000px) {
     #sidebar {
         margin-left: -260px;
@@ -427,6 +426,9 @@ option[hover]{
     #contenido.active {
         width: calc(100% - 260px);
     }
+
+
+
 }
 
 @media (min-width: 992px){
@@ -439,6 +441,9 @@ option[hover]{
 @media (max-width: 768px) {
     .hide-options{
         display: none;
+    }
+    .navbar-breakpoint{
+        margin-top: .75rem;
     }
 }
 

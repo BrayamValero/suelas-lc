@@ -345,7 +345,7 @@ const tabla = $('#tabla').DataTable({
     info: false,
     dom: "lrtip",
     lengthChange: false,
-    pageLength: 5,
+    pageLength: 10,
     order: [[0, 'desc']],
     columnDefs: [{
         targets: 4,

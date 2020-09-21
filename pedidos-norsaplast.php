@@ -127,7 +127,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
         dom: "lrtip",
         // searching: false,
         lengthChange: false,
-        pageLength: 5,
+        pageLength: 10,
         order: [[0, 'desc']],
         columnDefs: [{
             targets: 4,
