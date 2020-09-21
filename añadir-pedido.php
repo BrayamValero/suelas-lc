@@ -329,23 +329,37 @@ botonAñadirPedido.addEventListener("click", function(){
 
     } else {
 
-        // $.post => Enviando el elemento al backend.
-	    $.post( `backend/api/pedidos/añadir.php`, formulario.serialize(), function(data, status) {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Descuida, puedes editar el pedido luego.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si',
+            cancelButtonText: 'No',
+        }).then((result) => {
 
-            Swal.fire({
-            title: 'Exito',
-            text: 'El pedido ha sido añadido satisfactoriamente.',
-            icon: 'success',
-            timer: 2000,
-            timerProgressBar: true,
-            allowEscapeKey: false,
-            allowOutsideClick: false
-            }).then((result) => {
-                if ( result.dismiss === Swal.DismissReason.timer || result.value ){
-                    // location.href = 'pedidos-pendientes.php'
-                    console.log("object");
-                }
-            });
+            if (result.value) {
+
+                // $.post => Enviando el elemento al backend.
+                $.post( `backend/api/pedidos/añadir.php`, formulario.serialize(), function(data, status) {
+
+                    Swal.fire({
+                    title: 'Exito',
+                    text: 'El pedido ha sido añadido satisfactoriamente.',
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false
+                    }).then((result) => {
+                        if ( result.dismiss === Swal.DismissReason.timer || result.value ){
+                            location.href = 'pedidos-pendientes.php'
+                        }
+                    });
+
+                });
+
+            }
 
         });
 
