@@ -26,10 +26,10 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
-
+    <link rel="icon" type="image/png" href="images/favicon.ico">
+    
     <!-- CSS -->
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fontawesome-all.min.css">
@@ -68,11 +68,6 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
 
     <script>
 
-    // Fix Select2 with MODAL
-    $(document).ready(function () {
-        $.fn.modal.Constructor.prototype._enforceFocus = function () { };
-    });
-
     Date.prototype.toDateInputValue = (function() {
         const local = new Date(this);
         local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
@@ -93,29 +88,6 @@ check_user(session_id(), $_SESSION['USUARIO']['ID']);
         $('.toast-body').text(msg2);
         $('.toast').toast('show');
     }
-
-    // ajaxPost(url, data, async).done(function(data){});
-    function ajaxPost(url, data, async){
-        return $.ajax({
-            url:            url,
-            data:           data,
-            cache:          false,
-            async:          async,
-            type:           'post',
-            dataType:       'json'
-        });             
-    }
-
-    // ajaxGet(url, async).done(function(data){});
-    function ajaxGet(url, async){
-        return $.ajax({
-            url:            url,
-            cache:          false,
-            async:          async,
-            type:           'get',
-            dataType:       'json'
-        });             
-    }    
 
     </script>
 
