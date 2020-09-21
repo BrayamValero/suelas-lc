@@ -28,7 +28,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     <?php get_navbar('Pedidos', 'Añadir Pedido'); ?>
 
     <!-- Form -->
-    <form id="añadirPedidoForm" action="backend/api/pedidos/añadir.php" method="post">
+    <form id="añadirPedidoForm">
 
         <!-- Tabla de Datos -->
         <div class="tablaDatos shadow-sm">
@@ -139,7 +139,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
             <div class="contenedorPedidos"></div>
             <!-- / fin de contenedor de Serie -->
             
-            <button id="botonFinalizarPedido" type="submit" class="btn btn-main btn-block mt-3">Finalizar Pedido</button>
+            <button id="botonAñadirPedido" type="button" class="btn btn-main btn-block mt-3">Finalizar Pedido</button>
         
         </div>
         <!-- Fin de Tabla de Pedidos -->
@@ -166,7 +166,7 @@ const añadirSerie = document.getElementById('añadirSerie');
 const añadirColor = document.getElementById('añadirColor');
 const contenedorPedidos = document.getElementById('contenedorPedidos');
 const botonAñadirSerie = document.getElementById('botonAñadirSerie');
-const botonFinalizarPedido = document.getElementById('botonFinalizarPedido');
+const botonAñadirPedido = document.getElementById('botonAñadirPedido');
 
 // Asignando la fecha al input fecha.
 añadirFecha.min = new Date().toDateInputValue();
@@ -313,33 +313,45 @@ $(document).on('click', '.eliminarSerie', function(e) {
 
 });
 
-// Verificar Pedido
-botonFinalizarPedido.addEventListener("click", function(){
+// Botón de Añadir Pedido.
+botonAñadirPedido.addEventListener("click", function(){
+
+    // ID del formulario.
+	let formulario = $('#añadirPedidoForm');
+
+    // Si el formulario tiene algún campo vacio o incorrecto, lanzar error.
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
     // Comprobar que haya alguna serie ingresada en el sistema.
     if (Object.entries(verificadorSerie).length === 0) {
-        event.preventDefault();
-        return Swal.fire("Error", "Debes agregar al menos (1) serie al pedido.", "warning");
+
+        Swal.fire("Error", "Debes agregar al menos (1) serie al pedido.", "error");
+
+    } else {
+
+        // $.post => Enviando el elemento al backend.
+	    $.post( `backend/api/pedidos/añadir.php`, formulario.serialize(), function(data, status) {
+
+            Swal.fire({
+            title: 'Exito',
+            text: 'El pedido ha sido añadido satisfactoriamente.',
+            icon: 'success',
+            timer: 2000,
+            timerProgressBar: true,
+            allowEscapeKey: false,
+            allowOutsideClick: false
+            }).then((result) => {
+                if ( result.dismiss === Swal.DismissReason.timer || result.value ){
+                    // location.href = 'pedidos-pendientes.php'
+                    console.log("object");
+                }
+            });
+
+        });
+
     }
 
 });
-
-$(document).ready(function () {
-    $("#añadirPedidoForm").submit(function () {
-        $("#botonFinalizarPedido").attr("disabled", true);
-        return true;
-    });
-});
-
-// Comprobar que hayan Clientes disponibles.
-if( (añadirSerie.value == null || añadirSerie.value == '') || (añadirColor.value == null || añadirColor.value == '') ){
-    document.getElementById('buttonAñadirSerie').disabled = true;
-}
-
-// Comprobar que hayan Series o Colores disponibles.
-if(añadirNombre.value == null || añadirNombre.value == ''){
-    submitPedido.disabled = true;
-}
 
 </script>
 

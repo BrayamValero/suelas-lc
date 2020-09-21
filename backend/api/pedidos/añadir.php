@@ -1,55 +1,49 @@
 <?php
 session_start();
 require_once "../db.php";
-// echo '<pre>'; print_r($_POST); echo '</pre>';
+echo '<pre>'; print_r($_POST); echo '</pre>';
 
-// Datos del cliente.
-$usuario_id = $_SESSION['USUARIO']['ID'];
-$cliente_id = trim(mb_strtoupper($_POST['nombre'], 'UTF-8'));
-$forma_pago = trim(mb_strtoupper($_POST['pago'], 'UTF-8'));
-$fecha_estimada = trim(mb_strtoupper($_POST['fecha'], 'UTF-8'));
+// Si se ejecuta un Request, ya sea GET o POST se ejecuta el código.
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-$estado = 'EN ANALISIS';
-$prioridad = 'BAJA';
+    $pedidos = $_POST['pedido'];
+    $prioridad = 'BAJA';
+    $estado = 'EN ANALISIS';
 
-unset($_POST['nombre']);
-unset($_POST['fecha']);
-unset($_POST['pago']);
+    $usuario_id = test_input($_SESSION['USUARIO']['ID']);
+    $cliente_id = test_input($_POST['nombre']);
+    $forma_pago = test_input($_POST['pago']);
+    $fecha_estimada = test_input($_POST['fecha']);
 
-$sql = "INSERT INTO PEDIDOS VALUES (NULL, ?, ?, ?, ?, ?, ?, NOW(), NOW());";
-$data = array($usuario_id, $cliente_id, $estado, $prioridad, $forma_pago, $fecha_estimada);
+    // Pedido
+    $sql = "INSERT INTO PEDIDOS VALUES (NULL, ?, ?, ?, ?, ?, ?, NOW(), NOW());";
+    db_query($sql, array($usuario_id, $cliente_id, $estado, $prioridad, $forma_pago, $fecha_estimada));
 
-db_query($sql, $data);
+    // Producción => Datos del pedido.
+    $sql = "SELECT MAX(ID) AS ID FROM PEDIDOS";
+    $pedido_id = db_query($sql)[0]['ID'];
 
-// Datos del pedido.
-$sql = "SELECT MAX(ID) AS ID FROM PEDIDOS";
-$pedido_id = db_query($sql)[0]['ID'];
+    foreach ($pedidos as $pedido) {
+        
+        if ($pedido['cantidad'] != 0){
 
-$pedidos = $_POST['pedido'];
-// echo '<pre>'; print_r($pedidos); echo '</pre>';
+            if (isset($pedido['urgente'])) {
+                $urgente = test_input($pedido['urgente']);
+            } else {
+                $urgente = 0;
+            }
 
-foreach ($pedidos as $pedido) {
-    
-    if ($pedido['cantidad'] != 0){
+            $suela_id = test_input($pedido['suela_id']);
+            $serie_id = test_input($pedido['serie_id']);
+            $color_id = test_input($pedido['color_id']);
+            $cantidad = test_input($pedido['cantidad']);
+            $restante = test_input($pedido['cantidad']);
 
-        if (isset($pedido['urgente'])) {
-            $urgente = trim(mb_strtoupper($pedido['urgente'], 'UTF-8'));
-        } else {
-            $urgente = 0;
+            $sql = "INSERT INTO PRODUCCION VALUES (NULL, ?, ?, ?, ?, ?, ?, 0, 0, 0, 0, 0, ?, ?, NULL)";
+            db_query($sql, array($pedido_id, $suela_id, $serie_id, $color_id, $cantidad, $restante, $urgente, $estado));
+
         }
-
-        $suela_id = trim(mb_strtoupper($pedido['suela_id'], 'UTF-8'));
-        $serie_id = trim(mb_strtoupper($pedido['serie_id'], 'UTF-8'));
-        $color_id = trim(mb_strtoupper($pedido['color_id'], 'UTF-8'));
-        $cantidad = trim(mb_strtoupper($pedido['cantidad'], 'UTF-8'));
-        $restante = trim(mb_strtoupper($pedido['cantidad'], 'UTF-8'));
-
-        $sql = "INSERT INTO PRODUCCION VALUES (NULL, ?, ?, ?, ?, ?, ?, 0, 0, 0, 0, 0, ?, ?, NULL)";
-        $data = array($pedido_id, $suela_id, $serie_id, $color_id, $cantidad, $restante, $urgente, $estado);
-        db_query($sql, $data);
 
     }
 
 }
-
-header("Location: ../../../pedidos-pendientes.php");

@@ -8,7 +8,7 @@ require_once 'backend/api/utils.php';
 
 // Chequeamos el status para evitar ediciones luego de pasar a PENDIENTE.
 $pedido_id = $_GET['id'];
-$sql = "SELECT * FROM PEDIDOS WHERE ID = ?;";
+$sql = "SELECT ESTADO FROM PEDIDOS WHERE ID = ?;";
 $status = db_query($sql, array($pedido_id))[0]['ESTADO'];
 
 // Agregamos los roles que se quiere que usen esta página.
@@ -32,10 +32,20 @@ if( (!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)) || $status == 
     <!-- Incluimos el Navbar -->
     <?php get_navbar('Pedido', "Editar Pedido <span class='badge badge-danger'>" . $pedido_id . "</span>"); ?>
 
-    <?php echo $status; ?>
+    <!-- Toast => Alertas (data-delay="700" data-autohide="false") --> 
+	<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
+		<div class="toast-header">
+			<i class="toast-icon"></i>
+			<strong class="mr-auto toast-title"></strong>
+			<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+        <div class="toast-body"></div>
+    </div>
 
     <!-- Form -->
-    <form action="backend/api/pedidos/editar.php?id=<?= $pedido_id ?>" method="POST">
+    <form id="editarPedidoForm">
 
         <!-- Tabla de Datos -->
         <div class="tablaDatos">
@@ -159,7 +169,7 @@ if( (!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)) || $status == 
             <div class="contenedorPedidos"></div>
             <!-- / fin de contenedor de Serie -->
 
-            <button id="botonFinalizarPedido" type="submit" class="btn btn-main btn-block mt-3">Editar Pedido</button>
+            <button id="botonEditarPedido" type="button" class="btn btn-main btn-block mt-3">Editar Pedido</button>
         
         </div>
         <!-- Fin de Tabla de Pedidos -->
@@ -187,7 +197,7 @@ const editarColor = document.getElementById('editarColor');
 
 const contenedorPedidos = document.getElementById('contenedorPedidos');
 const botonAñadirSerie = document.getElementById('botonAñadirSerie');
-const botonFinalizarPedido = document.getElementById('botonFinalizarPedido');
+const botonEditarPedido = document.getElementById('botonEditarPedido');
 
 // Establecemos el rango mínimo para editar la fecha.
 editarFecha.min = editarFecha.value;
@@ -455,13 +465,65 @@ $(document).on('click', '.eliminarSerie', function(e) {
 
 });
 
-// Verificar Pedido
-botonFinalizarPedido.addEventListener("click", function(){
+// Boton de Editar Pedido
+botonEditarPedido.addEventListener('click', function(){
+
+    // ID del formulario.
+	let formulario = $('#editarPedidoForm');
+
+    // Si el formulario tiene algún campo vacio o incorrecto, lanzar error.
+	if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
     // Comprobar que haya alguna serie ingresada en el sistema.
     if (Object.entries(datosSeries).length === 0) {
-        event.preventDefault();
-        return Swal.fire("Error", "Debes agregar al menos (1) serie al pedido.", "warning");
+        
+        Swal.fire("Error", "Debes agregar al menos (1) serie al pedido.", "error");
+
+    } else {
+
+        // $.post => Enviando el elemento al backend.
+	    $.post( `backend/api/pedidos/editar.php?id=${pedido_id}`, formulario.serialize(), function(data, status) {
+
+            switch (data) {
+			
+			case 'ERROR':
+                
+                Swal.fire({
+                title: 'Error',
+                text: 'El pedido no puede ser editado.',
+                icon: 'error',
+                timer: 2000,
+                timerProgressBar: true,
+                allowEscapeKey: false,
+                allowOutsideClick: false
+                }).then((result) => {
+                    if ( result.dismiss === Swal.DismissReason.timer || result.value ){
+                        location.href = 'pedidos-pendientes.php'
+                    }
+                });
+
+				break;
+
+			default:
+                
+                Swal.fire({
+                title: 'Exito',
+                text: 'El pedido ha sido editado satisfactoriamente.',
+                icon: 'success',
+                timer: 2000,
+                timerProgressBar: true,
+                allowEscapeKey: false,
+                allowOutsideClick: false
+                }).then((result) => {
+                    if ( result.dismiss === Swal.DismissReason.timer || result.value ){
+                        location.href = 'pedidos-pendientes.php'
+                    }
+                });
+
+		    }		
+
+        });
+
     }
 
 });
