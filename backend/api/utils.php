@@ -10,7 +10,9 @@ define('FORMAS_PAGO', array(
     'EFECTIVO',
     'CHEQUE',
     'TARJETA',
-    'TRANSFERENCIA'
+    'TRANSFERENCIA',
+    'ALMACEN',
+    'TRASLADO'
 ));
 
 if (isset($_GET['fun'])) {

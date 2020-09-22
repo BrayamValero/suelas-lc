@@ -65,11 +65,11 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                 <div class="form-group col-lg-3 col-md-3">
                     <label for="añadirPago">Forma de Pago</label>
                     <select id="añadirPago" class="form-control dropdown-select2" name="pago" required>
-                        <option value="CREDITO" selected>Credito</option>   
-                        <option value="EFECTIVO">Efectivo</option>
-                        <option value="CHEQUE">Cheque</option>
-                        <option value="TARJETA">Tarjeta</option>
-                        <option value="TRANSFERENCIA">Transferencia</option>
+                        <?php
+                            foreach (FORMAS_PAGO as $forma_pago) {
+                                echo "<option value='$forma_pago'>". mb_convert_case($forma_pago, MB_CASE_TITLE) ."</option>";
+                            }
+                        ?>
                     </select>
                 </div>
             
