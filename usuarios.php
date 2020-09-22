@@ -125,7 +125,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-id-card"></i></div>
                                     </div>
-                                    <input id="inputAñadirCedula-modal" class="form-control" type="number" min="1" name="cedula" placeholder="ID" required>
+                                    <input id="inputAñadirCedula-modal" class="form-control" type="number" name="cedula" placeholder="ID" required>
                                 </div>
                             </div>
 
@@ -135,7 +135,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-phone"></i></div>
                                     </div>
-                                    <input id="inputAñadirTelefono-modal" class="form-control" name="telefono" type="number" min="1" placeholder="Teléfono" required>
+                                    <input id="inputAñadirTelefono-modal" class="form-control" name="telefono" type="number" placeholder="Teléfono" required>
                                 </div>
                             </div>
 
@@ -228,7 +228,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-id-card"></i></div>
                                     </div>
-                                    <input id="inputEditarCedula-modal" class="form-control" type="number" min="1" name="cedula" placeholder="ID" required>
+                                    <input id="inputEditarCedula-modal" class="form-control" type="number" name="cedula" placeholder="ID" required>
                                 </div>
                             </div>
 
@@ -238,7 +238,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-phone"></i></div>
                                     </div>
-                                    <input id="inputEditarTelefono-modal" class="form-control" name="telefono" type="number" min="1" placeholder="Teléfono" required>
+                                    <input id="inputEditarTelefono-modal" class="form-control" name="telefono" type="number" placeholder="Teléfono" required>
                                 </div>
                             </div>
 

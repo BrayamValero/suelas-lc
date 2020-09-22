@@ -2,8 +2,6 @@
 session_start();
 require_once '../db.php';
 
-print_r($_POST);
-
 // Si se ejecuta un Request, ya sea GET o POST se ejecuta el código.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -23,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         db_query($sql, array($password_hash, $id));
     }
 
-    echo "passed";
     $sql = "UPDATE USUARIOS SET CARGO = ?, CEDULA = ?, NOMBRE = ?, TELEFONO = ?, CORREO = ?  WHERE ID = ?";
     db_query($sql, array($cargo, $cedula, $nombre, $telefono, $correo, $id));
 
