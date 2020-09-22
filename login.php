@@ -24,31 +24,75 @@
 <body>
 <div class="container-fluid">
     <div class="form-container">
-        <form action="backend/api/usuarios/login.php?action=LOGIN" method="POST">
+        <form id="loginForm">
             <h1 class="text-center text-title">Bienvenido</h1>
             <p class="text-center text-subtitle">Suelas LC</p>
             <div class="form-group pt-3">
-                <input type="text" name="correo" class="form-control" id="inputUsuario" placeholder="Correo" required>
+                <input type="text" name="username" class="form-control" id="loginUsername" placeholder="Usuario" required>
             </div>
             <div class="form-group pb-3">
-                <input name="contrasena" type="password" class="form-control" id="inputContraseña" placeholder="Contraseña" required>
+                <input name="password" type="password" class="form-control" id="loginPassword" placeholder="Contraseña" required>
             </div>
             <div class="text-center pb-2">
-                <button type="submit" class="btn btn-main" style="width: 360px;">Iniciar Sesión</button>
+                <button type="button" class="btn btn-main btn-block" id="botonLogin">Iniciar Sesión</button>
             </div>
-            <small id="emailHelp" class="form-text text-center text-small">Si olvidaste tus datos puedes pedirselos a un Administrador.</small>
+            <small class="form-text text-center text-small">Si olvidaste tus datos puedes pedirselos a un Administrador.</small>
         </form>
     </div>
 </div>
+
+<script>
+
+// Iniciar Sesión => Ajax + PHP
+document.getElementById('botonLogin').addEventListener('click', function () {
+
+    // Guardamos el ID del FORM
+    let formulario = $('#loginForm');
+
+    // Si el formulario tiene algún campo incorrecto y/o vacio, lanzar error.
+    if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
+
+    // $.post => Añadiendo el elemento al backend.
+    $.post( 'backend/api/usuarios/login.php?action=LOGIN', formulario.serialize(), function(data) {
+
+        switch (data) {
+
+			case 'ERROR':
+				return Swal.fire('Error', 'Usuario y/o Contraseña invalidos.', 'error');
+				break;
+
+			default:
+
+                Swal.fire({
+                    title: 'Bienvenido',
+                    text: 'En unos momentos te redirigimos al inicio.',
+                    icon: 'success',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    allowEscapeKey: false,
+                    allowOutsideClick: false
+                    }).then((result) => {
+                        if ( result.dismiss === Swal.DismissReason.timer || result.value ){
+                            location.href = 'index.php';
+                        }
+                    });
+
+		}	
+
+    });
+
+});
+
+</script>
+
 </body>
 </html>
-
 
 <?php
 session_start();
 require_once 'backend/api/db.php';
 
-// 1. Comprobamos si hay al menos un usuario administrador.
+// Comprobamos si hay al menos un usuario administrador.
 $sql = "SELECT COUNT(*) AS CONTEO FROM USUARIOS;";
 $result = db_query($sql);
 
@@ -66,27 +110,11 @@ if (isset($_SESSION['USUARIO'])) {
     header("Location: index.php");
 }
 
-// Si está setteado el 'deslogueado' y  este es igual a '1', lanzar alerta.
-if (isset($_GET['deslogueado']) && $_GET['deslogueado'] == '1') {
+// Si está setteado inactivity y este es true, lanzar alerta.
+if (isset($_GET['inactivity']) && $_GET['inactivity'] == 'true') {
     echo "<script type='text/javascript'>
             $(document).ready(function(){
                 Swal.fire('Alerta', 'Su sesión ha caducado.', 'warning');
-            });
-        </script>";
-}
-
-?>
-
-<?php
-
-if (isset($_SESSION['LOGIN']) && $_SESSION['LOGIN'] == "Credenciales invalidas"){
-    
-    $_SESSION['LOGIN'] = null;
-    unset($_SESSION['LOGIN']);
-    
-    echo "<script type='text/javascript'>
-            $(document).ready(function(){
-                Swal.fire('Error', 'Usuario y/o contraseña inválidos.', 'error');
             });
         </script>";
 }

@@ -3,7 +3,7 @@
 // Incluimos el header.php y components.php
 $title = 'Panel de Producción';
 include_once 'components/header.php';
-include_once 'components/components.php';
+include_once 'components/navbar.php';
 require_once 'backend/api/utils.php';
 
 // Agregamos los roles que se quiere que usen esta página.

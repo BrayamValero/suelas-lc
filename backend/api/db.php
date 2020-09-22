@@ -32,7 +32,7 @@ function db_connect(){
         // $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $db;
     } catch (PDOException $e) {
-        echo '<h1>Error al conectarse a la base de datos</h1><br />';
+        echo '<h1>Error al conectarse a la base de datos</h1><br>';
 
         echo '<p>Error: <mark>' . $e->getMessage() . '</mark></p>';
         die();
@@ -55,10 +55,9 @@ function db_query($sql, $data = array()){
     return $result;
 }
 
-// Global Function which is going to be used in every Database Manipulation Script.
+// Chequear los inputs.
 function test_input($data) {
 
-    // If GET or POST data is not empty, apply trim(), stripslashes(), and htmlspecialchars().
     if(!empty($data)){
         $data = trim($data);
         $data = stripslashes($data);

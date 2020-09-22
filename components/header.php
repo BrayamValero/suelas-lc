@@ -10,7 +10,7 @@ function check_user( $session_id, $user_id ) {
     $usuario = db_query($sql, array($user_id));
 
     if ($usuario[0]['SESSION_ID'] != $session_id) {
-        header("Location: backend/api/usuarios/login.php?action=unlogin&deslogueado=1");
+        header("Location: backend/api/usuarios/login.php?action=unlogin&inactivity=true");
     }
 }
 

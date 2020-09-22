@@ -3,7 +3,7 @@
 // Incluimos el header.php y components.php
 $title = 'Editar Pedido';
 include 'components/header.php';
-include 'components/components.php';
+include 'components/navbar.php';
 require_once 'backend/api/utils.php';
 
 // Chequeamos el status para evitar ediciones luego de pasar a PENDIENTE.
@@ -498,7 +498,7 @@ botonEditarPedido.addEventListener('click', function(){
                 allowOutsideClick: false
                 }).then((result) => {
                     if ( result.dismiss === Swal.DismissReason.timer || result.value ){
-                        location.href = 'pedidos-pendientes.php'
+                        location.href = 'pedidos-pendientes.php';
                     }
                 });
 
@@ -516,7 +516,7 @@ botonEditarPedido.addEventListener('click', function(){
                 allowOutsideClick: false
                 }).then((result) => {
                     if ( result.dismiss === Swal.DismissReason.timer || result.value ){
-                        location.href = 'pedidos-pendientes.php'
+                        location.href = 'pedidos-pendientes.php';
                     }
                 });
 

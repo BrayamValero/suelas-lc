@@ -3,7 +3,7 @@
 // Incluimos el header.php y components.php
 $title = 'Auditoría de entrega';
 include 'components/header.php';
-include 'components/components.php';
+include 'components/navbar.php';
 require_once 'backend/api/utils.php';
 
 // Agregamos los roles que se quiere que usen esta página.
