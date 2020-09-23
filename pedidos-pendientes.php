@@ -109,7 +109,25 @@ $.ajax({
 				{ data: "CLIENTE_NOMBRE", title: "Cliente" },
                 { data: "CLIENTE_TIPO", title: "Tipo" },
                 { data: "FORMA_PAGO", title: "Forma Pago" },
-				{ data: "CREATED_AT", title: "Fecha Registro" },
+				{ data: "CREATED_AT", title: "Fecha Registro", 
+					render: function(value, type, row) {
+
+                        let date = new Date(Date.parse(row.CREATED_AT));
+
+                        let day = date.getDate();
+                        let month = date.getMonth() + 1;
+                        let year = date.getFullYear();
+
+                        let time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+                        if(month < 10){
+                            return `${day}-0${month}-${year} ${time}`;
+                        }else{
+                            return `${day}-${month}-${year} ${time}`;
+                        }
+
+					}
+				},
 				{ data: "ESTADO", title: "Estado", 
 					render: function(value, type, row) {
 						if ( row.ESTADO === 'EN ANALISIS') {
