@@ -121,9 +121,17 @@ $.ajax({
                         let time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
 
                         if(month < 10){
-                            return `${day}-0${month}-${year} ${time}`;
+                            if(day < 10){
+                                return `0${day}-0${month}-${year} ${time}`;
+                            } else{
+                                return `${day}-0${month}-${year} ${time}`;
+                            }
                         }else{
-                            return `${day}-${month}-${year} ${time}`;
+                            if(day < 10){
+                                return `0${day}-${month}-${year} ${time}`;
+                            } else{
+                                return `${day}-${month}-${year} ${time}`;
+                            }
                         }
 
 					}

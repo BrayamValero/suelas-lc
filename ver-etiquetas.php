@@ -73,7 +73,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                             <div class='centering'>
                                 <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                 <h1 class='etiqueta-cliente'>$nombre</h1>
-                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['COLOR'], MB_CASE_TITLE, "UTF-8") . "</h3>
                                 <div class='etiqueta-numeracion'>
                                     <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                         {$etiqueta['TALLA']}
@@ -110,7 +110,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                             <div class='centering'>
                                 <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                 <h1 class='etiqueta-cliente'>$nombre</h1>
-                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['COLOR'], MB_CASE_TITLE, "UTF-8") . "</h3>
                                 <div class='etiqueta-numeracion'>
                                     <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                         {$etiqueta['TALLA']}
@@ -150,7 +150,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                 <div class='centering'>
                                     <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                     <h1 class='etiqueta-cliente'>$nombre</h1>
-                                    <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                    <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['COLOR'], MB_CASE_TITLE, "UTF-8") . "</h3>
                                     <div class='etiqueta-numeracion'>
                                         <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                             {$etiqueta['TALLA']}
@@ -187,7 +187,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                                 <div class='centering'>
                                     <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                     <h1 class='etiqueta-cliente'>$nombre</h1>
-                                    <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                    <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['COLOR'], MB_CASE_TITLE, "UTF-8") . "</h3>
                                     <div class='etiqueta-numeracion'>
                                         <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                             {$etiqueta['TALLA']}
@@ -224,7 +224,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                             <div class='centering'>
                                 <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                 <h1 class='etiqueta-cliente'>$nombre</h1>
-                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['COLOR'], MB_CASE_TITLE, "UTF-8") . "</h3>
                                 <div class='etiqueta-numeracion'>
                                     <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                         {$etiqueta['TALLA']}
@@ -261,7 +261,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                             <div class='centering'>
                                 <div class='etiqueta-pedido'>PEDIDO {$etiqueta['PEDIDO_ID']}</div>
                                 <h1 class='etiqueta-cliente'>$nombre</h1>
-                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['TALLA'], MB_CASE_TITLE, "UTF-8") . "</h3>
+                                <h3 class='etiqueta-marca'>" . mb_convert_case($etiqueta['MARCA'], MB_CASE_TITLE, "UTF-8") . " " . mb_convert_case($etiqueta['COLOR'], MB_CASE_TITLE, "UTF-8") . "</h3>
                                 <div class='etiqueta-numeracion'>
                                     <h1 class='text-dark font-weight-bold py-3 mb-0 etiqueta-borde etiqueta-cantidad'>
                                         {$etiqueta['TALLA']}
