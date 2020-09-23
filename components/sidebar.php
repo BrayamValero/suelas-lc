@@ -142,7 +142,7 @@
 
             <!-- Ventas -->
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO' || $_SESSION['USUARIO']['CARGO'] == 'CLIENTE'):
+                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO' || $_SESSION['USUARIO']['CARGO'] == 'CLIENTE' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION'):
             ?>
             
             <li class="sidebar-header-menu">
@@ -161,7 +161,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO') {
+                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='pedidos-pendientes.php'>
                                 <i class='fas fa-store'></i>
@@ -172,7 +172,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO') {
+                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'|| $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='despachos-parciales.php'>
                                 <i class='fas fa-truck'></i>
@@ -265,7 +265,7 @@
 
             <!-- Inventario -->  
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION'):
+                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO'):
             ?>
 
             <li class="sidebar-header-menu">

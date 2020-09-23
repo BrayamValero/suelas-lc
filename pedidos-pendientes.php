@@ -109,7 +109,7 @@ $.ajax({
 				{ data: "CLIENTE_NOMBRE", title: "Cliente" },
                 { data: "CLIENTE_TIPO", title: "Tipo" },
                 { data: "FORMA_PAGO", title: "Forma Pago" },
-				{ data: "FECHA_ESTIMADA", title: "Fecha Estimada" },
+				{ data: "CREATED_AT", title: "Fecha Registro" },
 				{ data: "ESTADO", title: "Estado", 
 					render: function(value, type, row) {
 						if ( row.ESTADO === 'EN ANALISIS') {

@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             foreach ($grupo_series as $key => $referencia) {
 
                 if(!isset($cantidad)){
-                    $cantidad = 0;
+                    $cantidad = '<i class="fas fa-ban text-danger"></i>';
                 }
                 
                 $suela_id = $referencia['SUELA_ID'];
