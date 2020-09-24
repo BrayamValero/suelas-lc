@@ -100,7 +100,7 @@ $result = db_query($sql);
 if ($result[0]['CONTEO'] == 0) {
 
     $sql = "INSERT INTO USUARIOS VALUES (NULL, ?, ?, ?, ?, ?, ?, NOW(), NOW(), 'SI', NULL);";
-    $data = array('ADMINISTRADOR', '123456789', 'admin@suelaslc.com', '123456789', password_hash('admin123*', PASSWORD_DEFAULT), 'ADMINISTRADOR');
+    $data = array('ADMINISTRADOR', '123456789', 'admin@suelaslc.com', '123456789', password_hash('admin123', PASSWORD_DEFAULT), 'ADMINISTRADOR');
     db_query($sql, $data);
 
 }
