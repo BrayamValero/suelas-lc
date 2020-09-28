@@ -15,6 +15,19 @@ define('FORMAS_PAGO', array(
     'TRASLADO'
 ));
 
+define('ROLES', array(
+    'ADMINISTRADOR',
+    'VENTAS',
+    'MOLINERO',
+    'OPERARIO',
+    'PRODUCCION',
+    'NORSAPLAST',
+    'DESPACHO',
+    'CLIENTE',
+    'CONTROL',
+    'LIDER'
+));
+
 if (isset($_GET['fun'])) {
     require_once 'db.php';
 

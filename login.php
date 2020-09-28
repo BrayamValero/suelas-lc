@@ -91,12 +91,12 @@ var Login = (function checkLogin() {
     
 }());
 
-// Iniciar Sesión => al clickear el botón.
+// Iniciar Sesión => Al undir el click.
 document.getElementById('botonLogin').addEventListener('click', function () {
     Login.loginAttemp(); 
 });
 
-// Iniciar Sesión => Al undir el Enter.
+// Iniciar Sesión => Al undir el enter.
 document.addEventListener('keyup', function (e) {
     if(e.code === 'Enter') Login.loginAttemp();
 });
