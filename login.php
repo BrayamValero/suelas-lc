@@ -43,44 +43,62 @@
 
 <script>
 
-// Iniciar Sesión => Ajax + PHP
+var Login = (function checkLogin() {
+    
+    // Variable privada
+    var formulario = $('#loginForm');
+
+    // Object that's returned from the IIFE.
+    return {
+
+        loginAttemp: function() {
+
+            // Si el formulario tiene algún campo incorrecto y/o vacio, lanzar error.
+            if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
+
+            // $.post => Añadiendo el elemento al backend.
+            $.post( 'backend/api/usuarios/login.php?action=LOGIN', formulario.serialize(), function(data) {
+
+                switch (data) {
+
+                    case 'ERROR':
+                        return Swal.fire('Error', 'Usuario y/o Contraseña invalidos.', 'error');
+                        break;
+
+                    default:
+
+                        Swal.fire({
+                            title: 'Bienvenido',
+                            text: 'En unos momentos te redirigimos al inicio.',
+                            icon: 'success',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            allowEscapeKey: false,
+                            allowOutsideClick: false
+                            }).then((result) => {
+                                if ( result.dismiss === Swal.DismissReason.timer || result.value ){
+                                    location.href = 'index.php';
+                                }
+                            });
+
+                }	
+
+            });
+
+        }
+
+    };
+    
+}());
+
+// Iniciar Sesión => al clickear el botón.
 document.getElementById('botonLogin').addEventListener('click', function () {
+    Login.loginAttemp(); 
+});
 
-    // Guardamos el ID del FORM
-    let formulario = $('#loginForm');
-
-    // Si el formulario tiene algún campo incorrecto y/o vacio, lanzar error.
-    if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
-
-    // $.post => Añadiendo el elemento al backend.
-    $.post( 'backend/api/usuarios/login.php?action=LOGIN', formulario.serialize(), function(data) {
-
-        switch (data) {
-
-			case 'ERROR':
-				return Swal.fire('Error', 'Usuario y/o Contraseña invalidos.', 'error');
-				break;
-
-			default:
-
-                Swal.fire({
-                    title: 'Bienvenido',
-                    text: 'En unos momentos te redirigimos al inicio.',
-                    icon: 'success',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    allowEscapeKey: false,
-                    allowOutsideClick: false
-                    }).then((result) => {
-                        if ( result.dismiss === Swal.DismissReason.timer || result.value ){
-                            location.href = 'index.php';
-                        }
-                    });
-
-		}	
-
-    });
-
+// Iniciar Sesión => Al undir el Enter.
+document.addEventListener('keyup', function (e) {
+    if(e.code === 'Enter') Login.loginAttemp();
 });
 
 </script>

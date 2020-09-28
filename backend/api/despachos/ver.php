@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $output = '';
 
         // 1. Primero buscamos el PEDIDO dependiendo del ID dado.
-        $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, CANTIDAD - DESPACHADO AS DESPACHADO, DISPONIBLE, ESTADO, URGENTE FROM PRODUCCION WHERE PEDIDO_ID = ?;";
+        $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, CANTIDAD, DESPACHADO, DISPONIBLE, ESTADO, URGENTE FROM PRODUCCION WHERE PEDIDO_ID = ?;";
         $datosPedido = db_query($sql, array($pedido_id));
         // echo '<pre>'; print_r($datosPedido); echo '</pre>';
 
@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if($referencia['SUELA_ID'] == $pedido['SUELA_ID'] && $color_id == $pedido['COLOR_ID']){
                         
                         $prod_id = $pedido['PROD_ID'];
+                        $cantidad = $pedido['CANTIDAD'];
                         $disponible =  $pedido['DISPONIBLE'];
                         $despachado = $pedido['DESPACHADO'];
                         $estado = $pedido['ESTADO'];
@@ -66,28 +67,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 }
 
-
+                // Dependiendo de la disponibilidad, muestra una vista distinta de suelas disponibles.
                 if($disponible != 0){
 
-                    $status = "
-                    
-                    <div class='badge-checkboxes mt-2'>
+                    $status = "<div class='badge-checkboxes mt-2'>
                         <div class='checkbox'>
+                            <span class='badge badge-main mb-2'>Desp: $despachado</span>
                             <label>
                                 <input type='checkbox' name='producción-id-$prod_id' value='$prod_id'>
                                 <span class='badge'>Disp: $disponible</span>
                             </label>
                         </div>
-                    </div>
-                        
-                    ";
+                    </div>";
 
-                } else {
+                } elseif ($disponible == null) {
 
                     $status = "";
 
+                } else {
+
+                    $status = "<span class='badge badge-main mt-2'>Desp: $despachado</span>";
+
                 }
                 
+                // Evaluamos el estado para poder colocar las cantidades.
                 if($estado == 'COMPLETADO'){
 
                     $append .= "
@@ -99,14 +102,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $status
                         </div>";
 
-                } else {
+                } elseif ($estado == 'PENDIENTE' || $estado == 'POR DESPACHAR' || $estado == 'EN ANALISIS') {
 
                     $append .= "
                         <div class='form-group col mb-0'>
                             <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
-                            <div class='form-control input-cantidades'>$despachado</div>
+                            <div class='form-control input-cantidades'>$cantidad</div>
                             $status
                         </div>";
+
+                } else {
+
+                    $append .= "
+                    <div class='form-group col mb-0'>
+                        <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
+                        <div class='form-control input-cantidades'>$despachado</div>
+                        $status
+                    </div>";
 
                 }
 
@@ -114,6 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             }
 
+            // Agrupamos todos los resultados.
             $output .= "
             <div class='contenedor-serie shadow-sm'>
                 <div class='form-row mb-2'>
