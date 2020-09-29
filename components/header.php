@@ -12,18 +12,42 @@ define('BASE_URL', $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_
 session_start();
 require_once 'backend/api/db.php';
 
+# Declaramos el tiempo de duración de la sesión (1 hora).
+$timer = 60 * 60;
+
 # Si los datos se sesión se encuentran vacios, devolver al login.
-if (empty($_SESSION)) {
+if (empty($_SESSION['USUARIO'])) {
     header("Location: login.php");
 }
 
-# Si la sesión ha durado más de 60 minutos, cerrar sesión.
-if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 60 * 60)) {
+# Si pasamos el primer IF significa que estamos conectados, así que obtenemos el SESSION_ID registrado al momento de loguear.
+$sql = "SELECT SESSION_ID FROM USUARIOS WHERE ID = ?;";
+$session_id = db_query($sql, array($_SESSION['USUARIO']['ID']))[0]['SESSION_ID'];
+
+# Ahora bien, revisamos si la última actividad fue hace más de X cantidad de segundos, así como también, debemos verificar si el ID de la sesion es el mismo que se encuentra en la base de datos.
+    
+# Si la sesión ha durado más de 60 minutos o el SESSION_ID de la base de datos es distinto al actual, cerramos sesión.
+if (time() - $_SESSION['USUARIO']['ULTIMA_ACTIVIDAD'] > $timer || $session_id != session_id()) {
     header("Location: backend/api/usuarios/login.php?action=unlogin&inactivity=true");
+} else {
+    # De lo contrario, actualizamos el timestamp al actualizar la página.
+    $_SESSION['USUARIO']['ULTIMA_ACTIVIDAD'] = time();
 }
 
-# De lo contrario, actualizamos el timestamp al actualizar la página.
-$_SESSION['last_activity'] = time();
+# Si la sesión inició hace más de 30 mins, renovamos el session_id.
+if (time() - $_SESSION['USUARIO']['CREADO'] > $timer / 2) {
+
+    # Renovamos el ID de la sesión para evitar ataques.
+    session_regenerate_id(true);
+
+    # Actualizamos la Base de datos.
+    $sql = "UPDATE USUARIOS SET SESSION_ID = ? WHERE ID = ?;";
+    db_query($sql, array(session_id(), $_SESSION['USUARIO']['ID']));
+    
+    # Actualizamos el timer.
+    $_SESSION['USUARIO']['CREADO'] = time();  
+
+}
 
 ?>
 
@@ -72,19 +96,6 @@ $_SESSION['last_activity'] = time();
     <title>Suelas LC</title>
 
     <script>
-
-    Date.prototype.toDateInputValue = (function() {
-        const local = new Date(this);
-        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
-
-        return local.toJSON().slice(0,10);
-    });
-
-    String.prototype.toProperCase = function () {
-        return this.replace(/\w\S*/g, function (txt) {
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-        });
-    }
 
     // Toast Notification
     function toastNotifications(icon, icon_color, msg1, msg2){

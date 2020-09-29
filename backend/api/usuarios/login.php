@@ -23,16 +23,16 @@ switch ($action) {
                 if( password_verify($password, $user[0]['CONTRASENA']) ){
 
                     $_SESSION['USUARIO'] = array(
-                        'ID' => $user[0]['ID'],
-                        'CORREO' => $user[0]['CORREO'],
-                        'NOMBRE' => $user[0]['NOMBRE'],
-                        'CARGO' => $user[0]['CARGO']
+                        'ID'                => $user[0]['ID'],
+                        'CORREO'            => $user[0]['CORREO'],
+                        'NOMBRE'            => $user[0]['NOMBRE'],
+                        'CARGO'             => $user[0]['CARGO'],
+                        'CREADO'            => time(),
+                        'ULTIMA_ACTIVIDAD'  => time()
                     );
-
-                    $session_id = session_id();
         
                     $sql = "UPDATE USUARIOS SET SESSION_ID = ? WHERE ID = ?;";
-                    $data = array($session_id, $user[0]['ID']);
+                    $data = array(session_id(), $user[0]['ID']);
                     db_query($sql, $data);
 
                     echo "SUCCESS";

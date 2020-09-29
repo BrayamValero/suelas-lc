@@ -26,7 +26,6 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     <!-- Incluimos el Navbar -->
     <?php get_navbar('Inicio', 'Panel Principal'); ?>
 
-
 </div>
 <!-- Fin de contenido -->
 

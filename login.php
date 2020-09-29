@@ -123,9 +123,9 @@ if ($result[0]['CONTEO'] == 0) {
 
 }
 
-# Si los datos se sesión no se encuentran vacios, devolver al index.
-if (!empty($_SESSION)) {
-    header("Location: index.php");
+// Si hay un usuario en SESSION -> Enviar a index.php
+if (!empty($_SESSION['USUARIO'])) {
+    header("Location: login.php");
 }
 
 // Si está setteado inactivity y este es true, lanzar alerta.
