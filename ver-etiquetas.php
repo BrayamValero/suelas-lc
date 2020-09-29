@@ -15,6 +15,8 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     exit();
 }
 
+$pedido_id = $_GET['id'];
+
 ?>
 
 <div class="text-center">
