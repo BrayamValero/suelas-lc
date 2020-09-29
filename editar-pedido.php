@@ -2,9 +2,8 @@
 
 // Incluimos el header.php y components.php
 $title = 'Editar Pedido';
-include 'components/header.php';
-include 'components/navbar.php';
-require_once 'backend/api/utils.php';
+require_once 'components/header.php';
+require_once 'components/navbar.php';
 
 // Chequeamos el status para evitar ediciones luego de pasar a PENDIENTE.
 $pedido_id = $_GET['id'];
@@ -16,15 +15,15 @@ $status = db_query($sql, array($pedido_id))[0]['ESTADO'];
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS');
 
 if( (!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)) || $status == 'PENDIENTE' || $status == 'COMPLETADO'){
-    include 'components/error.php';
-    include_once 'components/footer.php';
+    require_once 'components/error.php';
+    require_once 'components/footer.php';
     exit();
 }
 
 ?>
 
 <!-- Incluimos el sidebar.php -->
-<?php include 'components/sidebar.php' ?>
+<?php require_once 'components/sidebar.php' ?>
 
 <!-- Incluimos el contenido --> 
 <div id="contenido">
@@ -532,4 +531,4 @@ botonEditarPedido.addEventListener('click', function(){
 </script>
 
 <!-- Incluimos el footer.php -->
-<?php include_once 'components/footer.php'; ?>
+<?php require_once 'components/footer.php'; ?>

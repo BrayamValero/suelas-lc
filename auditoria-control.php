@@ -2,17 +2,16 @@
 
 // Incluimos el header.php y components.php
 $title = 'Pedidos Pendientes';
-include 'components/header.php';
-include 'components/navbar.php';
-require_once 'backend/api/utils.php';
+require_once 'components/header.php';
+require_once 'components/navbar.php';
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR');
 
 if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
-    include 'components/error.php';
-    include_once 'components/footer.php';
+    require_once 'components/error.php';
+    require_once 'components/footer.php';
     exit();
 }
 
@@ -144,4 +143,4 @@ $('#tabla tbody').on( 'click', '.devolverEmpaquetado', function () {
 </script>
 
 <!-- Incluimos el footer.php -->
-<?php include_once 'components/footer.php'; ?>
+<?php require_once 'components/footer.php'; ?>

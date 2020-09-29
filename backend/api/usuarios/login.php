@@ -26,8 +26,7 @@ switch ($action) {
                         'ID' => $user[0]['ID'],
                         'CORREO' => $user[0]['CORREO'],
                         'NOMBRE' => $user[0]['NOMBRE'],
-                        'CARGO' => $user[0]['CARGO'],
-                        'TIMER' => 10000
+                        'CARGO' => $user[0]['CARGO']
                     );
 
                     $session_id = session_id();
@@ -77,15 +76,13 @@ switch ($action) {
 
     case "UNLOGIN":
 
+        session_unset();
         session_destroy();
-        unset($_SESSION['USUARIO']);
 
         if (isset($_GET['inactivity']) && $_GET['inactivity'] == 'true') {
             header("Location: ../../../login.php?inactivity=true");
         } else {
             header("Location: ../../../login.php");
         }
- 
-        break;
 
 }

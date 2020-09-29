@@ -123,8 +123,8 @@ if ($result[0]['CONTEO'] == 0) {
 
 }
 
-// Si hay un usuario en SESSION -> Enviar a index.php
-if (isset($_SESSION['USUARIO'])) {
+# Si los datos se sesión no se encuentran vacios, devolver al index.
+if (!empty($_SESSION)) {
     header("Location: index.php");
 }
 

@@ -1,24 +1,29 @@
 <?php
-session_start();
 
+//——————————————————————————————————————————————————————————————————————
+// Define el protocolo a usar => HTTP o HTTPS.
+//——————————————————————————————————————————————————————————————————————
 $protocol = stripos($_SERVER['SERVER_PROTOCOL'],'https') === 0 ? 'https://' : 'http://';
 define('BASE_URL', $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER["REQUEST_URI"] . '?') . '/');
 
-function check_user( $session_id, $user_id ) {
-    require_once 'backend/api/db.php';
-    $sql = "SELECT * FROM USUARIOS WHERE ID = ?;";
-    $usuario = db_query($sql, array($user_id));
+//——————————————————————————————————————————————————————————————————————
+// Iniciar la sesión => Monitoreo del tiempo de sesión actual.
+//——————————————————————————————————————————————————————————————————————
+session_start();
+require_once 'backend/api/db.php';
 
-    if ($usuario[0]['SESSION_ID'] != $session_id) {
-        header("Location: backend/api/usuarios/login.php?action=unlogin&inactivity=true");
-    }
-}
-
-if (!isset($_SESSION['USUARIO'])) {
+# Si los datos se sesión se encuentran vacios, devolver al login.
+if (empty($_SESSION)) {
     header("Location: login.php");
 }
 
-check_user(session_id(), $_SESSION['USUARIO']['ID']);
+# Si la sesión ha durado más de 60 minutos, cerrar sesión.
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 60 * 60)) {
+    header("Location: backend/api/usuarios/login.php?action=unlogin&inactivity=true");
+}
+
+# De lo contrario, actualizamos el timestamp al actualizar la página.
+$_SESSION['last_activity'] = time();
 
 ?>
 

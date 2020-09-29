@@ -2,24 +2,23 @@
 
 // Incluimos el header.php y components.php
 $title = 'Reporte de Producción';
-include 'components/header.php';
-include 'components/navbar.php';
-require_once 'backend/api/utils.php';
+require_once 'components/header.php';
+require_once 'components/navbar.php';
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'MOLINERO', 'OPERARIO', 'PRODUCCION');
 
 if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
-    include 'components/error.php';
-    include_once 'components/footer.php';
+    require_once 'components/error.php';
+    require_once 'components/footer.php';
     exit();
 }
 
 ?>
 
 <!-- Incluimos el sidebar.php -->
-<?php include 'components/sidebar.php' ?>
+<?php require_once 'components/sidebar.php' ?>
 
 <!-- Page Content -->
 <div id="contenido">
@@ -615,4 +614,4 @@ function confirmar_reporte(id) {
 </script>
 
 <!-- Incluimos el footer.php -->
-<?php include_once 'components/footer.php'; ?>
+<?php require_once 'components/footer.php'; ?>

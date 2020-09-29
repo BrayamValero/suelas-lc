@@ -2,24 +2,23 @@
 
 // Incluimos el header.php y components.php
 $title = 'Panel de Producción';
-include_once 'components/header.php';
-include_once 'components/navbar.php';
-require_once 'backend/api/utils.php';
+require_once 'components/header.php';
+require_once 'components/navbar.php';
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION', 'CONTROL');
 
 if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
-    include_once 'components/error.php';
-    include_once 'components/footer.php';
+    require_once 'components/error.php';
+    require_once 'components/footer.php';
     exit();
 }
 
 ?>
 
 <!-- Incluimos el sidebar.php -->
-<?php include 'components/sidebar.php' ?>
+<?php require_once 'components/sidebar.php' ?>
 
 <!-- Incluimos el contenido --> 
 <div id="contenido">
@@ -228,4 +227,4 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 </div>
 
 <!-- Incluimos el footer.php -->
-<?php include_once 'components/footer.php'; ?>
+<?php require_once 'components/footer.php'; ?>
