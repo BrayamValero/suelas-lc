@@ -103,6 +103,18 @@ if (empty($_SESSION['USUARIO'])) {
 
     <script>
 
+    Date.prototype.toDateInputValue = (function() {
+        const local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0,10);
+    });
+
+    String.prototype.toProperCase = function () {
+        return this.replace(/\w\S*/g, function (txt) {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        });
+    }
+
     // Toast Notification
     function toastNotifications(icon, icon_color, msg1, msg2){
         $('.toast-icon').removeClass().addClass(`toast-icon ${icon} ${icon_color} mr-2`);
