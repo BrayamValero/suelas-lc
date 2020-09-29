@@ -26,11 +26,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
         
         <div class="row">
     
-        <?php 
-
-        require_once "backend/api/db.php";
-        $pedido_id = $_GET['id'];
-
+        <?php
         $sql = "SELECT PROD.PEDIDO_ID AS PEDIDO_ID, CLI.NOMBRE, SUE.MARCA AS MARCA, COL.COLOR AS COLOR, SUE.TALLA AS TALLA, PROD.CANTIDAD AS CANTIDAD, PROD.RESTANTE AS RESTANTE, PROD.STOCK AS STOCK, SUE.CAP_EMPAQUETADO AS CAP_EMPAQUETADO
         FROM PRODUCCION PROD
             LEFT JOIN SUELAS SUE
