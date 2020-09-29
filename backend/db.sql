@@ -120,15 +120,16 @@ CREATE TABLE IF NOT EXISTS STOCK
 
 CREATE TABLE IF NOT EXISTS PEDIDOS
 (
-    ID             INT PRIMARY KEY AUTO_INCREMENT,
-    USUARIO_ID     INT      NOT NULL,
-    CLIENTE_ID     INT      NOT NULL,
-    ESTADO         ENUM ('COMPLETADO', 'PENDIENTE', 'EN ANALISIS')                    DEFAULT 'PENDIENTE',
-    PRIORIDAD      ENUM ('BAJA', 'ALTA')                                              DEFAULT 'BAJA',
-    FORMA_PAGO     ENUM ('EFECTIVO', 'CREDITO', 'TARJETA', 'CHEQUE', 'TRANSFERENCIA') DEFAULT 'CREDITO',
-    FECHA_ESTIMADA DATE     NOT NULL,
-    CREATED_AT     DATETIME NOT NULL                                                  DEFAULT NOW(),
-    UPDATED_AT     DATETIME NOT NULL                                                  DEFAULT NOW() ON UPDATE NOW(),
+    ID                  INT PRIMARY KEY AUTO_INCREMENT,
+    USUARIO_ID          INT      NOT NULL,
+    CLIENTE_ID          INT      NOT NULL,
+    ESTADO              ENUM ('COMPLETADO', 'PENDIENTE', 'EN ANALISIS')                    DEFAULT 'PENDIENTE',
+    PRIORIDAD           ENUM ('BAJA', 'ALTA')                                              DEFAULT 'BAJA',
+    FORMA_PAGO          ENUM ('EFECTIVO', 'CREDITO', 'TARJETA', 'CHEQUE', 'TRANSFERENCIA') DEFAULT 'CREDITO',
+    IMPRESO             ENUM ('SI', 'NO')                                                  DEFAULT 'NO',
+    FECHA_ESTIMADA      DATE     NOT NULL,
+    CREATED_AT          DATETIME NOT NULL                                                  DEFAULT NOW(),
+    UPDATED_AT          DATETIME NOT NULL                                                  DEFAULT NOW() ON UPDATE NOW(),
     FOREIGN KEY (USUARIO_ID) REFERENCES USUARIOS (ID),
     FOREIGN KEY (CLIENTE_ID) REFERENCES CLIENTES (ID)
 ) ENGINE = InnoDB

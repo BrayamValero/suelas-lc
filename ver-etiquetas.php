@@ -20,7 +20,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 <div class="text-center">
     
-    <button class="btn btn-main hide-on-print my-4" type="button" onclick="imprimirDiv('areaImprimible')">Imprimir Etiquetas</button>
+    <button class="btn btn-main hide-on-print my-4 imprimirEtiquetas" type="button">Imprimir Etiquetas</button>
 
     <!-- Aquí se encuentra el área de impresión -->
     <div class="contenedorEtiquetas" id="areaImprimible">
@@ -300,10 +300,17 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 <script>
 
-function imprimirDiv(divName) {
-    var printContents = document.getElementById(divName).innerHTML;
+const pedido_id = <?= $pedido_id ?> 
+
+// Botón para imprimir las etiquetas.
+document.querySelector('.imprimirEtiquetas').addEventListener('click', function(){
+    
     window.print();
-}
+    setTimeout(window.close, 500);
+    $.get(`backend/api/pedidos/cambiar_estado_impresion.php?id=${pedido_id}`);
+    window.location = `pedidos-pendientes.php`;
+
+});
 
 </script>
 

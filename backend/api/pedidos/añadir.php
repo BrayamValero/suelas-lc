@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pedidos = $_POST['pedido'];
     $prioridad = 'BAJA';
     $estado = 'EN ANALISIS';
+    $impreso = 'NO';
 
     $usuario_id = test_input($_SESSION['USUARIO']['ID']);
     $cliente_id = test_input($_POST['nombre']);
@@ -16,8 +17,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fecha_estimada = test_input($_POST['fecha']);
 
     // Pedido
-    $sql = "INSERT INTO PEDIDOS VALUES (NULL, ?, ?, ?, ?, ?, ?, NOW(), NOW());";
-    db_query($sql, array($usuario_id, $cliente_id, $estado, $prioridad, $forma_pago, $fecha_estimada));
+    $sql = "INSERT INTO PEDIDOS VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());";
+    db_query($sql, array($usuario_id, $cliente_id, $estado, $prioridad, $forma_pago, $impreso, $fecha_estimada));
 
     // Producción => Datos del pedido.
     $sql = "SELECT MAX(ID) AS ID FROM PEDIDOS";
