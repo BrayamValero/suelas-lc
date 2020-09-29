@@ -5,12 +5,18 @@ $title = 'Imprimir Etiquetas';
 include 'components/header.php';
 include 'components/navbar.php';
 require_once 'backend/api/utils.php';
+require_once "backend/api/db.php";
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'DESPACHO');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+// Chequeamos el status para evitar ediciones luego de pasar a PENDIENTE.
+$pedido_id = $_GET['id'];
+$sql = "SELECT IMPRESO FROM PEDIDOS WHERE ID = ?;";
+$impreso = db_query($sql, array($pedido_id))[0]['ESTADO'];
+
+if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos || $impreso == 'SI')){
     include 'components/error.php';
     include_once 'components/footer.php';
     exit();
@@ -27,11 +33,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
         
         <div class="row">
     
-        <?php 
-
-        require_once "backend/api/db.php";
-        $pedido_id = $_GET['id'];
-
+        <?php
         $sql = "SELECT PROD.PEDIDO_ID AS PEDIDO_ID, CLI.NOMBRE, SUE.MARCA AS MARCA, COL.COLOR AS COLOR, SUE.TALLA AS TALLA, PROD.CANTIDAD AS CANTIDAD, PROD.RESTANTE AS RESTANTE, PROD.STOCK AS STOCK, SUE.CAP_EMPAQUETADO AS CAP_EMPAQUETADO
         FROM PRODUCCION PROD
             LEFT JOIN SUELAS SUE
