@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $produccion_id = $_GET['id'];
     $pesado = $_GET['pesado'];
     $cantidad = $_GET['cantidad'];
-    $nombre_usuario = $_SESSION['USUARIO']['NOMBRE'];
+    $nombre_usuario = $_SESSION['NOMBRE'];
 
     $sql = "SELECT PEDIDO_ID FROM PRODUCCION WHERE ID = ?;";
     $pedido_id = db_query($sql, array($produccion_id))[0]['PEDIDO_ID'];

@@ -10,7 +10,7 @@
                     <p class="card-text">
                         <?php 
 
-                        if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
+                        if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'PRODUCCION') {
                             echo "<p><span class='font-weight-bold'>&#9642 Color: </span>" . mb_convert_case($maquinaria_selected[0]['COLOR'], MB_CASE_TITLE, "UTF-8") . " " . "<a href='#' data-toggle='modal' data-target='#editarColorMaquinaModal' role='button'><i class='fas fa-edit icon-color'></i></a>" . "</p>";
                         } else {
                             echo "<p><span class='font-weight-bold'>&#9642 Color: </span> " . mb_convert_case($maquinaria_selected[0]['COLOR'], MB_CASE_TITLE, "UTF-8") . "</p>";
@@ -29,7 +29,7 @@
                     </p>
                         <?php
 
-                        if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
+                        if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'PRODUCCION') {
                         
                             echo "<a href='#' class='card-link icon-color deshabilitarMaquina'>Deshabilitar Máquina</a>";
                         }

@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION', 'MOLINERO');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -54,7 +54,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                         echo "<td>{$row['EXISTENCIA']} Kg</td>";
 
-                        if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'){
+                        if($_SESSION['ROL'] == 'ADMINISTRADOR'){
                             if ($row['MATERIAL'] != NULL) {
                                 echo "<td>
                                     <a href='#' data-toggle='modal' data-target='#editarMateriaPrimaAvanzada-modal' data-id='{$row['ID']}'><i class='fas fa-edit icon-color mr-1'></i></a>
@@ -318,7 +318,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
 
     <!-- Fin de Modal de Editar Materia Prima Avanzada -->
-    <?php if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO'): ?>
+    <?php if($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'MOLINERO'): ?>
 
     <div class="row mt-5">
         <a class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirMateriaPrima-modal" href="#" role="button">Añadir Materia Prima</a>

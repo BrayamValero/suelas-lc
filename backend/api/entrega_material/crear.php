@@ -20,7 +20,7 @@ if(empty($result)) {
 	// Este es el operario que estaba de turno al momento de realizar la entrega
 	$usuario_operario_id = $result[0]['ID'];
 
-	$usuario_molinero_id = $_SESSION['USUARIO']['ID'];
+	$usuario_molinero_id = $_SESSION['ID'];
 
 	$total = 0;
 

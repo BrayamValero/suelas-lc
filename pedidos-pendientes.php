@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO', 'PRODUCCION');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -50,7 +50,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 	</div>
 
     <!-- Añadimos el botón de Añadir Pedido -->
-    <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS'): ?>
+    <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'VENTAS'): ?>
         <div class="d-flex justify-content-center mt-5">
             <a class="btn btn-sm btn-main" href="añadir-pedido.php" role="button">Añadir Pedido</a>
         </div>
@@ -107,39 +107,22 @@ $.ajax({
                 { data: "ID", title: "#" },
 				{ data: "CLIENTE_NOMBRE", title: "Cliente" },
                 { data: "CLIENTE_TIPO", title: "Tipo" },
-                { data: "FORMA_PAGO", title: "Forma Pago" },
+                { data: "FORMA_PAGO", title: "Forma Pago", 
+					render: function(value, type, row) {
+                        return row.FORMA_PAGO.toProperCase();
+					}
+				},
 				{ data: "CREATED_AT", title: "Fecha Registro", 
 					render: function(value, type, row) {
-
                         let date = new Date(Date.parse(row.CREATED_AT));
-
-                        let day = date.getDate();
-                        let month = date.getMonth() + 1;
-                        let year = date.getFullYear();
-
-                        let time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-
-                        if(month < 10){
-                            if(day < 10){
-                                return `0${day}-0${month}-${year} ${time}`;
-                            } else{
-                                return `${day}-0${month}-${year} ${time}`;
-                            }
-                        }else{
-                            if(day < 10){
-                                return `0${day}-${month}-${year} ${time}`;
-                            } else{
-                                return `${day}-${month}-${year} ${time}`;
-                            }
-                        }
-
+                        return `${date.toLocaleDateString('es-US')} ${date.toLocaleTimeString('en-US')}`;
 					}
 				},
 				{ data: "ESTADO", title: "Estado", 
 					render: function(value, type, row) {
 						if ( row.ESTADO === 'EN ANALISIS') {
                             return `
-                            <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'): ?>
+                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
                                 <a href='aprobar-pedido.php?id=${row.ID}' class='btn btn-sm btn-main'>Aprobar Pedido</a>
                             <?php else: ?>
                                 Aprobar Pedido
@@ -155,7 +138,7 @@ $.ajax({
                         
                         if ( row.ESTADO === 'EN ANALISIS') {
                             return `
-                            <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS'): ?>
+                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'VENTAS'): ?>
                                 <a href='editar-pedido.php?id=${row.ID}' class='mr-1'>
                                     <i class='fas fa-edit icon-color'></i>
                                 </a>
@@ -168,7 +151,7 @@ $.ajax({
                                 </a>`;
                         } else if ( row.IMPRESO === 'NO' ) {
                             return `
-                            <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'): ?>
+                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
                                 <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-ban icon-color'></i>
                                 </a>
@@ -181,7 +164,7 @@ $.ajax({
                                 </a>`;
                         } else {
                             return `
-                            <?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'): ?>
+                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
                                 <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-ban icon-color'></i>
                                 </a>

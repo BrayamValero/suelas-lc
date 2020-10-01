@@ -23,7 +23,10 @@
 
             <?php
 
-            switch ($_SESSION['USUARIO']['CARGO']) {
+            $rol = $_SESSION['ROL'];
+            $nombre = $_SESSION['NOMBRE'];
+
+            switch ($rol) {
                 case 'ADMINISTRADOR':
                     echo "<img class='sidebar-img' src='images/administrador.png' alt='Administrador'>";
                     break;
@@ -57,8 +60,8 @@
 
             </div>
             <div class="col-8 pl-3">
-                <span class="sidebar-user-name"><?=ucwords(mb_strtolower($_SESSION['USUARIO']['NOMBRE'], 'UTF-8'))?></span>
-                <span class="sidebar-user-role"><?=ucwords(mb_strtolower($_SESSION['USUARIO']['CARGO'], 'UTF-8'))?></span>
+                <span class="sidebar-user-name"><?php ucwords(mb_strtolower($nombre)) ?></span>
+                <span class="sidebar-user-role"><?php ucwords(mb_strtolower($rol)) ?></span>
                 <span class="sidebar-user-status"><i class="fa fa-circle sidebar-user-status-circle "></i> Online</span>
             </div>
         </div>
@@ -84,7 +87,7 @@
 
             <!-- Producción -->
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO' || $_SESSION['USUARIO']['CARGO'] == 'OPERARIO' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION' || $_SESSION['USUARIO']['CARGO'] == 'CONTROL'):
+                if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'MOLINERO' || $rol == 'OPERARIO' || $rol == 'PRODUCCION' || $rol == 'CONTROL'):
             ?>
 
             <li class="sidebar-header-menu">
@@ -92,7 +95,7 @@
             </li>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'PRODUCCION') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='tablero-general.php'>
                                 <i class='fas fa-columns'></i>
@@ -103,7 +106,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION' || $_SESSION['USUARIO']['CARGO'] == 'CONTROL') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION' || $rol == 'CONTROL') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='control-de-calidad.php'>
                                 <i class='far fa-calendar-check'></i>
@@ -114,7 +117,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO' || $_SESSION['USUARIO']['CARGO'] == 'OPERARIO' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO' || $rol == 'PRODUCCION') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='reporte-de-produccion.php'>
                                 <i class='fas fa-book'></i>
@@ -125,7 +128,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='operarios.php'>
                                 <i class='fas fa-address-card'></i>
@@ -142,7 +145,7 @@
 
             <!-- Ventas -->
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO' || $_SESSION['USUARIO']['CARGO'] == 'CLIENTE' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION'):
+                if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO' || $rol == 'CLIENTE' || $rol == 'PRODUCCION'):
             ?>
             
             <li class="sidebar-header-menu">
@@ -150,7 +153,7 @@
             </li>
                     
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='añadir-pedido.php'>
                             <i class='fas fa-shopping-cart'></i>
@@ -161,7 +164,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO' || $rol == 'PRODUCCION') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='pedidos-pendientes.php'>
                                 <i class='fas fa-store'></i>
@@ -172,7 +175,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'|| $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO'|| $rol == 'PRODUCCION') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='despachos-parciales.php'>
                                 <i class='fas fa-truck'></i>
@@ -183,7 +186,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='ventas-culminadas.php'>
                                 <i class='fa fa-chart-line'></i>
@@ -194,7 +197,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='clientes.php'>
                                 <i class='fa fa-user-tie'></i>
@@ -211,7 +214,7 @@
 
             <!-- Auditorias -->
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'):
+                if($rol == 'ADMINISTRADOR'):
             ?>
 
             <li class="sidebar-header-menu">
@@ -219,7 +222,7 @@
             </li> 
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
+                    if($rol == 'ADMINISTRADOR') {
 
                         echo "<li class='sidebar-dropdown'>
                         <a href='auditoria-control.php'>
@@ -265,7 +268,7 @@
 
             <!-- Inventario -->  
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO'):
+                if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'MOLINERO'):
             ?>
 
             <li class="sidebar-header-menu">
@@ -273,7 +276,7 @@
             </li>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'PRODUCCION' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION' || $rol == 'MOLINERO') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='materia-prima.php'>
                                 <i class='fab fa-react'></i>
@@ -284,7 +287,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'VENTAS' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='suelas-en-stock.php'>
                             <i class='fas fa-boxes'></i>
@@ -295,7 +298,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
+                    if($rol == 'ADMINISTRADOR') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='referencias.php'>
                             <i class='fab fa-slack-hash'></i>
@@ -306,7 +309,7 @@
                 ?>
                 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
+                    if($rol == 'ADMINISTRADOR') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='series.php'>
                             <i class='fas fa-sort-amount-up-alt'></i>
@@ -317,7 +320,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
+                    if($rol == 'ADMINISTRADOR') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='color.php'>
                             <i class='fas fa-star'></i>
@@ -334,7 +337,7 @@
 
             <!-- Norsaplast -->  
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'NORSAPLAST'):
+                if($rol == 'ADMINISTRADOR' || $rol == 'NORSAPLAST'):
             ?>
 
             <li class="sidebar-header-menu">
@@ -342,7 +345,7 @@
             </li>
                     
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'NORSAPLAST') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'NORSAPLAST') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='solicitud-material.php'>
                                 <i class='fas fa-sticky-note'></i>
@@ -359,7 +362,7 @@
 
             <!-- Molinero -->
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO' || $_SESSION['USUARIO']['CARGO'] == 'OPERARIO'):
+                if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO'):
             ?>
           
             <li class="sidebar-header-menu">
@@ -367,7 +370,7 @@
             </li>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='formulas.php'>
                             <i class='fas fa-flask'></i>
@@ -378,7 +381,7 @@
                 ?>
                 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO' || $_SESSION['USUARIO']['CARGO'] == 'OPERARIO') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='entrega-de-material.php'>
                             <i class='fas fa-truck-loading'></i>
@@ -389,7 +392,7 @@
                 ?>
 
                 <?php
-                    if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='auditoria-de-entrega.php'>
                             <i class='fas fa-dolly-flatbed'></i>
@@ -412,7 +415,7 @@
     <div class="sidebar-footer bg-light">
         <div class="row text-center">
             <?php
-                if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR') {
+                if($rol == 'ADMINISTRADOR') {
                     echo "<div class='col'>
                         <div>
                             <a href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>

@@ -24,16 +24,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "UPDATE USUARIOS SET CARGO = ?, CEDULA = ?, NOMBRE = ?, TELEFONO = ?, CORREO = ?  WHERE ID = ?";
     db_query($sql, array($cargo, $cedula, $nombre, $telefono, $correo, $id));
 
-    if ($id == $_SESSION['USUARIO']['ID']) {
+    if ($id == $_SESSION['ID']) {
         $sql = "SELECT * FROM USUARIOS WHERE ID = ?;";
         $result = db_query($sql, array($id));
+       
+        $_SESSION['ID'] = $result[0]['ID'];
+        $_SESSION['NOMBRE'] = $result[0]['NOMBRE'];
+        $_SESSION['CORREO'] = $result[0]['CORREO'];
+        $_SESSION['ROL'] = $result[0]['CARGO'];
 
-        $_SESSION['USUARIO'] = array(
-            'ID' => $result[0]['ID'],
-            'CORREO' => $result[0]['CORREO'],
-            'NOMBRE' => $result[0]['NOMBRE'],
-            'CARGO' => $result[0]['CARGO']
-        );
     }
 
     header("Location: ../../../usuarios.php");

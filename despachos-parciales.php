@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -66,7 +66,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                     <div id="detallesDespachos" class="modal-body"></div>
 
                     <!-- Fin de Modal de Editar Materia Prima Avanzada -->
-                    <?php if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'DESPACHO'): ?>
+                    <?php if($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-outline-dark mr-auto" id="marcarCheckbox" data-status="off">Marcar Todos</button>

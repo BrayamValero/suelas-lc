@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -213,7 +213,11 @@ $.ajax({
             "data": result,
             "columns": [
                 { data: "ID", title: "#" },
-                { data: "NOMBRE", title: "Nombre" },
+				{ data: "NOMBRE", title: "Nombre", 
+					render: function(value, type, row) {
+                        return row.NOMBRE.toProperCase();
+					}
+				},
                 { 
                     data: 'ID',
                     title: "Opciones", render: function(value, type, row) {

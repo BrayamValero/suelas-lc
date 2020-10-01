@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'MOLINERO', 'OPERARIO', 'PRODUCCION');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -32,13 +32,13 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
     $boton_visible = false;
 
     $sql = "SELECT * FROM USUARIOS WHERE ID = ?;";
-    $data = array($_SESSION['USUARIO']['ID']);
+    $data = array($_SESSION['ID']);
 
     $usuario = db_query($sql, $data);
 
     if ($usuario[0]['CARGO'] == 'OPERARIO') {
         $sql = "SELECT * FROM OPERARIOS WHERE USUARIO_ID = ?;";
-        $data = array($_SESSION['USUARIO']['ID']);
+        $data = array($_SESSION['ID']);
 
         $operario = db_query($sql, $data);
 
@@ -86,7 +86,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 
                         // Verificación de status.
                         if ($row['ESTADO'] === 'PENDIENTE') {
-                            if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO') {
+                            if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'MOLINERO') {
                                 echo "<td>
                                     <button class='btn btn-sm btn-main' onclick='confirmar_reporte({$row['REPORTE_ID']})'>Pendiente</button>
                                 </td>";

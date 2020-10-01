@@ -16,7 +16,7 @@ require_once 'backend/api/db.php';
 $timer = 60 * 60;
 
 # Si los datos se sesión se encuentran vacios, devolver al login.
-if (empty($_SESSION['USUARIO'])) {
+if (empty($_SESSION)) {
 
     header("Location: login.php");
     
@@ -24,36 +24,34 @@ if (empty($_SESSION['USUARIO'])) {
 
     # Si pasamos el primer IF significa que estamos conectados, así que obtenemos el SESSION_ID registrado al momento de loguear.
     $sql = "SELECT SESSION_ID FROM USUARIOS WHERE ID = ?;";
-    $session_id = db_query($sql, array($_SESSION['USUARIO']['ID']))[0]['SESSION_ID'];
+    $session_id = db_query($sql, array($_SESSION['ID']))[0]['SESSION_ID'];
 
     # Ahora bien, revisamos si la última actividad fue hace más de X cantidad de segundos, así como también, debemos verificar si el ID de la sesion es el mismo que se encuentra en la base de datos.
         
     # Si la sesión ha durado más de 60 minutos o el SESSION_ID de la base de datos es distinto al actual, cerramos sesión.
-    if (time() - $_SESSION['USUARIO']['ULTIMA_ACTIVIDAD'] > $timer || $session_id != session_id()) {
+    if (time() - $_SESSION['ULTIMA_ACTIVIDAD'] > $timer || $session_id != session_id()) {
         header("Location: backend/api/usuarios/login.php?action=unlogin&inactivity=true");
     } else {
         # De lo contrario, actualizamos el timestamp al actualizar la página.
-        $_SESSION['USUARIO']['ULTIMA_ACTIVIDAD'] = time();
+        $_SESSION['ULTIMA_ACTIVIDAD'] = time();
     }
 
     # Si la sesión inició hace más de 30 mins, renovamos el session_id.
-    if (time() - $_SESSION['USUARIO']['CREADO'] > $timer / 2) {
+    if (time() - $_SESSION['CREADO'] > $timer / 2) {
 
         # Renovamos el ID de la sesión para evitar ataques.
         session_regenerate_id(true);
 
         # Actualizamos la Base de datos.
         $sql = "UPDATE USUARIOS SET SESSION_ID = ? WHERE ID = ?;";
-        db_query($sql, array(session_id(), $_SESSION['USUARIO']['ID']));
+        db_query($sql, array(session_id(), $_SESSION['ID']));
         
         # Actualizamos el timer.
-        $_SESSION['USUARIO']['CREADO'] = time();  
+        $_SESSION['CREADO'] = time();  
 
     }
 
 }
-
-
 
 ?>
 

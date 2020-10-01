@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $estado = 'EN ANALISIS';
     $impreso = 'NO';
 
-    $usuario_id = test_input($_SESSION['USUARIO']['ID']);
+    $usuario_id = test_input($_SESSION['ID']);
     $cliente_id = test_input($_POST['nombre']);
     $forma_pago = test_input($_POST['pago']);
     $fecha_estimada = test_input($_POST['fecha']);

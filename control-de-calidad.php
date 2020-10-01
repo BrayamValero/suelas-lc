@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION', 'CONTROL');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -72,7 +72,9 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
             
             ?>
         </div>
-
+        
+        <?php if($_SESSION['ROL'] === 'ADMINISTRADOR'): ?>
+        
         <div class="col-lg-6 px-2 mt-1">
             <form action="backend/api/maquinarias/color.php" method="POST">
                 <div class="input-group">
@@ -103,6 +105,14 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                 </div>
             </form>
         </div>
+
+        <?php else: ?>
+
+        <div class="col-lg-6 px-2 mt-1">
+            <input type="text" class="form-control" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" readonly>
+        </div>
+
+        <?php endif; ?>
 
     </div>
 
@@ -211,9 +221,12 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
                 <div class='casillero shadow mb-3'>
                     <div class='casillero-header' data-id='{$casilleros[$i]['ID']}' data-numero='{$casilleros[$i]['NUMERO']}'>
                         <span class='font-weight-bold'>$index</span>";
+        
 
-        include 'components/tabla-dropdown.php';
-
+        if($_SESSION['ROL'] === 'ADMINISTRADOR' || $_SESSION['ROL'] === 'PRODUCCION' || $_SESSION['ROL'] === 'LIDER') {
+            include 'components/tabla-dropdown.php';    
+        }        
+        
         echo "</div>
             $output
             </div>
@@ -376,6 +389,10 @@ function marcarEmpaquetado(id, restante) {
 
     Swal.mixin({
         input: 'number',
+        inputAttributes: {
+            step: 0.01
+        },
+        validationMessage: 'Error, solo puedes colocar 2 decimales.',
         confirmButtonText: 'Siguiente &rarr;',
         showCancelButton: true,
         progressSteps: ['1', '2']

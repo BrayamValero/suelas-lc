@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'MOLINERO', 'OPERARIO');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -75,7 +75,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 					if ($row['ESTADO'] === 'PENDIENTE') {
 						echo "<td>";
 						
-						if($_SESSION['USUARIO']['CARGO'] == 'MOLINERO') {
+						if($_SESSION['ROL'] == 'MOLINERO') {
 							echo "<a href='#' data-toggle='modal' data-target='#editarMaterialEntregadoModal' data-id='{$row['ID']}'>
 								<i class='fas fa-edit icon-color'></i>
 							</a>";
@@ -285,7 +285,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 	<!-- Fin de Editar Material Entregado -->
 
 	<?php
-		if($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR' || $_SESSION['USUARIO']['CARGO'] == 'MOLINERO'):
+		if($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'MOLINERO'):
 	?>
 		<div class="row mt-5">
 			<a id="comprobarMateriales" class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#entregarMaterialModal" href="#" role="button">Entregar Material</a>

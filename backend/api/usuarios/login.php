@@ -22,14 +22,12 @@ switch ($action) {
                 // Si la contraseña coincide.
                 if( password_verify($password, $user[0]['CONTRASENA']) ){
 
-                    $_SESSION['USUARIO'] = array(
-                        'ID'                => $user[0]['ID'],
-                        'CORREO'            => $user[0]['CORREO'],
-                        'NOMBRE'            => $user[0]['NOMBRE'],
-                        'CARGO'             => $user[0]['CARGO'],
-                        'CREADO'            => time(),
-                        'ULTIMA_ACTIVIDAD'  => time()
-                    );
+                    $_SESSION['ID'] = $user[0]['ID'];
+                    $_SESSION['NOMBRE'] = $user[0]['NOMBRE'];
+                    $_SESSION['CORREO'] = $user[0]['CORREO'];
+                    $_SESSION['ROL'] = $user[0]['CARGO'];
+                    $_SESSION['CREADO'] = time();
+                    $_SESSION['ULTIMA_ACTIVIDAD'] = time();
         
                     $sql = "UPDATE USUARIOS SET SESSION_ID = ? WHERE ID = ?;";
                     $data = array(session_id(), $user[0]['ID']);

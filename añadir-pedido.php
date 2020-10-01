@@ -10,7 +10,7 @@ require_once 'backend/api/utils.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -338,12 +338,12 @@ botonAñadirPedido.addEventListener("click", function(){
             cancelButtonText: 'No',
         }).then((result) => {
 
-            if (result.value) {
+            if (result.isConfirmed) {
 
                 // $.post => Enviando el elemento al backend.
-                $.post( `backend/api/pedidos/añadir.php`, formulario.serialize(), function(data, status) {
-
-                    Swal.fire({
+                $.post(`backend/api/pedidos/añadir.php`, formulario.serialize());
+            
+                Swal.fire({
                     title: 'Exito',
                     text: 'El pedido ha sido añadido satisfactoriamente.',
                     icon: 'success',
@@ -351,12 +351,10 @@ botonAñadirPedido.addEventListener("click", function(){
                     timerProgressBar: true,
                     allowEscapeKey: false,
                     allowOutsideClick: false
-                    }).then((result) => {
-                        if ( result.dismiss === Swal.DismissReason.timer || result.value ){
-                            location.href = 'pedidos-pendientes.php';
-                        }
-                    });
-
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.timer || result.value){
+                        location.href = 'pedidos-pendientes.php';
+                    }
                 });
 
             }

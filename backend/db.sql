@@ -121,15 +121,15 @@ CREATE TABLE IF NOT EXISTS STOCK
 CREATE TABLE IF NOT EXISTS PEDIDOS
 (
     ID                  INT PRIMARY KEY AUTO_INCREMENT,
-    USUARIO_ID          INT      NOT NULL,
-    CLIENTE_ID          INT      NOT NULL,
-    ESTADO              ENUM ('COMPLETADO', 'PENDIENTE', 'EN ANALISIS')                    DEFAULT 'PENDIENTE',
-    PRIORIDAD           ENUM ('BAJA', 'ALTA')                                              DEFAULT 'BAJA',
-    FORMA_PAGO          ENUM ('EFECTIVO', 'CREDITO', 'TARJETA', 'CHEQUE', 'TRANSFERENCIA') DEFAULT 'CREDITO',
-    IMPRESO             ENUM ('SI', 'NO')                                                  DEFAULT 'NO',
-    FECHA_ESTIMADA      DATE     NOT NULL,
-    CREATED_AT          DATETIME NOT NULL                                                  DEFAULT NOW(),
-    UPDATED_AT          DATETIME NOT NULL                                                  DEFAULT NOW() ON UPDATE NOW(),
+    USUARIO_ID          INT                 NOT NULL,
+    CLIENTE_ID          INT                 NOT NULL,
+    ESTADO              ENUM ('COMPLETADO', 'PENDIENTE', 'EN ANALISIS') NOT NULL      DEFAULT 'PENDIENTE',
+    PRIORIDAD           ENUM ('BAJA', 'ALTA') NOT NULL                                DEFAULT 'BAJA',
+    FORMA_PAGO          VARCHAR(20)         NOT NULL                                  DEFAULT 'CREDITO',
+    IMPRESO             ENUM ('SI', 'NO')   NOT NULL                                  DEFAULT 'NO',
+    FECHA_ESTIMADA      DATE                NOT NULL,
+    CREATED_AT          DATETIME            NOT NULL                                  DEFAULT NOW(),
+    UPDATED_AT          DATETIME            NOT NULL                                  DEFAULT NOW() ON UPDATE NOW(),
     FOREIGN KEY (USUARIO_ID) REFERENCES USUARIOS (ID),
     FOREIGN KEY (CLIENTE_ID) REFERENCES CLIENTES (ID)
 ) ENGINE = InnoDB
@@ -138,18 +138,18 @@ CREATE TABLE IF NOT EXISTS PEDIDOS
 CREATE TABLE IF NOT EXISTS PRODUCCION
 (
     ID         INT PRIMARY KEY AUTO_INCREMENT,
-    PEDIDO_ID  INT              NOT NULL,
-    SUELA_ID   INT              NOT NULL,
-    SERIE_ID   INT              NOT NULL,
-    COLOR_ID   INT              NOT NULL,
-    CANTIDAD   INT              NOT NULL,
-    RESTANTE   INT              NOT NULL,
-    STOCK      INT              NOT NULL,
-    POR_PESAR  INT              NOT NULL,
-    PESADO     DECIMAL UNSIGNED NOT NULL,
-    DISPONIBLE INT              NOT NULL,
-    DESPACHADO INT              NOT NULL,
-    URGENTE    INT              NOT NULL,
+    PEDIDO_ID  INT                    NOT NULL,
+    SUELA_ID   INT                    NOT NULL,
+    SERIE_ID   INT                    NOT NULL,
+    COLOR_ID   INT                    NOT NULL,
+    CANTIDAD   INT                    NOT NULL,
+    RESTANTE   INT                    NOT NULL,
+    STOCK      INT                    NOT NULL,
+    POR_PESAR  INT                    NOT NULL,
+    PESADO     DECIMAL(8,2) UNSIGNED  NOT NULL,
+    DISPONIBLE INT                    NOT NULL,
+    DESPACHADO INT                    NOT NULL,
+    URGENTE    INT                    NOT NULL,
     ESTADO     ENUM ('COMPLETADO', 'PENDIENTE', 'EN ANALISIS', 'POR DESPACHAR'),
     CREATED_AT DATETIME         NULL,
     FOREIGN KEY (PEDIDO_ID) REFERENCES PEDIDOS (ID) ON DELETE CASCADE,
@@ -330,7 +330,7 @@ CREATE TABLE IF NOT EXISTS AUDITORIA_CONTROL
     NOMBRE_USUARIO          VARCHAR(50)   NOT NULL,
     FECHA_EMPAQUETADO       DATETIME      NOT NULL DEFAULT NOW(),
     CANTIDAD                INT           NOT NULL,
-    PESADO                  INT           NOT NULL
+    PESADO                  DECIMAL(8,2)  UNSIGNED NOT NULL
     -- FOREIGN KEY (PRODUCCION_ID) REFERENCES PRODUCCION (ID),
     -- FOREIGN KEY (PEDIDO_ID) REFERENCES PRODUCCION (PEDIDO_ID)
 ) ENGINE = InnoDB

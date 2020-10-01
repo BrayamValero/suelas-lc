@@ -11,7 +11,6 @@ define('FORMAS_PAGO', array(
     'CHEQUE',
     'TARJETA',
     'TRANSFERENCIA',
-    'ALMACEN',
     'TRASLADO'
 ));
 

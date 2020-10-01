@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -50,7 +50,7 @@ if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
 	</div>
 
 	<!-- Si el usuario es Administrador, agregar botón. -->
-	<?php if ($_SESSION['USUARIO']['CARGO'] == 'ADMINISTRADOR'): ?>
+	<?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
 
 	<div class="row mt-5">
 		<button class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirStockModal">Añadir Stock</button>

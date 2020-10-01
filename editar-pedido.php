@@ -4,6 +4,7 @@
 $title = 'Editar Pedido';
 require_once 'components/header.php';
 require_once 'components/navbar.php';
+require_once 'backend/api/utils.php';
 
 // Chequeamos el status para evitar ediciones luego de pasar a PENDIENTE.
 $pedido_id = $_GET['id'];
@@ -14,7 +15,7 @@ $status = db_query($sql, array($pedido_id))[0]['ESTADO'];
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS');
 
-if( (!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)) || $status == 'PENDIENTE' || $status == 'COMPLETADO'){
+if( (!in_array($_SESSION['ROL'], $roles_permitidos)) || $status == 'PENDIENTE' || $status == 'COMPLETADO'){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();

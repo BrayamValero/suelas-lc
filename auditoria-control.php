@@ -9,7 +9,7 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR');
 
-if(!in_array($_SESSION['USUARIO']['CARGO'], $roles_permitidos)){
+if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -80,11 +80,23 @@ $.ajax({
             "columns": [
                 { data: "ID", title: "#" },
 				{ data: "PEDIDO_ID", title: "Pedido" },
-                { data: "FECHA_EMPAQUETADO", title: "Fecha y Hora" },
+                { data: "FECHA_EMPAQUETADO", title: "Fecha Registro", 
+					render: function(value, type, row) {
+
+                        let date = new Date(Date.parse(row.FECHA_EMPAQUETADO));
+                        
+                        return `${date.toLocaleDateString('es-US')} ${date.toLocaleTimeString('en-US')}`;
+
+					}
+				},
                 { data: "NOMBRE_USUARIO", title: "Usuario" },
                 { data: "REFERENCIA", title: "Referencia" },
 				{ data: "CANTIDAD", title: "Cantidad" },
-                { data: "PESADO", title: "Peso" },
+                { data: "PESADO", title: "Peso", 
+					render: function(value, type, row) {
+                        return `${row.PESADO} Kgs`;
+					}
+				},
 				{ data: "ID", title: "Opciones", 
 					render: function(value, type, row) {
                         return `<a href='javascript:void(0)' data-id='${row.ID}' class='btn btn-sm btn-main devolverEmpaquetado'>
@@ -92,7 +104,6 @@ $.ajax({
                         </a>`;
 					}
 				}
-        
             ],
             "columnDefs": [{
                 searchable: true,
