@@ -4,6 +4,7 @@
 $title = 'Usuarios';
 require_once 'components/header.php';
 require_once 'components/navbar.php';
+require_once 'backend/api/utils.php';
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
@@ -96,15 +97,11 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                             <div class="form-group col-sm-6">
                                 <label for="inputAñadirCargo-modal">Cargo</label>
                                 <select id="inputAñadirCargo-modal" class="form-control dropdown-select2" name="cargo">
-                                    <option value="ADMINISTRADOR">Administrador</option>
-                                    <option value="VENTAS">Ventas</option>
-                                    <option value="MOLINERO">Molinero</option>
-                                    <option value="OPERARIO">Operario</option>
-                                    <option value="PRODUCCION">Producción</option>
-                                    <option value="NORSAPLAST">Norsaplast</option>
-                                    <option value="DESPACHO">Despacho</option>
-                                    <option value="CLIENTE">Cliente</option>
-                                    <option value="CONTROL">Control de Calidad</option>
+                                    <?php
+                                        foreach (ROLES as $rol) {
+                                            echo "<option value='$rol'>". mb_convert_case($rol, MB_CASE_TITLE) ."</option>";
+                                        }
+                                    ?>
                                 </select>
                             </div>
 
@@ -194,70 +191,66 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
                         <div class="form-row">
 
-                            <input type="hidden" name="id" id="inputEditarId-modal">
+                            <input type="hidden" name="id" id="editarId">
 
                             <div class="form-group col-sm-6">
-                                <label for="inputEditarCargo-modal">Cargo</label>
-                                <select id="inputEditarCargo-modal" class="form-control dropdown-select2" name="cargo">
-                                    <option value="ADMINISTRADOR">Administrador</option>
-                                    <option value="VENTAS">Ventas</option>
-                                    <option value="MOLINERO">Molinero</option>
-                                    <option value="OPERARIO">Operario</option>
-                                    <option value="PRODUCCION">Producción</option>
-                                    <option value="NORSAPLAST">Norsaplast</option>
-                                    <option value="DESPACHO">Despacho</option>
-                                    <option value="CLIENTE">Cliente</option>
-                                    <option value="CONTROL">Control de Calidad</option>
+                                <label for="editarRol">Cargo</label>
+                                <select id="editarRol" class="form-control" name="cargo">
+                                    <?php
+                                        foreach (ROLES as $rol) {
+                                            echo "<option value='$rol'>". mb_convert_case($rol, MB_CASE_TITLE) ."</option>";
+                                        }
+                                    ?>
                                 </select>
                             </div>
 
                             <div class="form-group col-sm-6">
-                                <label for="inputEditarNombre-modal">Nombre y Apellido</label>
+                                <label for="editarNombre">Nombre y Apellido</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-signature"></i></div>
                                     </div>
-                                    <input id="inputEditarNombre-modal" class="form-control" name="nombre" type="text" placeholder="Nombre" placeholder="Nombre y Apellido" pattern="[A-Za-zÀ-ž\s]+" title="El nombre solo puede contener letras." required>
+                                    <input id="editarNombre" class="form-control" name="nombre" type="text" placeholder="Nombre" placeholder="Nombre y Apellido" pattern="[A-Za-zÀ-ž\s]+" title="El nombre solo puede contener letras." required>
                                 </div>
                             </div>
 
                             <div class="form-group col-sm-6">
-                                <label for="inputEditarCedula-modal">ID</label>
+                                <label for="editarCedula">ID</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-id-card"></i></div>
                                     </div>
-                                    <input id="inputEditarCedula-modal" class="form-control" type="number" name="cedula" placeholder="ID" required>
+                                    <input id="editarCedula" class="form-control" type="number" name="cedula" placeholder="ID" required>
                                 </div>
                             </div>
 
                             <div class="form-group col-sm-6">
-                                <label for="inputEditarTelefono-modal">Teléfono</label>
+                                <label for="editarTelefono">Teléfono</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-phone"></i></div>
                                     </div>
-                                    <input id="inputEditarTelefono-modal" class="form-control" name="telefono" type="number" placeholder="Teléfono" required>
+                                    <input id="editarTelefono" class="form-control" name="telefono" type="number" placeholder="Teléfono" required>
                                 </div>
                             </div>
 
                             <div class="form-group col-sm-6">
-                                <label for="inputEditarCorreo-modal">Email</label>
+                                <label for="editarCorreo">Email</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-envelope"></i></div>
                                     </div>
-                                    <input id="inputEditarCorreo-modal" class="form-control" name="correo" type="email" placeholder="Email" required>
+                                    <input id="editarCorreo" class="form-control" name="correo" type="email" placeholder="Email" required>
                                 </div>
                             </div>
 
                             <div class="form-group col-sm-6">
-                                <label for="inputEditarContraseña-modal">Contraseña</label>
+                                <label for="editarContraseña">Contraseña</label>
                                 <div class="input-group mb-2">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text"><i class="fas fa-lock"></i></div>
                                     </div>
-                                    <input id="inputEditarContraseña-modal" class="form-control" name="contrasena" type="password" placeholder="Contraseña" minlength="6" readonly required>
+                                    <input id="editarContraseña" class="form-control" name="contrasena" type="password" placeholder="Contraseña" minlength="6" readonly required>
                                 </div>
                             </div>
 
@@ -311,14 +304,6 @@ $('#customInput').on( 'keyup', function () {
 	tabla.search( this.value ).draw();
 });
 
-// Variables Inicializadas para Editar.
-const inputEditarId = document.getElementById("inputEditarId-modal");
-const inputEditarCedula = document.getElementById("inputEditarCedula-modal");
-const inputEditarNombre = document.getElementById('inputEditarNombre-modal');
-const inputEditarCorreo = document.getElementById('inputEditarCorreo-modal');
-const inputEditarTelefono = document.getElementById('inputEditarTelefono-modal');
-const inputEditarContraseña = document.getElementById('inputEditarContraseña-modal');
-
 // Editar Usuarios.
 $('#editarUsuario-modal').on('show.bs.modal', function (e) {
 
@@ -331,49 +316,49 @@ $('#editarUsuario-modal').on('show.bs.modal', function (e) {
         success: function (data) {
 
             const result = JSON.parse(data);
-
             console.log(result);
 
-            $("#inputEditarCargo-modal > option").each(function() {
+            $("#editarRol> option").each(function() {
 
-                if( result[0].CARGO == this.value ){
+                if(result[0].CARGO == this.value){
 
                     $(this).prop("selected", true);
-                    
+        
                     return false;
 
                 }
 
             });
 
-            inputEditarId.value = result[0].ID;
-            inputEditarCedula.value = result[0].CEDULA;
-            inputEditarNombre.value = result[0].NOMBRE;
-            inputEditarTelefono.value = result[0].TELEFONO;
-            inputEditarCorreo.value = result[0].CORREO;
+            document.getElementById("editarId").value = result[0].ID;
+            document.getElementById("editarCedula").value = result[0].CEDULA;
+            document.getElementById("editarNombre").value = result[0].NOMBRE.toProperCase();
+            document.getElementById("editarCorreo").value = result[0].CORREO;
+            document.getElementById("editarTelefono").value = result[0].TELEFONO;
 
         }
     });
 });
 
 // Activación y desactivación del botón para editar la contraseña.
-$('.readonlyToggler').click(function () {
+document.querySelector('.readonlyToggler').addEventListener('click', function(e){
+
+    e.preventDefault();
     
-    event.preventDefault();
+    let button = e.target;
 
-    var $this = $(this);
-
-    $this.toggleClass('readonlyToggler');
-
-    if ($this.hasClass('readonlyToggler')) {
-        inputEditarContraseña.readOnly = true;
-        $this.text('Desbloquear');
+    if(button.classList.contains('readonlyToggler')){
+        document.getElementById('editarContraseña').readOnly = false;
+        button.innerHTML = "Bloquear";
     } else {
-        inputEditarContraseña.readOnly = false;
-        $this.text('Bloquear');
+        document.getElementById('editarContraseña').readOnly = true;
+        button.innerHTML = "Desbloquear";
     }
 
+    button.classList.toggle('readonlyToggler');
+
 });
+
 </script>
 
 <!-- Incluimos el footer.php -->

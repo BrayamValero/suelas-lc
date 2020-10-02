@@ -255,9 +255,8 @@ function obtenerSuelas()
 
 function obtenerUsuarioId()
 {
-    $sql = "SELECT * FROM USUARIOS WHERE ID = ?;";
+    $sql = "SELECT ID, NOMBRE, CEDULA, CARGO, TELEFONO, CORREO, ACTIVO FROM USUARIOS WHERE ID = ?;";
     $result = db_query($sql, array($_POST['id']));
-
     echo json_encode($result);
 }
 
