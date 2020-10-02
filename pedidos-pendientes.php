@@ -152,11 +152,11 @@ $.ajax({
                         } else if ( row.IMPRESO === 'NO' ) {
                             return `
                             <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
+                                <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
+                                    <i class='fas fa-print icon-color'></i>
+                                </a>
                                 <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-ban icon-color'></i>
-                                </a>
-                                <a href='ver-etiquetas.php?id=${row.ID}'>
-                                    <i class='fas fa-print icon-color'></i>
                                 </a>
                             <?php endif; ?>
                                 <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>

@@ -160,14 +160,10 @@ if( (!in_array($_SESSION['ROL'], $roles_permitidos)) || $status == 'PENDIENTE' |
         <!-- Tabla de Pedidos -->
         <div class="tablaPedidos shadow-sm mt-4">
 
-            <h6 class="font-weight-bold mb-4">
+            <h6 class="font-weight-bold mb-4" id="inicioPedidos">
                 <i class="fas fa-shopping-bag icon-color mr-2"></i> Pedido
                 <small class="ml-1">Si no carga la información, prueba refrescando con la tecla <strong>F5.</strong></small>
             </h6>
-
-            <!-- Contenedor de Pedidos / JavaScript .clear -->
-            <div class="contenedorPedidos"></div>
-            <!-- / fin de contenedor de Serie -->
 
             <button id="botonEditarPedido" type="button" class="btn btn-main btn-block mt-3">Editar Pedido</button>
         
@@ -195,7 +191,6 @@ const editarPago = document.getElementById('editarPago');
 const editarSerie = document.getElementById('editarReferencia');
 const editarColor = document.getElementById('editarColor');
 
-const contenedorPedidos = document.getElementById('contenedorPedidos');
 const botonAñadirSerie = document.getElementById('botonAñadirSerie');
 const botonEditarPedido = document.getElementById('botonEditarPedido');
 
@@ -262,41 +257,37 @@ document.addEventListener('DOMContentLoaded', function () {
             let blue = parseInt(backgroundHex.substring(5, 7), 16);
 
             let colorHex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
-
-            $('.contenedorPedidos').append(`
-                <div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
-                    <div class="form-row">
-                        <div class="col-8">
-                            <strong>${result[0].MARCA.toProperCase()}</strong>
-                            <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color.toProperCase()}</span>
-                            <small class="text-muted">${result[0].TALLA} al ${result[result.length - 1].TALLA}</small>
-                        </div>
-                        <div class="col-4">
-                            <button type="button" class="close eliminarSerie" data-id="${i}" data-serie-id="${serieId}" data-color-id="${colorId}" tabIndex="-1">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <button type="button" class="close esconderSerie" data-id="${i}" tabIndex="-1">
-                                <span aria-hidden="true" class="mr-2">&minus;</span>
-                            </button>
-                        </div>
+            
+            document.getElementById('inicioPedidos').insertAdjacentHTML('afterend', 
+            `<div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
+                <div class="form-row">
+                    <div class="col-8">
+                        <strong>${result[0].MARCA.toProperCase()}</strong>
+                        <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color}</span>
+                        <small class="text-muted">${result[0].TALLA} al ${result[result.length - 1].TALLA}</small>
                     </div>
-                    <div id="grupoSeries-${i}" class="form-row text-center">
+                    <div class="col-4">
+                        <button type="button" class="close eliminarSerie" data-id="${i}" data-serie-id="${serieId}" data-color-id="${colorId}" tabIndex="-1">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <button type="button" class="close esconderSerie" data-id="${i}" tabIndex="-1">
+                            <span aria-hidden="true" class="mr-2">&minus;</span>
+                        </button>
                     </div>
-                </div>        
-            `);
+                </div>
+                <div id="grupoSeries-${i}" class="form-row text-center"></div>
+            </div>`);
+                    
+            result.forEach(serie => {
 
-            result.forEach(row => {
-
-                $('#grupoSeries-' + i).append(`
-                    <div class="form-group col mb-0 mt-2">
-                        <label class="label-cantidades" for="cantidades">${row.TALLA}</label>
-                        <input class="form-control input-cantidades" data-suela-id="${row.SUELA_ID}" data-color-id="${colorId}" type="number" name="pedido[${j}][cantidad]" min="0" value="0" required>
-                    </div>
-                    <input type="hidden" name="pedido[${j}][suela_id]" value="${row.SUELA_ID}">
+                document.getElementById('grupoSeries-' + i).innerHTML +=
+                `<div class="form-group col mb-0 mt-2">
+                    <label class="label-cantidades" for="cantidades">${serie.TALLA}</label>
+                    <input class="form-control input-cantidades" data-suela-id="${serie.SUELA_ID}" data-color-id="${colorId}" type="number" name="pedido[${j}][cantidad]" min="0" value="0" required>
+                    <input type="hidden" name="pedido[${j}][suela_id]" value="${serie.SUELA_ID}">
                     <input type="hidden" name="pedido[${j}][serie_id]" value="${serieId}">
                     <input type="hidden" name="pedido[${j}][color_id]" value="${colorId}">
-
-                `);
+                </div>`;
 
                 j++;
 
@@ -312,7 +303,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Agregamos las cantidades.
     $('.input-cantidades').each(function() {
-
+        
         datosPedido.some(elem => {
 
             if (elem.SUELA_ID == $(this).data('suela-id') && elem.COLOR_ID == $(this).data('color-id')) {
@@ -387,40 +378,36 @@ botonAñadirSerie.addEventListener('click', function () {
 
     let colorHex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
 
-    // AÑADIENDO LA SERIE -> NOMBRE SERIE, COLOR Y RANGO
-    $('.contenedorPedidos').append(`
-        <div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
-            <div class="form-row">
-                <div class="col-8">
-                    <strong>${obtenerSerie[0].MARCA.toProperCase()}</strong>
-                    <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color}</span>
-                    <small class="text-muted">${obtenerSerie[0].TALLA} al ${obtenerSerie[obtenerSerie.length - 1].TALLA}</small>
-                </div>
-                <div class="col-4">
-                    <button type="button" class="close eliminarSerie" data-id="${i}" data-serie-id="${serieId}" data-color-id="${colorId}" tabIndex="-1">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <button type="button" class="close esconderSerie" data-id="${i}" tabIndex="-1">
-                        <span aria-hidden="true" class="mr-2">&minus;</span>
-                    </button>
-                </div>
+    document.getElementById('inicioPedidos').insertAdjacentHTML('afterend', 
+    `<div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
+        <div class="form-row">
+            <div class="col-8">
+                <strong>${obtenerSerie[0].MARCA.toProperCase()}</strong>
+                <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color}</span>
+                <small class="text-muted">${obtenerSerie[0].TALLA} al ${obtenerSerie[obtenerSerie.length - 1].TALLA}</small>
             </div>
-            <div id="grupoSeries-${i}" class="form-row text-center">
+            <div class="col-4">
+                <button type="button" class="close eliminarSerie" data-id="${i}" data-serie-id="${serieId}" data-color-id="${colorId}" tabIndex="-1">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <button type="button" class="close esconderSerie" data-id="${i}" tabIndex="-1">
+                    <span aria-hidden="true" class="mr-2">&minus;</span>
+                </button>
             </div>
-        </div>        
-    `);
-
+        </div>
+        <div id="grupoSeries-${i}" class="form-row text-center"></div>
+    </div>`);
+            
     obtenerSerie.forEach(serie => {
 
-        $('#grupoSeries-' + i).append(`
-            <div class="form-group col mb-0 mt-2">
-                <label class="label-cantidades" for="cantidades">${serie.TALLA}</label>
-                <input class="form-control input-cantidades" data-suela-id="${serie.SUELA_ID}" data-color-id="${colorId}" type="number" name="pedido[${j}][cantidad]" min="0" required>
-            </div>
+        document.getElementById('grupoSeries-' + i).innerHTML +=
+        `<div class="form-group col mb-0 mt-2">
+            <label class="label-cantidades" for="cantidades">${serie.TALLA}</label>
+            <input class="form-control input-cantidades" data-suela-id="${serie.SUELA_ID}" data-color-id="${colorId}" type="number" name="pedido[${j}][cantidad]" min="0" required>
             <input type="hidden" name="pedido[${j}][suela_id]" value="${serie.SUELA_ID}">
             <input type="hidden" name="pedido[${j}][serie_id]" value="${serieId}">
             <input type="hidden" name="pedido[${j}][color_id]" value="${colorId}">
-        `);
+        </div>`;
 
         j++;
 
@@ -433,14 +420,10 @@ botonAñadirSerie.addEventListener('click', function () {
 // Event Delegation = Esconder Serie.
 $(document).on('click', '.esconderSerie', function() {
 
-    let columnaId = $(this).data('id');
-    let serie = document.getElementById(`grupoSeries-${columnaId}`);
+    let id = $(this).data('id');
+    let serie = document.getElementById('grupoSeries-' + id);
 
-    if (serie.style.display === 'none') {
-        serie.style.display = 'flex';
-    } else {
-        serie.style.display = 'none';
-    }
+    serie.style.display === 'none' ? serie.style.display = 'flex' : serie.style.display = 'none';
 
 });
 
@@ -449,7 +432,7 @@ $(document).on('click', '.eliminarSerie', function(e) {
 
     let serieId = $(this).data('serie-id');
     let colorId = $(this).data('color-id');
-    let columnaId = $(this).data('id');
+    let id = $(this).data('id');
 
     for (let i = 0; i < datosSeries.length; i++) {
 
@@ -461,7 +444,7 @@ $(document).on('click', '.eliminarSerie', function(e) {
 
     }
 
-    $('#serie-' + columnaId).remove();
+    $('#serie-' + id).remove();
 
 });
 

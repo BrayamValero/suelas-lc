@@ -131,13 +131,9 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
         <!-- Tabla de Pedidos -->
         <div class="tablaPedidos shadow-sm mt-4">
 
-            <h6 class="font-weight-bold mb-3">
+            <h6 class="font-weight-bold mb-3" id="inicioPedidos">
                 <i class="fas fa-shopping-bag icon-color mr-2"></i> Pedido
             </h6>
-            
-            <!-- Contenedor de Pedidos / JavaScript .clear -->
-            <div class="contenedorPedidos"></div>
-            <!-- / fin de contenedor de Serie -->
             
             <button id="botonAñadirPedido" type="button" class="btn btn-main btn-block mt-3">Finalizar Pedido</button>
         
@@ -154,8 +150,8 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <script>
 
 // Datos del cliente.
-var i = 0;
-var j = 0;
+var i = 1;
+var j = 1;
 var verificadorSerie = [];
 var obtenerColor, obtenerSerie; 
 
@@ -164,7 +160,6 @@ const añadirFecha = document.getElementById('añadirFecha');
 const añadirPago = document.getElementById('añadirPago');
 const añadirSerie = document.getElementById('añadirSerie');
 const añadirColor = document.getElementById('añadirColor');
-const contenedorPedidos = document.getElementById('contenedorPedidos');
 const botonAñadirSerie = document.getElementById('botonAñadirSerie');
 const botonAñadirPedido = document.getElementById('botonAñadirPedido');
 
@@ -217,7 +212,6 @@ botonAñadirSerie.addEventListener('click', function () {
         success: function (data) {
 
             obtenerSerie = JSON.parse(data);
-            // console.log(obtenerSerie);
 
         }
     });
@@ -232,41 +226,36 @@ botonAñadirSerie.addEventListener('click', function () {
 
     let colorHex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
 
-    // AÑADIENDO LA SERIE -> NOMBRE SERIE, COLOR Y RANGO
-    $('.contenedorPedidos').append(`
-        <div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
-            <div class="form-row">
-                <div class="col-8">
-                    <strong>${obtenerSerie[0].MARCA.toProperCase()}</strong>
-                    <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color}</span>
-                    <small class="text-muted">${obtenerSerie[0].TALLA} al ${obtenerSerie[obtenerSerie.length - 1].TALLA}</small>
-                </div>
-                <div class="col-4">
-                    <button type="button" class="close eliminarSerie" data-id="${i}" data-serie-id="${serieId}" data-color-id="${colorId}" tabIndex="-1">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <button type="button" class="close esconderSerie" data-id="${i}" tabIndex="-1">
-                        <span aria-hidden="true" class="mr-2">&minus;</span>
-                    </button>
-                </div>
+    document.getElementById('inicioPedidos').insertAdjacentHTML('afterend', 
+    `<div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
+        <div class="form-row">
+            <div class="col-8">
+                <strong>${obtenerSerie[0].MARCA.toProperCase()}</strong>
+                <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color}</span>
+                <small class="text-muted">${obtenerSerie[0].TALLA} al ${obtenerSerie[obtenerSerie.length - 1].TALLA}</small>
             </div>
-            <div id="grupoSeries-${i}" class="form-row text-center">
+            <div class="col-4">
+                <button type="button" class="close eliminarSerie" data-id="${i}" data-serie-id="${serieId}" data-color-id="${colorId}" tabIndex="-1">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <button type="button" class="close esconderSerie" data-id="${i}" tabIndex="-1">
+                    <span aria-hidden="true" class="mr-2">&minus;</span>
+                </button>
             </div>
-        </div>        
-    `);
+        </div>
+        <div id="grupoSeries-${i}" class="form-row text-center"></div>
+    </div>`);
 
     obtenerSerie.forEach(serie => {
 
-        $('#grupoSeries-' + i).append(`
-            <div class="form-group col mb-0 mt-2">
-                <label class="label-cantidades" for="cantidades">${serie.TALLA}</label>
-                <input class="form-control input-cantidades" type="number" name="pedido[${j}][cantidad]" min="0" required>
-            </div>
+        document.getElementById('grupoSeries-' + i).innerHTML +=
+        `<div class="form-group col mb-0 mt-2">
+            <label class="label-cantidades" for="cantidades">${serie.TALLA}</label>
+            <input class="form-control input-cantidades" type="number" name="pedido[${j}][cantidad]" min="0" required>
             <input type="hidden" name="pedido[${j}][suela_id]" value="${serie.SUELA_ID}">
             <input type="hidden" name="pedido[${j}][serie_id]" value="${serieId}">
             <input type="hidden" name="pedido[${j}][color_id]" value="${colorId}">
-
-        `);
+        </div>`;
 
         j++;
 
@@ -279,14 +268,10 @@ botonAñadirSerie.addEventListener('click', function () {
 // Event Delegation = Esconder Serie.
 $(document).on('click', '.esconderSerie', function() {
 
-    let columnaId = $(this).data('id');
-    let serie = document.getElementById(`grupoSeries-${columnaId}`);
+    let id = $(this).data('id');
+    let serie = document.getElementById('grupoSeries-' + id);
 
-    if (serie.style.display === 'none') {
-        serie.style.display = 'flex';
-    } else {
-        serie.style.display = 'none';
-    }
+    serie.style.display === 'none' ? serie.style.display = 'flex' : serie.style.display = 'none';
 
 });
 
@@ -302,8 +287,6 @@ $(document).on('click', '.eliminarSerie', function(e) {
         if ((verificadorSerie[i].SERIE_ID == serieId) && (verificadorSerie[i].COLOR_ID == colorId)){
             
             verificadorSerie.splice(i, 1);
-            // console.clear();
-            // console.log(verificadorSerie);
 
         }
 
