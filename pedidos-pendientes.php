@@ -128,7 +128,15 @@ $.ajax({
                             row.PRIORIDAD === elem ? opciones += `<option value='${elem}' selected>${elem.toProperCase()}</option>` : opciones += `<option value='${elem}'>${elem.toProperCase()}</option>`;
                         });
 
+                        <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
+
                         return `<select class='cambiarPrioridad custom-select custom-select-sm' data-id='${row.ID}'>${opciones}</select>`;
+
+                        <?php else: ?>
+
+                        return row.PRIORIDAD.toProperCase();
+                        
+                        <?php endif; ?>
 
 					}
 				},
