@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS PEDIDOS
     USUARIO_ID          INT                 NOT NULL,
     CLIENTE_ID          INT                 NOT NULL,
     ESTADO              ENUM ('COMPLETADO', 'PENDIENTE', 'EN ANALISIS') NOT NULL      DEFAULT 'PENDIENTE',
-    PRIORIDAD           ENUM ('BAJA', 'ALTA') NOT NULL                                DEFAULT 'BAJA',
+    PRIORIDAD           ENUM ('BAJA', 'MEDIA', 'ALTA',  'VIP')          NOT NULL      DEFAULT 'BAJA',
     FORMA_PAGO          VARCHAR(20)         NOT NULL                                  DEFAULT 'CREDITO',
     IMPRESO             ENUM ('SI', 'NO')   NOT NULL                                  DEFAULT 'NO',
     FECHA_ESTIMADA      DATE                NOT NULL,
@@ -331,7 +331,15 @@ CREATE TABLE IF NOT EXISTS AUDITORIA_CONTROL
     FECHA_EMPAQUETADO       DATETIME      NOT NULL DEFAULT NOW(),
     CANTIDAD                INT           NOT NULL,
     PESADO                  DECIMAL(8,2)  UNSIGNED NOT NULL
-    -- FOREIGN KEY (PRODUCCION_ID) REFERENCES PRODUCCION (ID),
-    -- FOREIGN KEY (PEDIDO_ID) REFERENCES PRODUCCION (PEDIDO_ID)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+  
+CREATE TABLE IF NOT EXISTS REGISTRO_SALIDA
+(
+    ID                      INT PRIMARY KEY AUTO_INCREMENT,
+    USUARIO                 VARCHAR(50)       NOT NULL,
+    PEDIDO_ID               INT               NOT NULL,           
+    IMAGEN_DESPACHO         VARCHAR(255)      NOT NULL,
+    FECHA_ENTREGA           DATETIME          NOT NULL DEFAULT NOW()
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;

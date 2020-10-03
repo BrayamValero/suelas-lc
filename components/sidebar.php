@@ -22,37 +22,37 @@
             <div class="col-4">
 
             <?php
-
+        
             $rol = $_SESSION['ROL'];
             $nombre = $_SESSION['NOMBRE'];
 
             switch ($rol) {
                 case 'ADMINISTRADOR':
-                    echo "<img class='sidebar-img' src='images/administrador.png' alt='Administrador'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/administrador.png' alt='Administrador'>";
                     break;
                 case 'VENTAS':
-                    echo "<img class='sidebar-img' src='images/ventas.png' alt='Ventas'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/ventas.png' alt='Ventas'>";
                     break;
                 case 'MOLINERO':
-                    echo "<img class='sidebar-img' src='images/molinero.png' alt='Molinero'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/molinero.png' alt='Molinero'>";
                     break;
                 case 'OPERARIO':
-                    echo "<img class='sidebar-img' src='images/operario.png' alt='Operario'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/operario.png' alt='Operario'>";
                     break;
                 case 'PRODUCCION':
-                    echo "<img class='sidebar-img' src='images/produccion.png' alt='Producción'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/produccion.png' alt='Producción'>";
                     break;
                 case 'DESPACHO':
-                    echo "<img class='sidebar-img' src='images/despacho.png' alt='Despacho'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/despacho.png' alt='Despacho'>";
                     break;
                 case 'CONTROL':
-                    echo "<img class='sidebar-img' src='images/control.png' alt='Control'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/control.png' alt='Control'>";
                     break;
                 case 'NORSAPLAST':
-                    echo "<img class='sidebar-img' src='images/norsaplast.png' alt='Norsaplast'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/norsaplast.png' alt='Norsaplast'>";
                     break;
                 case 'CLIENTE':
-                    echo "<img class='sidebar-img' src='images/cliente.png' alt='Cliente'>";
+                    echo "<img class='sidebar-img' src='imagenes/imagen-perfil/cliente.png' alt='Cliente'>";
                     break;
             }
 
@@ -60,8 +60,8 @@
 
             </div>
             <div class="col-8 pl-3">
-                <span class="sidebar-user-name"><?php ucwords(mb_strtolower($nombre)) ?></span>
-                <span class="sidebar-user-role"><?php ucwords(mb_strtolower($rol)) ?></span>
+                <span class="sidebar-user-name"><?php echo ucwords(mb_strtolower($nombre)) ?></span>
+                <span class="sidebar-user-role"><?php echo ucwords(mb_strtolower($rol)) ?></span>
                 <span class="sidebar-user-status"><i class="fa fa-circle sidebar-user-status-circle "></i> Online</span>
             </div>
         </div>

@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="form-row">
                     <div class="col-8">
                         <strong>${result[0].MARCA.toProperCase()}</strong>
-                        <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color}</span>
+                        <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color.toProperCase()}</span>
                         <small class="text-muted">${result[0].TALLA} al ${result[result.length - 1].TALLA}</small>
                     </div>
                     <div class="col-4">

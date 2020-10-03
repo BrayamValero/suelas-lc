@@ -117,6 +117,20 @@ $.ajax({
                         let date = new Date(Date.parse(row.CREATED_AT));
                         return `${date.toLocaleDateString('es-US')} ${date.toLocaleTimeString('en-US')}`;
 					}
+                },
+                { data: "PRIORIDAD", title: "Prioridad", 
+					render: function(value, type, row) {
+
+                        let opciones = '';
+                        let prioridades = ['BAJA', 'MEDIA', 'ALTA', 'VIP'];
+                        
+                        prioridades.forEach(elem => {
+                            row.PRIORIDAD === elem ? opciones += `<option value='${elem}' selected>${elem.toProperCase()}</option>` : opciones += `<option value='${elem}'>${elem.toProperCase()}</option>`;
+                        });
+
+                        return `<select class='cambiarPrioridad custom-select custom-select-sm' data-id='${row.ID}'>${opciones}</select>`;
+
+					}
 				},
 				{ data: "ESTADO", title: "Estado", 
 					render: function(value, type, row) {
@@ -271,6 +285,15 @@ $('#tabla tbody').on( 'click', '.cancelarPedido', function () {
 
         }
     });
+
+});
+
+// CAMBIAR => Cambiando el estado del cliente.
+$('#tabla tbody').on( 'change', '.cambiarPrioridad', function () {
+
+    let id = $(this).data("id");
+    let prioridad = $(this).val();
+    $.get(`backend/api/pedidos/cambiar_prioridad.php?id=${id}&prioridad=${prioridad}`);
 
 });
 
