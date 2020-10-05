@@ -115,7 +115,12 @@ $.ajax({
 				{ data: "CLIENTE_NOMBRE", title: "Cliente" },
                 { data: "CLIENTE_TIPO", title: "Tipo" },
                 { data: "FORMA_PAGO", title: "Forma Pago" },
-				{ data: "FECHA_ESTIMADA", title: "Fecha Estimada" },
+                { data: "FECHA_ESTIMADA", title: "Fecha Estimada", 
+					render: function(value, type, row) {
+                        // let date = new Date(Date.parse(row.FECHA_ESTIMADA));
+                        return row.FECHA_ESTIMADA;
+					}
+                },
                 { data: 'ID', title: "Opciones",
 					render: function(value, type, row) {
                         

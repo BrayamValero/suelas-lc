@@ -104,7 +104,12 @@ $.ajax({
                 { data: "ID", title: "#" },
                 { data: "CLIENTE_NOMBRE", title: "Nombre Cliente" },
                 { data: "CLIENTE_TIPO", title: "Tipo Cliente" },
-				{ data: "UPDATED_AT", title: "Fecha Culminación" },
+                { data: "UPDATED_AT", title: "Fecha Culminación", 
+					render: function(value, type, row) {
+                        let date = new Date(Date.parse(row.UPDATED_AT));
+                        return `${date.toLocaleDateString('es-US')} ${date.toLocaleTimeString('en-US')}`;
+					}
+                },
 				{ data: "FORMA_PAGO", title: "Tipo Pago" },
                 { 
                     data: 'ID',
