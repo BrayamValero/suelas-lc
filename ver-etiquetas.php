@@ -88,7 +88,7 @@ $pedido_id = $_GET['id'];
 
                     $restante -= $cap_empaquetado;
 
-                    if($pageBreak == 4){
+                    if($pageBreak == 2){
                         $output .= "</div><div class='pageBreak'></div><div class='row'>";
                         $pageBreak = 0;
                     }
@@ -123,7 +123,7 @@ $pedido_id = $_GET['id'];
                         </div>  
                     </div>";
 
-                    if($pageBreak == 4){
+                    if($pageBreak == 2){
                         $output .= "</div><div class='pageBreak'></div><div class='row'>";
                         $pageBreak = 0;
                     }
@@ -165,7 +165,7 @@ $pedido_id = $_GET['id'];
         
                         $stock -= $cap_empaquetado;
 
-                        if($pageBreak == 4){
+                        if($pageBreak == 2){
                             $output .= "</div><div class='pageBreak'></div><div class='row'>";
                             $pageBreak = 0;
                         }
@@ -200,7 +200,7 @@ $pedido_id = $_GET['id'];
                             </div>  
                         </div>";
 
-                        if($pageBreak == 4){
+                        if($pageBreak == 2){
                             $output .= "</div><div class='pageBreak'></div><div class='row'>";
                             $pageBreak = 0;
                         }
@@ -239,7 +239,7 @@ $pedido_id = $_GET['id'];
 
                     $restante -= $cap_empaquetado;
                                     
-                    if($pageBreak == 4){
+                    if($pageBreak == 2){
                         $output .= "</div><div class='pageBreak'></div><div class='row'>";
                         $pageBreak = 0;
                     }
@@ -274,7 +274,7 @@ $pedido_id = $_GET['id'];
                         </div>  
                     </div>";
 
-                    if($pageBreak == 4){
+                    if($pageBreak == 2){
                         $output .= "</div><div class='pageBreak'></div><div class='row'>";
                         $pageBreak = 0;
                     }

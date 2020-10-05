@@ -117,8 +117,8 @@ $.ajax({
                 { data: "FORMA_PAGO", title: "Forma Pago" },
                 { data: "FECHA_ESTIMADA", title: "Fecha Estimada", 
 					render: function(value, type, row) {
-                        // let date = new Date(Date.parse(row.FECHA_ESTIMADA));
-                        return row.FECHA_ESTIMADA;
+                        let date = new Date(Date.parse(row.FECHA_ESTIMADA));
+                        return date.toLocaleDateString('es-US');
 					}
                 },
                 { data: 'ID', title: "Opciones",
