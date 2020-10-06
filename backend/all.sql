@@ -2,6 +2,12 @@
 INSERT INTO DUREZA VALUES
 ('1', 65);
 
+INSERT INTO PRIORIDAD VALUES 
+(1, 'Baja'),
+(2, 'Media'),
+(3, 'Alta'),
+(4, 'VIP');
+
 -- Color
 INSERT INTO COLOR VALUES
 (1, 'BLANCO', '#FFFFFF'),

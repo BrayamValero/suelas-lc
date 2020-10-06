@@ -118,20 +118,28 @@ CREATE TABLE IF NOT EXISTS STOCK
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
+CREATE TABLE IF NOT EXISTS PRIORIDAD
+(
+    ID                  INT PRIMARY KEY AUTO_INCREMENT,
+    TIPO_PRIORIDAD      VARCHAR(50) NOT NULL UNIQUE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
 CREATE TABLE IF NOT EXISTS PEDIDOS
 (
     ID                  INT PRIMARY KEY AUTO_INCREMENT,
     USUARIO_ID          INT                 NOT NULL,
     CLIENTE_ID          INT                 NOT NULL,
     ESTADO              ENUM ('COMPLETADO', 'PENDIENTE', 'EN ANALISIS') NOT NULL      DEFAULT 'PENDIENTE',
-    PRIORIDAD           ENUM ('BAJA', 'MEDIA', 'ALTA',  'VIP')          NOT NULL      DEFAULT 'BAJA',
+    PRIORIDAD_ID        INT                 NOT NULL,
     FORMA_PAGO          VARCHAR(20)         NOT NULL                                  DEFAULT 'CREDITO',
     IMPRESO             ENUM ('SI', 'NO')   NOT NULL                                  DEFAULT 'NO',
     FECHA_ESTIMADA      DATE                NOT NULL,
     CREATED_AT          DATETIME            NOT NULL                                  DEFAULT NOW(),
     UPDATED_AT          DATETIME            NOT NULL                                  DEFAULT NOW() ON UPDATE NOW(),
     FOREIGN KEY (USUARIO_ID) REFERENCES USUARIOS (ID),
-    FOREIGN KEY (CLIENTE_ID) REFERENCES CLIENTES (ID)
+    FOREIGN KEY (CLIENTE_ID) REFERENCES CLIENTES (ID),
+    FOREIGN KEY (PRIORIDAD_ID) REFERENCES PRIORIDAD (ID)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 

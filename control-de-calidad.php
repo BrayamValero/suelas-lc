@@ -132,10 +132,15 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
             S.MARCA AS SUELA_MARCA,
             S.TALLA AS SUELA_TALLA,
             S.PESO_IDEAL AS SUELA_PESO_IDEAL,
-            S.PESO_MAQUINA AS SUELA_PESO_MAQUINA
+            S.PESO_MAQUINA AS SUELA_PESO_MAQUINA,
+            PED.PRIORIDAD_ID AS PRIORIDAD_ID,
+            PRI.TIPO_PRIORIDAD AS TIPO_PRIORIDAD
                 FROM PRODUCCION P 
-                    JOIN SUELAS S ON P.SUELA_ID = S.ID 
-                        WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ? ORDER BY CREATED_AT ASC;";
+                    JOIN SUELAS S ON P.SUELA_ID = S.ID
+                    JOIN PEDIDOS PED ON P.PEDIDO_ID = PED.ID
+                    JOIN PRIORIDAD PRI ON PED.PRIORIDAD_ID = PRI.ID    
+                        WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ? ORDER BY PRIORIDAD_ID DESC, CREATED_AT ASC;";
+                        
 
     $produccion_actual = db_query($sql, array($maquinaria_color[0]['ID']));
 
@@ -166,6 +171,9 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                     
                     $output .= "
                     <div class='casillero-content'>
+
+                        <div class='badge badge-danger mb-2'>{$produccion['TIPO_PRIORIDAD']}</div>
+
                         <div class='badge badge-main badge-casillero mb-2'>Pedido {$produccion['PEDIDO_ID']}</div>
                         
                         <div class='font-weight-bold'>{$produccion['SUELA_MARCA']} {$produccion['SUELA_TALLA']}</div>

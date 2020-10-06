@@ -82,7 +82,20 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <script>
 
 // VARIABLES => Declarando Variables Globales.
-var tabla;
+var tabla, prioridades;
+
+// AJAX => Obtejemos las Prioridades.
+$.ajax({
+    type: 'get',
+    url: 'backend/api/utils.php?fun=obtenerPrioridades',
+    async: false,
+    success: function (data) {
+
+        prioridades = JSON.parse(data);
+
+    }
+});
+
 
 // DATATABLES => Mostrando la tabla PEDIDOS_PENDIENTES.
 $.ajax({
@@ -92,6 +105,8 @@ $.ajax({
     success: function (data) {
 
         const result = JSON.parse(data);
+
+        console.log(result);
 
         tabla = $('#tabla').DataTable({
             "initComplete": function(settings, json) {
@@ -118,24 +133,33 @@ $.ajax({
                         return `${date.toLocaleDateString('es-US')} ${date.toLocaleTimeString('en-US')}`;
 					}
                 },
-                { data: "PRIORIDAD", title: "Prioridad", 
+                { data: "PRIORIDAD_ID", title: "Prioridad", 
 					render: function(value, type, row) {
 
                         let opciones = '';
-                        let prioridades = ['BAJA', 'MEDIA', 'ALTA', 'VIP'];
-                        
-                        prioridades.forEach(elem => {
-                            row.PRIORIDAD === elem ? opciones += `<option value='${elem}' selected>${elem.toProperCase()}</option>` : opciones += `<option value='${elem}'>${elem.toProperCase()}</option>`;
+
+                        prioridades.forEach(prioridad => {
+                            
+                            if(prioridad.ID === row.PRIORIDAD_ID){
+
+                                opciones += `<option value='${prioridad.ID}' selected>${prioridad.TIPO_PRIORIDAD}</option>`;
+
+                            } else {
+
+                                opciones += `<option value='${prioridad.ID}'>${prioridad.TIPO_PRIORIDAD}</option>`;
+
+                            }
+
                         });
 
                         <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
 
-                        return `<select class='cambiarPrioridad custom-select custom-select-sm' data-id='${row.ID}'>${opciones}</select>`;
+                            return `<select class='cambiarPrioridad custom-select custom-select-sm' data-id='${row.ID}'>${opciones}</select>`;
 
                         <?php else: ?>
 
-                        return row.PRIORIDAD.toProperCase();
-                        
+                            return row.TIPO_PRIORIDAD;
+
                         <?php endif; ?>
 
 					}

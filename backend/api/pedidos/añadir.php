@@ -7,7 +7,7 @@ echo '<pre>'; print_r($_POST); echo '</pre>';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $pedidos = $_POST['pedido'];
-    $prioridad = 'BAJA';
+    $prioridad_id = 1;
     $estado = 'EN ANALISIS';
     $impreso = 'NO';
 
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Pedido
     $sql = "INSERT INTO PEDIDOS VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());";
-    db_query($sql, array($usuario_id, $cliente_id, $estado, $prioridad, $forma_pago, $impreso, $fecha_estimada));
+    db_query($sql, array($usuario_id, $cliente_id, $estado, $prioridad_id, $forma_pago, $impreso, $fecha_estimada));
 
     // Producción => Datos del pedido.
     $sql = "SELECT MAX(ID) AS ID FROM PEDIDOS";

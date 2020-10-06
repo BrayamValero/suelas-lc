@@ -210,6 +210,10 @@ if (isset($_GET['fun'])) {
             obtenerPedidosPendientes();
             break;
 
+        case 'obtenerPrioridades':
+            obtenerPrioridades();
+            break;
+            
         case 'obtenerPedidosEnProceso':
             obtenerPedidosEnProceso();
             break;
@@ -659,15 +663,22 @@ function obtenerPedidos(){
 }
 
 function obtenerPedidosPendientes(){
-    $sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE 
-            FROM PEDIDOS P 
-                JOIN CLIENTES C 
-                    ON P.CLIENTE_ID = C.ID 
-            WHERE P.ESTADO IN ('EN ANALISIS', 'PENDIENTE');";
+    $sql = "SELECT PED.*, PRI.TIPO_PRIORIDAD, CLI.ID AS CLIENTE_ID, CLI.TIPO AS CLIENTE_TIPO, CLI.NOMBRE AS CLIENTE_NOMBRE 
+            FROM PEDIDOS PED 
+                JOIN CLIENTES CLI 
+                    ON PED.CLIENTE_ID = CLI.ID
+                JOIN PRIORIDAD PRI
+                    ON PRI.ID = PED.PRIORIDAD_ID 
+            WHERE PED.ESTADO IN ('EN ANALISIS', 'PENDIENTE');";
     $result = db_query($sql);
     echo json_encode($result);
 }
 
+function obtenerPrioridades(){
+    $sql = "SELECT * FROM PRIORIDAD ORDER BY ID ASC;";
+    $result = db_query($sql);
+    echo json_encode($result);
+}
 
 function obtenerPedidosEnProceso(){
     $sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE 
