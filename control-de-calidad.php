@@ -21,7 +21,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <?php require_once 'components/sidebar.php' ?>
 
 <!-- Incluimos el contenido --> 
-<div id="contenido">
+<div id="contenido" class="contenido-fixed">
 
     <?php
 
