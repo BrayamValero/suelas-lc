@@ -63,7 +63,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
             foreach ($maquinarias_activas as $maquinaria) {
 
                 if ($maquinaria['ID'] == $maquinaria_id) {
-                    echo "<a href='$url_actual?id={$maquinaria['ID']}' role='button' class='btn btn-sm btn-main mr-1 mb-2'>" . mb_convert_case($maquinaria['NOMBRE'], MB_CASE_TITLE) . "</a>";
+                    echo "<a href='$url_actual?id={$maquinaria['ID']}' role='button' class='btn btn-sm btn-main mr-1 mb-2 font-weight-bold'>" . mb_convert_case($maquinaria['NOMBRE'], MB_CASE_TITLE) . "</a>";
                 } else {
                     echo "<a href='$url_actual?id={$maquinaria['ID']}' role='button' class='btn btn-sm btn-outline-dark mr-1 mb-2'>" . mb_convert_case($maquinaria['NOMBRE'], MB_CASE_TITLE) . "</a>";
                 }
@@ -109,7 +109,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
         <?php else: ?>
 
         <div class="col-lg-6 px-2 mt-1">
-            <input type="text" class="form-control" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" readonly>
+            <input type="text" class="form-control font-weight-bold" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" readonly>
         </div>
 
         <?php endif; ?>

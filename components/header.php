@@ -73,6 +73,7 @@ if (empty($_SESSION)) {
     <link rel="stylesheet" href="css/select2-bootstrap4.css">
     <link rel="stylesheet" href="css/sweetalert2.min.css">
     <link rel="stylesheet" type="text/css" media="print" href="css/print.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
 
     <!-- JS -->
     <script src="js/jquery.min.js"></script>
