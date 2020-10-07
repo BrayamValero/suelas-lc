@@ -154,7 +154,7 @@ $.ajax({
 
                         <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
 
-                            return `<select class='cambiarPrioridad custom-select custom-select-sm' data-id='${row.ID}'>${opciones}</select>`;
+                            return `<select class='cambiarPrioridad custom-select custom-select-sm dropdown-select2' data-id='${row.ID}'>${opciones}</select>`;
 
                         <?php else: ?>
 
