@@ -22,6 +22,7 @@
 
 </head>
 <body>
+
 <div class="container-fluid">
     <div class="form-container">
         <form id="loginForm">
@@ -36,28 +37,57 @@
             <div class="text-center pb-2">
                 <button type="button" class="btn btn-main btn-block" id="botonLogin">Iniciar Sesión</button>
             </div>
-            <small class="form-text text-center text-small">Si olvidaste tus datos puedes pedirselos a un Administrador.</small>
+            <small class="form-text text-center text-small">Si olvidaste tu contraseña, has <a href="javascript:void(0);" data-toggle='modal' data-target='#recuperarClave' class="font-weight-bold text-danger">click aqui</a>.</small>
         </form>
     </div>
-</div>
+
+    <!-- Modal de Recuperar Clave -->
+    <div class="modal fade" id="recuperarClave" tabindex="-1" role="dialog" aria-labelledby="recuperarClave" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fa fa-lock icon-color mr-1"></i> Recuperar Contraseña
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="recuperarClaveForm">
+                        <div class="form-group">
+                            <label for="correo" class="font-weight-bold">Correo Electrónico</label>
+                            <input type="email" class="form-control" id="correo" name="correo" aria-describedby="emailHelp" placeholder="Correo Electrónico" required>
+                            <small class="d-block text-muted mt-2">Se le enviará un correo electrónico con la clave asociada a la cuenta.</small>
+                        </div>
+                        <button type="button" id="botonRecuperarClave" class="btn btn-block btn-main">Recuperar Contraseña</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<!-- Fin de Modal de Ver Serie -->
 
 <script>
 
 var Login = (function checkLogin() {
     
-    // Variable privada
-    var formulario = $('#loginForm');
+    // Variables privadas
+    var loginForm = $('#loginForm');
+    var recuperarClaveForm = $('#recuperarClaveForm');
 
     // Object that's returned from the IIFE.
     return {
 
-        loginAttemp: function() {
+        iniciarSesion: function() {
 
             // Si el formulario tiene algún campo incorrecto y/o vacio, lanzar error.
-            if(!formulario[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
+            if(!loginForm[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica todos los campos.', 'error');
 
             // $.post => Añadiendo el elemento al backend.
-            $.post( 'backend/api/usuarios/login.php?action=LOGIN', formulario.serialize(), function(data) {
+            $.post( 'backend/api/usuarios/login.php?action=LOGIN', loginForm.serialize(), function(data) {
 
                 switch (data) {
 
@@ -85,7 +115,51 @@ var Login = (function checkLogin() {
 
             });
 
+        }, 
+
+        recuperarClave: function() {
+
+            // Si el formulario tiene algún campo incorrecto y/o vacio, lanzar error.
+            if(!recuperarClaveForm[0].checkValidity()) return Swal.fire('Error', 'Por favor verifica el campo nuevamente.', 'error');
+
+            // $.post => Añadiendo el elemento al backend.
+            $.post( 'backend/api/usuarios/login.php?action=RECOVER', recuperarClaveForm.serialize(), function(data) {
+
+                    console.log("object");
+                    console.log(recuperarClaveForm.serialize());
+
+                switch (data) {
+
+                    case 'ERROR':
+                        return Swal.fire('Error', 'El correo electrónico no se encuentra en nuestra base de datos.', 'error');
+                        break;
+
+                    case 'FAILED':
+                        return Swal.fire('Error', 'El correo electrónico no se pudo enviar, intenta nuevamente.', 'error');
+                        break;
+
+                    default:
+
+                        Swal.fire({
+                            title: 'Exito',
+                            text: 'Se ha enviado la clave a tu correo electrónico.',
+                            icon: 'success',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            allowEscapeKey: false,
+                            allowOutsideClick: false
+                            }).then((result) => {
+                                if ( result.dismiss === Swal.DismissReason.timer || result.value ){
+                                    $('#recuperarClave').modal('hide');
+                                }
+                            });
+
+                }	
+
+            });
+
         }
+
 
     };
     
@@ -93,12 +167,17 @@ var Login = (function checkLogin() {
 
 // Iniciar Sesión => Al undir el click.
 document.getElementById('botonLogin').addEventListener('click', function () {
-    Login.loginAttemp(); 
+    Login.iniciarSesion(); 
 });
 
 // Iniciar Sesión => Al undir el enter.
 document.addEventListener('keyup', function (e) {
-    if(e.code === 'Enter') Login.loginAttemp();
+    if(e.code === 'Enter') Login.iniciarSesion();
+});
+
+// Recuperar Contraseña => Al undir el click.
+document.getElementById('botonRecuperarClave').addEventListener('click', function () {
+    Login.recuperarClave(); 
 });
 
 </script>
@@ -107,7 +186,7 @@ document.addEventListener('keyup', function (e) {
 </html>
 
 <?php
-session_start();
+// Conexion Base de Datos.
 require_once 'backend/api/db.php';
 
 // Comprobamos si hay al menos un usuario administrador.

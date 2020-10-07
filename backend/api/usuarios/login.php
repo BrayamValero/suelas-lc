@@ -3,6 +3,45 @@ session_start();
 require_once '../db.php';
 $action = strtoupper($_GET['action']);
 
+function generateStrongPassword($length = 6, $add_dashes = false, $available_sets = 'luds'){
+	$sets = array();
+	if(strpos($available_sets, 'l') !== false)
+		$sets[] = 'abcdefghjkmnpqrstuvwxyz';
+	if(strpos($available_sets, 'u') !== false)
+		$sets[] = 'ABCDEFGHJKMNPQRSTUVWXYZ';
+	if(strpos($available_sets, 'd') !== false)
+		$sets[] = '23456789';
+	if(strpos($available_sets, 's') !== false)
+		$sets[] = '!@#$%&*?';
+
+	$all = '';
+	$password = '';
+	foreach($sets as $set)
+	{
+		$password .= $set[array_rand(str_split($set))];
+		$all .= $set;
+	}
+
+	$all = str_split($all);
+	for($i = 0; $i < $length - count($sets); $i++)
+		$password .= $all[array_rand($all)];
+
+	$password = str_shuffle($password);
+
+	if(!$add_dashes)
+		return $password;
+
+	$dash_len = floor(sqrt($length));
+	$dash_str = '';
+	while(strlen($password) > $dash_len)
+	{
+		$dash_str .= substr($password, 0, $dash_len) . '-';
+		$password = substr($password, $dash_len);
+	}
+	$dash_str .= $password;
+	return $dash_str;
+}
+
 switch ($action) {
 
     case "LOGIN":
@@ -82,5 +121,66 @@ switch ($action) {
         } else {
             header("Location: ../../../login.php");
         }
+
+    case "RECOVER":
+
+        $toEmail = test_input($_POST['correo']);
+        
+        // Si el usuario y contraseña no se encuentran vacios.
+        if(isset($toEmail)){
+
+            $sql = "SELECT * FROM USUARIOS WHERE CORREO = ?";
+            $user = db_query($sql, array($toEmail));
+
+            // Si el correo coincide.
+            if(!empty($user)){
+
+                // Genera una contraseña nueva.
+                $contraseña = generateStrongPassword();
+                $password_hash = password_hash($contraseña, PASSWORD_DEFAULT);
+                
+                // Se actualiza la nueva contraseña.
+                $sql = "UPDATE USUARIOS SET CONTRASENA = ? WHERE CORREO = ?;";
+                db_query($sql, array($password_hash, $toEmail));
+
+                $nombre = $user[0]['NOMBRE'];
+
+                // We validate if the email passed is valid (Server Side Validation)
+                if (filter_var($toEmail, FILTER_VALIDATE_EMAIL) === false) {
+                    // Failed
+                    echo "ERROR";
+                } else {
+                    
+                    // Subject & body
+                    $subject = 'Suelas LC APP | Restablecimiento de contraseña.';
+                    $body = "Saludos {$nombre}, aquí está tu nueva contraseña, con ella podrás acceder a la aplicación web. La clave es: {$contraseña}
+                    ";
+
+                    // Email Headers
+                    $headers =  'MIME-Version: 1.0' . "\r\n"; 
+                    $headers .= 'From: Suelas LC "<contacto@suelaslc.com>"' . "\r\n";
+                    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+
+                    echo $headers;
+
+                    if (mail($toEmail, $subject, $body, $headers)) {
+                        // Email Sent
+                        echo "SUCCESS";
+                    } else {
+                        // Email Not Sent
+                        echo "FAILED";
+                    }
+                    
+                }                    
+
+            } else {
+
+                echo "ERROR";
+
+            }
+
+        }
+
+        break;
 
 }

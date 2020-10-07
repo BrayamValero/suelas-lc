@@ -104,7 +104,6 @@ td a, td a:visited, td a:hover, td a:active {
     background: $primary-color;
 }
 
-
 /* ---------------------------------------------------
     4. BADGES
 ----------------------------------------------------- */
@@ -321,4 +320,9 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+// Font Awesome - Color de Iconos globales.
+.icon-color {
+  color: $primary-color !important;
 }

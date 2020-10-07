@@ -226,11 +226,6 @@ table.dataTable{
     padding: 2rem 3rem;
 }
 
-// Font Awesome - Color de Iconos globales.
-.icon-color {
-    color: $primary-color !important;
-}
-
 // Esconder los labels para que no se vean pero que ocupen su respectivo espacio en el DOM.
 .hide-label, .hide-options {
     visibility: hidden !important;
