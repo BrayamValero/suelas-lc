@@ -135,7 +135,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
             className: "align-middle", "targets": "_all"
         }],
         language: {
-            "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
+            "url": "datatables/Spanish.json"
         }
     });
 

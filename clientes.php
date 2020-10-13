@@ -408,7 +408,7 @@ $.ajax({
                 className: "align-middle", "targets": "_all"
             }],
             "language": {
-                "url": "<?= BASE_URL . "datatables/Spanish.json"; ?>"
+                "url": "datatables/Spanish.json"
             }
         });
 
