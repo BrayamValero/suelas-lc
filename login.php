@@ -127,9 +127,6 @@ var Login = (function checkLogin() {
             // $.post => Añadiendo el elemento al backend.
             $.post( 'backend/api/usuarios/login.php?action=RECOVER', recuperarClaveForm.serialize(), function(data) {
 
-                    console.log("object");
-                    console.log(recuperarClaveForm.serialize());
-
                 switch (data) {
 
                     case 'ERROR':
@@ -146,10 +143,6 @@ var Login = (function checkLogin() {
                             title: 'Exito',
                             text: 'Se ha enviado la clave a tu correo electrónico.',
                             icon: 'success',
-                            timer: 2000,
-                            timerProgressBar: true,
-                            allowEscapeKey: false,
-                            allowOutsideClick: false
                             }).then((result) => {
                                 if ( result.dismiss === Swal.DismissReason.timer || result.value ){
                                     $('#recuperarClave').modal('hide');

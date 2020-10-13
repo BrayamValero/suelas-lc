@@ -152,14 +152,14 @@ switch ($action) {
                 } else {
                     
                     // Subject & body
-                    $subject = 'Suelas LC APP | Restablecimiento de contraseña.';
+                    $subject = 'Suelas LC | Restablecimiento de contraseña.';
                     $body = "Saludos {$nombre}, aquí está tu nueva contraseña, con ella podrás acceder a la aplicación web. La clave es: {$contraseña}
                     ";
 
                     // Email Headers
-                    $headers =  'MIME-Version: 1.0' . "\r\n"; 
-                    $headers .= 'From: Suelas LC "<contacto@suelaslc.com>"' . "\r\n";
-                    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+                    $headers =  "MIME-Version: 1.0" . "\r\n"; 
+                    $headers .= "Content-type: text/html; charset=UTF-8" . "\r\n";
+                    $headers .= "From: Suelas LC <contacto@suelaslc.com>" . "\r\n";
 
                     echo $headers;
 
