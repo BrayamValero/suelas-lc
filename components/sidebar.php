@@ -169,6 +169,19 @@
                             <a href='pedidos-pendientes.php'>
                                 <i class='fas fa-store'></i>
                                 <span class='sidebar-menu-text'>Pedidos Pendientes</span>
+                             
+                            </a>
+                        </li>";
+                    }
+                ?>
+
+                <?php
+                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO' || $rol == 'PRODUCCION') {
+                        echo "<li class='sidebar-dropdown'>
+                            <a href='busqueda-avanzada.php'>
+                                <i class='fas fa-search'></i>
+                                <span class='sidebar-menu-text'>Busqueda Avanzada</span>
+                                <span class='badge badge-danger ml-1'>New</span>
                             </a>
                         </li>";
                     }
