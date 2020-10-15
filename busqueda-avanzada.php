@@ -48,7 +48,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
     <!-- Mostramos la tabla con la información correspondiente -->
     <div class="table-responsive text-center mt-3" style="width:100%">
-        <div id="spinner" class="spinner-border text-warning text-center mt-5" role="status">
+        <div id="spinner" class="spinner-border text-danger text-center mt-5" role="status">
 			<span class="sr-only">Cargando...</span>
 		</div>
 		<table class="table table-bordered text-center" id="tabla">
@@ -82,6 +82,7 @@ if(cliente_id){
                 "initComplete": function(settings, json) {
                     $("#spinner").css('display', 'none');
                 },
+                "processing": true,
                 "info": false,
                 "dom": "lrtip",
                 "pageLength": 10,
@@ -157,9 +158,11 @@ $(document).on( 'change', '.cambiarBusqueda', function () {
                     "COLOR":            elem.COLOR,
                     "RESTANTE":         elem.RESTANTE,
                     "ESTADO":           elem.ESTADO
-                }).draw().node();
+                });
 
             });
+
+            tabla.draw();
 
         }
 
