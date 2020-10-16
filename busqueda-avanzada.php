@@ -168,8 +168,6 @@ if(cliente_id){
 botonBuscarPedidos.addEventListener('click', function(){
   
     let cliente_id = document.getElementById('verClientes').value;
-    botonBuscarPedidos.textContent = "Buscando...";
-    botonBuscarPedidos.disabled = true;
 
     $.ajax({
         type: 'post',
@@ -202,9 +200,6 @@ botonBuscarPedidos.addEventListener('click', function(){
         }
 
     });
-
-    botonBuscarPedidos.textContent = "Buscar Pedidos";
-    botonBuscarPedidos.disabled = false;
 
 })
 
