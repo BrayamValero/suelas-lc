@@ -18,7 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sql = "SELECT PRO.PEDIDO_ID, SUE.MARCA, SUE.TALLA, COL.COLOR, PRO.RESTANTE, PRO.ESTADO FROM PRODUCCION PRO
                         JOIN SUELAS SUE ON SUE.ID = PRO.SUELA_ID
                         JOIN COLOR COL ON COL.ID = PRO.COLOR_ID
-                            WHERE PRO.PEDIDO_ID = ?";
+                            WHERE PRO.PEDIDO_ID = ?
+                                AND PRO.RESTANTE != 0";
 
             $result = db_query($sql, array($pedido['ID']));
 

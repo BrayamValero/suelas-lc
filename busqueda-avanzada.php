@@ -26,31 +26,43 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     <!-- Incluimos el Navbar -->
     <?php get_navbar('Ventas', 'Busqueda Avanzada'); ?>
 
-    <label for="verClientes">Nombre</label>
-    <select id="verClientes" name="cliente" class="form-control dropdown-select2 cambiarBusqueda" required>
-    
-    <?php 
 
-    $sql = "SELECT DISTINCT CLI.ID, CLI.NOMBRE, CLI.DOCUMENTO, CLI.DOCUMENTO_NRO FROM PEDIDOS PED JOIN CLIENTES CLI ON CLI.ID = PED.CLIENTE_ID;";
-    $clientes = db_query($sql);
+    <h6 class="font-weight-bold my-3">
+        <i class="fas fa-mouse-pointer text-primary mr-1"></i>
+        Seleccione un cliente
+    </h6>
 
-    foreach ($clientes as $cliente) {
-        echo "<option value='{$cliente['ID']}'>" . mb_convert_case($cliente['NOMBRE'], MB_CASE_TITLE, "UTF-8") . " - {$cliente['DOCUMENTO']} - {$cliente['DOCUMENTO_NRO']}</option>";
-    }
+    <div class="form-row">
 
-    if(empty($clientes)){
-        echo "<option value=''>No hay clientes disponibles.</option>";
-    }
+        <div class="form-group col-md-9">
+            <select id="verClientes" name="cliente" class="form-control dropdown-select2 cambiarBusqueda" required>
 
-    ?>
+                <?php 
 
-    </select>
+                $sql = "SELECT DISTINCT CLI.ID, CLI.NOMBRE, CLI.DOCUMENTO, CLI.DOCUMENTO_NRO FROM PEDIDOS PED JOIN CLIENTES CLI ON CLI.ID = PED.CLIENTE_ID;";
+                $clientes = db_query($sql);
+
+                foreach ($clientes as $cliente) {
+                    echo "<option value='{$cliente['ID']}'>" . mb_convert_case($cliente['NOMBRE'], MB_CASE_TITLE, "UTF-8") . " - {$cliente['DOCUMENTO']} - {$cliente['DOCUMENTO_NRO']}</option>";
+                }
+
+                if(empty($clientes)){
+                    echo "<option value=''>No hay clientes disponibles.</option>";
+                }
+
+                ?>
+
+            </select>
+            <small class="form-text text-muted mt-2">Al buscar el cliente recuerda esperar a que cargue la información.</small>
+        </div>
+        <div class="form-group col-md-3">
+            <button id="botonBuscarPedidos" class="btn btn-main btn-block" type="button">Buscar Pedidos</button>
+        </div>
+
+    </div>
 
     <!-- Mostramos la tabla con la información correspondiente -->
     <div class="table-responsive text-center mt-3" style="width:100%">
-        <div id="spinner" class="spinner-border text-danger text-center mt-5" role="status">
-			<span class="sr-only">Cargando...</span>
-		</div>
 		<table class="table table-bordered text-center" id="tabla">
 			<thead class="thead-dark"></thead>
 		</table>
@@ -66,6 +78,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 // Variables y constantes.
 var tabla;
 var cliente_id = document.getElementById('verClientes').value;
+var botonBuscarPedidos = document.getElementById('botonBuscarPedidos');
 
 if(cliente_id){
 
@@ -76,18 +89,17 @@ if(cliente_id){
         success: function (data) {
 
             const resultado = JSON.parse(data);
-            console.log(resultado);
 
             tabla = $('#tabla').DataTable({
-                "initComplete": function(settings, json) {
-                    $("#spinner").css('display', 'none');
-                },
+                "orderCellsTop": true,
+                "fixedHeader": true,
                 "processing": true,
                 "info": false,
                 "dom": "lrtip",
                 "pageLength": 10,
                 "lengthChange": false,
-                "order": [[0, 'desc']],
+                "ordering": false,
+                // "order": [[0, 'desc']],
                 "data": resultado,
                 "columns": [
                     { data: "PEDIDO_ID", title: "Pedido" },
@@ -111,7 +123,7 @@ if(cliente_id){
                 ],
                 "columnDefs": [{
                     searchable: true,
-                    orderable: true,
+                    orderable: false,
                     className: "align-middle", "targets": "_all"
                 }],
                 "language": {
@@ -120,22 +132,44 @@ if(cliente_id){
             });
 
             // DATATABLES => Paginación
-            $.fn.DataTable.ext.pager.numbers_length = 5;    
+            $.fn.DataTable.ext.pager.numbers_length = 5;   
+
+            $(document).ready(function() {
+
+                // Setup - add a text input to each footer cell
+                $('#tabla thead tr').clone(true).appendTo( '#tabla thead' );
+
+                $('#tabla thead tr:eq(1) th').each( function (i) {
+
+                    var titulo = $(this).text();
+
+                    $(this).html( `<input class='form-control form-control-sm text-center rounded-0' type='text' placeholder='Buscar ${titulo}'/>`);
+                    
+                    $( 'input', this ).on( 'keyup change', function () {
+                        if ( tabla.column(i).search() !== this.value ) {
+                            tabla
+                                .column(i)
+                                .search( this.value )
+                                .draw();
+                        }
+                    });
+
+                });
+                
+            });
 
         }
 
     });
 
-} else {
-
-    console.log("No hay resultados disponibles.");
-
 }
 
 // CAMBIAR => Cambiando el cliente.
-$(document).on( 'change', '.cambiarBusqueda', function () {
+botonBuscarPedidos.addEventListener('click', function(){
   
-    let cliente_id = $(this).val();
+    let cliente_id = document.getElementById('verClientes').value;
+    botonBuscarPedidos.textContent = "Buscando...";
+    botonBuscarPedidos.disabled = true;
 
     $.ajax({
         type: 'post',
@@ -162,13 +196,17 @@ $(document).on( 'change', '.cambiarBusqueda', function () {
 
             });
 
+            // Datatables => Se dibuja luego del forEach.
             tabla.draw();
 
         }
 
     });
 
-});
+    botonBuscarPedidos.textContent = "Buscar Pedidos";
+    botonBuscarPedidos.disabled = false;
+
+})
 
 </script>
 

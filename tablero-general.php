@@ -1,13 +1,13 @@
 <?php
 
 // Incluimos el header.php y components.php
-$title = 'Panel de Producción';
+$title = 'Tablero General';
 require_once 'components/header.php';
 require_once 'components/navbar.php';
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
-$roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION', 'CONTROL');
+$roles_permitidos = array('ADMINISTRADOR');
 
 if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
@@ -50,7 +50,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     <div class="row mb-4">
         <!-- Botones Maquinas -->
         <div class="col-lg-12 px-2">
-            <h6 class="text-title">Control de Calidad</h6>
+            <h6 class="text-title">Tablero General</h6>
             <button type="button"class="align-middle sidebarCollapse btn btn-sm btn-main mb-2">
                 <i class="fas fa-bars"></i>
             </button>
@@ -73,8 +73,14 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
             ?>
         </div>
 
-        <div class="col-lg-6 px-2 mt-1">
-            <input type="text" class="form-control font-weight-bold" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" readonly>
+        <!-- Color -->
+       <div class="px-2 mt-1">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <label class="input-group-text font-weight-bold" for="color">Color</label>
+                </div>
+                <input type="text" class="form-control bg-white" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" disabled>
+            </div>
         </div>
 
     </div>
@@ -149,7 +155,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                     
                     $output .= "
                     <div class='casillero-content'>
-                        <div class='badge badge-main badge-casillero mb-2'>Pedido {$produccion['PEDIDO_ID']}</div>
+                        <div class='badge badge-main badge-casillero mb-2'>Pedidos</div>
                         
                         <div class='font-weight-bold'>{$produccion['SUELA_MARCA']} {$produccion['SUELA_TALLA']}</div>
 

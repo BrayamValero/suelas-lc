@@ -117,25 +117,25 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO' || $rol == 'PRODUCCION') {
-                        echo "<li class='sidebar-dropdown'>
-                            <a href='reporte-de-produccion.php'>
-                                <i class='fas fa-book'></i>
-                                <span class='sidebar-menu-text'>Reporte de Producción</span>
-                            </a>
-                        </li>";
-                    }
+                    // if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO' || $rol == 'PRODUCCION') {
+                    //     echo "<li class='sidebar-dropdown'>
+                    //         <a href='reporte-de-produccion.php'>
+                    //             <i class='fas fa-book'></i>
+                    //             <span class='sidebar-menu-text'>Reporte de Producción</span>
+                    //         </a>
+                    //     </li>";
+                    // }
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION') {
-                        echo "<li class='sidebar-dropdown'>
-                            <a href='operarios.php'>
-                                <i class='fas fa-address-card'></i>
-                                <span class='sidebar-menu-text'>Operarios</span>
-                            </a>
-                        </li>";
-                    }
+                    // if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION') {
+                    //     echo "<li class='sidebar-dropdown'>
+                    //         <a href='operarios.php'>
+                    //             <i class='fas fa-address-card'></i>
+                    //             <span class='sidebar-menu-text'>Operarios</span>
+                    //         </a>
+                    //     </li>";
+                    // }
                 ?>
 
             <?php
@@ -155,11 +155,12 @@
                 <?php
                     if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS') {
                         echo "<li class='sidebar-dropdown'>
-                        <a href='añadir-pedido.php'>
-                            <i class='fas fa-shopping-cart'></i>
-                            <span class='sidebar-menu-text'>Añadir Pedido</span>
-                        </a>
-                    </li>";
+                            <a href='añadir-pedido.php'>
+                                <i class='fas fa-shopping-cart'></i>
+                                <span class='sidebar-menu-text'>Añadir Pedido</span>
+                                <span class='badge badge-danger ml-1'>Popular</span>
+                            </a>
+                        </li>";
                     }
                 ?>
 
@@ -181,7 +182,6 @@
                             <a href='busqueda-avanzada.php'>
                                 <i class='fas fa-search'></i>
                                 <span class='sidebar-menu-text'>Busqueda Avanzada</span>
-                                <span class='badge badge-danger ml-1'>New</span>
                             </a>
                         </li>";
                     }
@@ -238,39 +238,39 @@
                     if($rol == 'ADMINISTRADOR') {
 
                         echo "<li class='sidebar-dropdown'>
-                        <a href='auditoria-control.php'>
-                            <i class='fas fa-clipboard-check'></i>
-                            <span class='sidebar-menu-text'>Auditoria de Control</span>
-                        </a>
-                    </li>";
+                            <a href='auditoria-control.php'>
+                                <i class='fas fa-clipboard-check'></i>
+                                <span class='sidebar-menu-text'>Auditoria de Control</span>
+                            </a>
+                        </li>";
 
-                        echo "<li class='sidebar-dropdown'>
-                        <a href='pedidos-norsaplast.php'>
-                            <i class='fas fa-clipboard-check'></i>
-                            <span class='sidebar-menu-text'>Pedidos a Norsaplast</span>
-                        </a>
-                    </li>";
+                        // echo "<li class='sidebar-dropdown'>
+                        //     <a href='pedidos-norsaplast.php'>
+                        //         <i class='fas fa-clipboard-check'></i>
+                        //         <span class='sidebar-menu-text'>Pedidos a Norsaplast</span>
+                        //     </a>
+                        // </li>";
     
-                        echo "<li class='sidebar-dropdown'>
-                        <a href='pedidos-norsaplast.php'>
-                            <i class='fas fa-clipboard-check'></i>
-                            <span class='sidebar-menu-text'>Pedidos a Norsaplast</span>
-                        </a>
-                    </li>";
+                        // echo "<li class='sidebar-dropdown'>
+                        //     <a href='pedidos-norsaplast.php'>
+                        //         <i class='fas fa-clipboard-check'></i>
+                        //         <span class='sidebar-menu-text'>Pedidos a Norsaplast</span>
+                        //     </a>
+                        // </li>";
 
-                        echo "<li class='sidebar-dropdown'>
-                        <a href='pedidos-produccion.php'>
-                            <i class='fas fa-clipboard-check'></i>
-                            <span class='sidebar-menu-text'>Pedidos a Producción</span>
-                        </a>
-                    </li>";
+                        // echo "<li class='sidebar-dropdown'>
+                        //     <a href='pedidos-produccion.php'>
+                        //         <i class='fas fa-clipboard-check'></i>
+                        //         <span class='sidebar-menu-text'>Pedidos a Producción</span>
+                        //     </a>
+                        // </li>";
 
-                        echo "<li class='sidebar-dropdown'>
-                        <a href='norsaplast-inventario.php'>
-                            <i class='fas fa-clipboard-check'></i>
-                            <span class='sidebar-menu-text'>Norsaplast a Inventario</span>
-                        </a>
-                    </li>";
+                        // echo "<li class='sidebar-dropdown'>
+                        //     <a href='norsaplast-inventario.php'>
+                        //         <i class='fas fa-clipboard-check'></i>
+                        //         <span class='sidebar-menu-text'>Norsaplast a Inventario</span>
+                        //     </a>
+                        // </li>";
 
                     }
                 ?>
@@ -289,14 +289,14 @@
             </li>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION' || $rol == 'MOLINERO') {
-                        echo "<li class='sidebar-dropdown'>
-                            <a href='materia-prima.php'>
-                                <i class='fab fa-react'></i>
-                                <span class='sidebar-menu-text'>Insumos y Materia Prima</span>
-                            </a>
-                        </li>";
-                    }
+                    // if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION' || $rol == 'MOLINERO') {
+                    //     echo "<li class='sidebar-dropdown'>
+                    //         <a href='materia-prima.php'>
+                    //             <i class='fab fa-react'></i>
+                    //             <span class='sidebar-menu-text'>Insumos y Materia Prima</span>
+                    //         </a>
+                    //     </li>";
+                    // }
                 ?>
 
                 <?php
@@ -353,19 +353,19 @@
                 if($rol == 'ADMINISTRADOR' || $rol == 'NORSAPLAST'):
             ?>
 
-            <li class="sidebar-header-menu">
+            <!-- <li class="sidebar-header-menu">
                <span>Norsaplast</span>
-            </li>
+            </li> -->
                     
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'NORSAPLAST') {
-                        echo "<li class='sidebar-dropdown'>
-                            <a href='solicitud-material.php'>
-                                <i class='fas fa-sticky-note'></i>
-                                <span class='sidebar-menu-text'>Solicitud de Material</span>
-                            </a>
-                        </li>";
-                    }
+                    // if($rol == 'ADMINISTRADOR' || $rol == 'NORSAPLAST') {
+                    //     echo "<li class='sidebar-dropdown'>
+                    //         <a href='solicitud-material.php'>
+                    //             <i class='fas fa-sticky-note'></i>
+                    //             <span class='sidebar-menu-text'>Solicitud de Material</span>
+                    //         </a>
+                    //     </li>";
+                    // }
                 ?>
 
             <?php
@@ -378,41 +378,41 @@
                 if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO'):
             ?>
           
-            <li class="sidebar-header-menu">
+            <!-- <li class="sidebar-header-menu">
                 <span>Molino</span>
-            </li>
+            </li> -->
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO') {
-                        echo "<li class='sidebar-dropdown'>
-                        <a href='formulas.php'>
-                            <i class='fas fa-flask'></i>
-                            <span class='sidebar-menu-text'>Formulas</span>
-                        </a>
-                    </li>";
-                    }
+                    // if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO') {
+                    //     echo "<li class='sidebar-dropdown'>
+                    //         <a href='formulas.php'>
+                    //             <i class='fas fa-flask'></i>
+                    //             <span class='sidebar-menu-text'>Formulas</span>
+                    //         </a>
+                    //     </li>";
+                    // }
                 ?>
                 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO') {
-                        echo "<li class='sidebar-dropdown'>
-                        <a href='entrega-de-material.php'>
-                            <i class='fas fa-truck-loading'></i>
-                            <span class='sidebar-menu-text'>Entrega de Material</span>
-                        </a>
-                    </li>";
-                    }
+                    // if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO') {
+                    //     echo "<li class='sidebar-dropdown'>
+                    //         <a href='entrega-de-material.php'>
+                    //             <i class='fas fa-truck-loading'></i>
+                    //             <span class='sidebar-menu-text'>Entrega de Material</span>
+                    //         </a>
+                    //     </li>";
+                    // }
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO') {
-                        echo "<li class='sidebar-dropdown'>
-                        <a href='auditoria-de-entrega.php'>
-                            <i class='fas fa-dolly-flatbed'></i>
-                            <span class='sidebar-menu-text'>Auditoría de Entrega</span>
-                        </a>
-                    </li>";
-                    }
+                    // if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO') {
+                    //     echo "<li class='sidebar-dropdown'>
+                    //         <a href='auditoria-de-entrega.php'>
+                    //             <i class='fas fa-dolly-flatbed'></i>
+                    //             <span class='sidebar-menu-text'>Auditoría de Entrega</span>
+                    //         </a>
+                    //     </li>";
+                    // }
                 ?>
 
             <?php

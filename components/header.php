@@ -86,6 +86,7 @@ if (empty($_SESSION)) {
     <script src="datatables/buttons.html5.min.js"></script>
     <script src="datatables/buttons.print.min.js"></script>
     <script src="datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="datatables/dataTables.fixedHeader.min.js"></script>
     <script src="js/select2.full.js"></script>
     <script src="js/jscolor.js"></script>
     <script src="js/sweetalert2.all.min.js"></script>

@@ -73,43 +73,31 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
             ?>
         </div>
         
-        <?php if($_SESSION['ROL'] === 'ADMINISTRADOR'): ?>
-        
-        <div class="col-lg-6 px-2 mt-1">
-            <form action="backend/api/maquinarias/color.php" method="POST">
-                <div class="input-group">
-                    <input type="hidden" name="id" value="<?= $maquinaria_id; ?>">
-                    <select name="color" class="form-control dropdown-select2">
+        <?php if($_SESSION['ROL'] === 'ADMINISTRADOR' || $_SESSION['ROL'] === 'PRODUCCION' || $_SESSION['ROL'] === 'LIDER'): ?>
 
-                        <?php
-
-                        $sql = "SELECT * FROM COLOR;";
-                        $result = db_query($sql);
-
-                        foreach ($result as $row) {
-
-                            if ($maquinaria_seleccionada[0]['COLOR'] == $row['COLOR']) {
-                                echo "<option value='{$row['COLOR']}' selected>" . mb_convert_case($row['COLOR'], MB_CASE_TITLE, "UTF-8") . "</option>";
-                            } else {
-                                echo "<option value='{$row['COLOR']}'>" . mb_convert_case($row['COLOR'], MB_CASE_TITLE, "UTF-8") . "</option>";
-                            }
-
-                        }
-
-                        ?>
-
-                    </select>
-                    <div class="input-group-append">
-                        <button class="btn btn-sm btn-main" type="submit">Cambiar Color</button>
-                    </div>
+        <!-- Color Editable -->
+        <div class="px-2 mt-1">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <label class="input-group-text font-weight-bold" for="color">Color</label>
                 </div>
-            </form>
+                <input type="text" class="form-control bg-white" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" disabled>
+                <div class="input-group-append">
+                    <a href="javascript:void(0)" data-toggle="modal" data-target="#editarColorModal" class="btn btn-main" type="button">Editar</a>
+                </div>
+            </div>
         </div>
-
+        
         <?php else: ?>
 
-        <div class="col-lg-6 px-2 mt-1">
-            <input type="text" class="form-control font-weight-bold" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" readonly>
+        <!-- Color -->
+        <div class="px-2 mt-1">
+            <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                    <label class="input-group-text font-weight-bold" for="color">Color</label>
+                </div>
+                <input type="text" class="form-control bg-white" value="<?=  mb_convert_case($maquinaria_seleccionada[0]['COLOR'], MB_CASE_TITLE) ?>" disabled>
+            </div>
         </div>
 
         <?php endif; ?>
@@ -379,6 +367,53 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
         </div>
     </div>
     <!-- Fin de Modal -->
+
+    <!-- Modal de Editar Color -->
+    <div class="modal fade" id="editarColorModal" tabindex="-1" role="dialog" aria-labelledby="editarColorModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content">
+                <form action="backend/api/maquinarias/color.php" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="fab fa-slack-hash icon-color"></i>
+                            Editar Color
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id" value="<?= $maquinaria_id; ?>">
+                        <label for="color">Color</label>
+                        <select name="color" class="form-control dropdown-select2">   
+
+                            <?php
+
+                            $sql = "SELECT * FROM COLOR;";
+                            $result = db_query($sql);
+
+                            foreach ($result as $row) {
+
+                                if ($maquinaria_seleccionada[0]['COLOR'] == $row['COLOR']) {
+                                    echo "<option value='{$row['COLOR']}' selected>" . mb_convert_case($row['COLOR'], MB_CASE_TITLE, "UTF-8") . "</option>";
+                                } else {
+                                    echo "<option value='{$row['COLOR']}'>" . mb_convert_case($row['COLOR'], MB_CASE_TITLE, "UTF-8") . "</option>";
+                                }
+
+                            }
+
+                            ?>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-sm btn-main">Editar Color</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- / Fin del Modal -->
 
 </div>
 

@@ -58,7 +58,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                 </div>
 
                 <div class="form-group col-lg-3 col-md-3">
-                    <label for="añadirFecha">Fecha de Entrega</label>
+                    <label for="añadirFecha">Fecha Estimada</label>
                     <input id="añadirFecha" name="fecha" type="date" class="form-control" placeholder="Elige la fecha" required>
                 </div>
 
