@@ -1,4 +1,3 @@
--- Dureza.
 INSERT INTO DUREZA VALUES
 ('1', 65);
 
@@ -8,7 +7,59 @@ INSERT INTO PRIORIDAD VALUES
 (3, 'Alta'),
 (4, 'VIP');
 
--- Color
+INSERT INTO TALLAS VALUES 
+(1, '0'),
+(2, '1'),
+(3, '2'),
+(4, '3'),
+(5, '4'),
+(6, '5'),
+(7, '6'),
+(8, '7'),
+(9, '8'),
+(10, '9'),
+(11, '10'),
+(12, '11'),
+(13, '12'),
+(14, '13'),
+(15, '14'),
+(16, '15'),
+(17, '16'),
+(18, '17'),
+(19, '18'),
+(20, '19'),
+(21, '20'),
+(22, '21'),
+(23, '22'),
+(24, '23'),
+(25, '24'),
+(26, '25'),
+(27, '26'),
+(28, '27'),
+(29, '28'),
+(30, '29'),
+(31, '30'),
+(32, '31'),
+(33, '32'),
+(34, '33'),
+(35, '34'),
+(36, '35'),
+(37, '36'),
+(38, '37'),
+(39, '38'),
+(40, '39'),
+(41, '40'),
+(42, '41'),
+(43, '42'),
+(44, '43'),
+(45, '44'),
+(46, '45'),
+(47, '46'),
+(48, '47'),
+(49, '48'),
+(50, '49'),
+(51, '50');
+
 INSERT INTO COLOR VALUES
 (1, 'BLANCO', '#FFFFFF'),
 (2, 'NEGRO', '#000000'),
@@ -37,7 +88,6 @@ INSERT INTO COLOR VALUES
 (25, 'FUCSIA', '#E30052'),
 (26, 'ROJO', '#FF0000');
 
--- Maquinarias
 INSERT INTO MAQUINARIAS VALUES
 (NULL, 'ROTATIVA 1', 'BLANCO', 'EXPANSO', 3000, 3000, 'ACTIVO', 20, NOW(), NOW()),
 (NULL, 'ROTATIVA 2', 'BLANCO', 'EXPANSO', 3000, 3000, 'ACTIVO', 20, NOW(), NOW()),
@@ -45,7 +95,6 @@ INSERT INTO MAQUINARIAS VALUES
 (NULL, 'INYECTORA', 'BLANCO', 'PVC', 3000, 3000, 'ACTIVO', 1, NOW(), NOW()),
 (NULL, 'LORENCINI', 'BLANCO', 'EXPANSO/PVC', 3000, 3000, 'ACTIVO', 5, NOW(), NOW());
 
--- Casilleros
 INSERT INTO CASILLEROS VALUES 
 (NULL, 1, 1, NULL, NULL, 1),
 (NULL, 2, 1, NULL, NULL, 1),
@@ -114,7 +163,6 @@ INSERT INTO CASILLEROS VALUES
 (NULL, 4, 5, NULL, NULL, 1),
 (NULL, 5, 5, NULL, NULL, 1);
 
--- Suelas
 INSERT INTO `SUELAS` (`ID`, `REFERENCIA`, `MARCA`, `TALLA`, `MATERIAL`, `PESO_MAQUINA`, `PESO_IDEAL`, `CAP_EMPAQUETADO`) VALUES
 (1, 'PT-ASBEL', 'APLIQUE BELLA', 0, 'PVC', 100, 100, 100),
 (2, 'PT-SPBFPU', 'PLANTILLA BEIRA FORRADA', 34, 'EXPANSO', 100, 100, 100),
@@ -1237,7 +1285,6 @@ INSERT INTO `SUELAS` (`ID`, `REFERENCIA`, `MARCA`, `TALLA`, `MATERIAL`, `PESO_MA
 (1118, 'PT-TUBJD', 'TUBULAR JHON D', 39, 'PVC', 100, 100, 100),
 (1119, 'PT-TUBJD', 'TUBULAR JHON D', 40, 'PVC', 100, 100, 100);
 
--- Series
 INSERT INTO `SERIES` (`ID`, `NOMBRE`) VALUES
 (2, 'APLIQUE BELLA'),
 (5, 'PLANTILLA BEIRA FORRADA'),
@@ -1413,7 +1460,6 @@ INSERT INTO `SERIES` (`ID`, `NOMBRE`) VALUES
 (172, 'TAQUITOS'),
 (173, 'TUBULAR JHON D');
 
--- Grupo Series
 INSERT INTO `GRUPO_SERIES` (`ID`, `SERIE_ID`, `SUELA_ID`) VALUES
 (1, 2, 1),
 (2, 5, 2),
@@ -2535,7 +2581,6 @@ INSERT INTO `GRUPO_SERIES` (`ID`, `SERIE_ID`, `SUELA_ID`) VALUES
 (1118, 173, 1118),
 (1119, 173, 1119);
 
--- Clientes
 INSERT INTO `CLIENTES` (`ID`, `DOCUMENTO`, `DOCUMENTO_NRO`, `NOMBRE`, `TIPO`, `CORREO`, `TELEFONO`, `CELULAR`, `DIRECCION`, `ACTIVO`) VALUES
 (1, 'NIT', '1090391426', 'Andrea Granados', 'Externo', '', '0', '0', 'Av 9 18-05 11 Noviembre', 'SI'),
 (2, 'NIT', '901227400', 'Calzado D\'alvarez S.a.s', 'Externo', '', '5943171', '5943171', 'Cl 13  10  18 Brr El Contento', 'SI'),

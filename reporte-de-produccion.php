@@ -24,7 +24,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Producción', 'Reporte de Producción'); ?>
+    <?php get_navbar('Producción', 'Reporte de Producción', true); ?>
 
 
     <!-- Filtro de Cargos -->

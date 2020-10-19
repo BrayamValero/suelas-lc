@@ -24,7 +24,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Auditorias', 'Pedidos a Producción'); ?>
+    <?php get_navbar('Auditorias', 'Pedidos a Producción', true); ?>
 
     <!-- Mostramos la tabla con la información correspondiente -->
     <div class="table-responsive-lg">

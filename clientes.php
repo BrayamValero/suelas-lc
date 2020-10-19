@@ -24,7 +24,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Ventas', 'Clientes'); ?>
+    <?php get_navbar('Ventas', 'Clientes', true); ?>
 
 	<!-- Mostramos la tabla con la información correspondiente -->
 	<div class="table-responsive text-center" style="width:100%">
@@ -369,7 +369,11 @@ $.ajax({
 				{ data: "TIPO", title: "Cliente" },
                 { data: "DOCUMENTO", title: "Tipo" },
                 { data: "DOCUMENTO_NRO", title: "Documento" },
-				{ data: "NOMBRE", title: "Nombre" },
+				{ data: "NOMBRE", title: "Nombre", 
+					render: function(value, type, row){
+						return row.NOMBRE.toUpperCase();
+					} 
+				},
 				{ data: "ACTIVO", title: "Activo", 
 					render: function(value, type, row) {
 						

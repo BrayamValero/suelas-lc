@@ -24,12 +24,11 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Panel de Control', 'Modificaciones'); ?>
+    <?php get_navbar('Panel de Control', 'Modificaciones', true); ?>
 
     <?php
 
     // Dureza
-    require_once 'backend/api/db.php';
     $sql = "SELECT * FROM DUREZA;";
     $dureza = db_query($sql);
 
@@ -122,9 +121,17 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                                 <select id="seleccionarPedido" class="form-control dropdown-select2" name="pedido_id" required>
                                     <?php 
 
-                                    foreach ($pedidos as $pedido) {
+                                    if(!empty($pedidos)){
+
+                                        foreach ($pedidos as $pedido) {
                                                                     
-                                        echo "<option value='{$pedido['PEDIDO_ID']}'>[Pedido {$pedido['PEDIDO_ID']}] " . mb_convert_case($pedido['NOMBRE'], MB_CASE_TITLE) . " - {$pedido['DOCUMENTO']} {$pedido['DOCUMENTO_NRO']}</option>";
+                                            echo "<option value='{$pedido['PEDIDO_ID']}'>[Pedido {$pedido['PEDIDO_ID']}] " . mb_convert_case($pedido['NOMBRE'], MB_CASE_TITLE) . " - {$pedido['DOCUMENTO']} {$pedido['DOCUMENTO_NRO']}</option>";
+    
+                                        }
+
+                                    } else {
+
+                                        echo "<option value=''>No hay pedidos disponibles.</option>";
 
                                     }
 

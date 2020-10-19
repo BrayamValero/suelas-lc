@@ -24,7 +24,39 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Inicio', 'Panel Principal'); ?>
+    <?php get_navbar('Inicio', 'Panel Principal', false); ?>
+
+    <div class="card-deck mt-2">
+        
+        <!-- Contraseñas -->
+        <div class="card bg-white mb-3">
+            <div class="card-header font-weight-bold">Opciones de usuario</div>
+            <div class="card-body">
+                <h5 class="card-title">Cambiar Clave</h5>
+                <p class="card-text text-muted">Permite cambiar tu clave actual.</p>
+
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <label for="añadirClaveAntigua">Clave antigua <span class="text-danger font-weight-bold">*</span></label>
+                        <input id="añadirClaveAntigua" name="clave-antigua" type="password" class="form-control">
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="añadirClaveNueva">Nueva clave <span class="text-danger font-weight-bold">*</span></label>
+                        <input id="añadirClaveNueva" name="clave-nueva" type="password" class="form-control">
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="añadirClaveNuevaRepetir">Repita la clave nueva<span class="text-danger font-weight-bold">*</span></label>
+                        <input id="añadirClaveNuevaRepetir" name="clave-nueva-repetir" type="password" class="form-control">
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-sm btn-main">Cambiar contraseña</button>
+            </div>
+        </div>
+
+    </div>
 
 </div>
 <!-- Fin de contenido -->

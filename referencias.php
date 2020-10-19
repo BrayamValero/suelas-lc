@@ -4,6 +4,7 @@
 $title = 'Referencias';
 require_once 'components/header.php';
 require_once 'components/navbar.php';
+require_once 'backend/api/utils.php';
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
@@ -24,7 +25,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Inventario', 'Referencias'); ?>
+    <?php get_navbar('Inventario', 'Referencias', true); ?>
 
     <!-- Mostramos la tabla con la información correspondiente -->
     <div class="table-responsive text-center" style="width:100%">
@@ -39,7 +40,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
     <!-- Boton -->
     <div class="row mt-5">
-        <button class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirReferenciaModal">Añadir Referencia</button>
+        <button class="btn btn-sm btn-main mx-auto" data-toggle="modal" data-target="#añadirReferenciaModal">Añadir Referencias</button>
     </div>
     <!-- Fin de Botón -->
 
@@ -53,7 +54,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                 <form id="añadirReferenciaForm">
 
                     <div class="modal-header">
-                        <h5 class="modal-title"><i class="fab fa-slack-hash icon-color"></i> Añadir Referencia
+                        <h5 class="modal-title"><i class="fab fa-slack-hash icon-color"></i> Añadir Referencias
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -69,14 +70,9 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                                 <input id="añadirReferencia" type="text" class="form-control" placeholder="Referencia" name="referencia" required>
                             </div>
 
-                            <div class="form-group col-sm-6">
+                            <div class="form-group col-sm-8">
                                 <label for="añadirMarca">Marca</label>
                                 <input id="añadirMarca" type="text" class="form-control" placeholder="Nombre" name="marca" required>
-                            </div>
-
-                            <div class="form-group col-sm-2">
-                                <label for="añadirTalla">Talla</label>
-                                <input id="añadirTalla" type="number" min="0" max="99" class="form-control" placeholder="0" name="talla" required>
                             </div>
 
                             <div class="form-group col-sm-4">
@@ -104,6 +100,24 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                                 <input id="añadirCapEmpaquetado" type="number" min="1" class="form-control" placeholder="Cap. Empaquetado" name="capacidad_empaquetado" required>
                             </div>
 
+                            <div class="form-group col-sm-12">
+
+                                <label for="añadirTalla">Tallas</label>
+                                <select id="añadirTalla" class="form-control select2-multiple" name="talla[]" multiple="multiple" required>
+                                    <?php
+                                        $sql = "SELECT * FROM TALLAS;";
+                                        $tallas = db_query($sql);
+                                        foreach ($tallas as $talla) {
+                                            echo "<option value='{$talla['TALLA']}'>{$talla['TALLA']}</option>";
+                                        }
+                                        if(empty($tallas)){
+                                            echo "<option value=''>No hay tallas disponibles.</option>";
+                                        }
+                                    ?>
+                                </select>
+
+                            </div>
+
                         </div>
 
                     </div>
@@ -112,7 +126,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cerrar
                         </button>
                         <button type="button" class="btn btn-sm btn-main" id="botonAñadirReferencia">
-                            Añadir Referencia
+                            Añadir referencias
                         </button>
                     </div>
 
@@ -162,8 +176,16 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
                             <div class="form-group col-sm-2">
                                 <label for="editarTalla">Talla</label>
-                                <input id="editarTalla" type="number" min="0" max="99" class="form-control"
-                                        placeholder="0" name="talla" required>
+                                <select id="editarTalla" class="form-control dropdown-select2" name="talla" required>
+                                    <?php
+                                        foreach ($tallas as $talla) {
+                                            echo "<option value='{$talla['TALLA']}'>{$talla['TALLA']}</option>";
+                                        }
+                                        if(empty($tallas)){
+                                            echo "<option value=''>No hay tallas disponibles.</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
 
                             <div class="form-group col-sm-4">
@@ -320,29 +342,45 @@ botonAñadirReferencia.addEventListener('click', function () {
 			
 			case 'ERROR':
                 botonAñadirReferencia.disabled = false;
-				return Swal.fire('Error', 'La referencia ya se encuentra registrada.', 'error');
+				return Swal.fire('Error', 'La referencia ya se encuentra registrada, prueba con otras tallas y/o referencias.', 'error');
 				break;
 
 			default:
 
+                let ids = JSON.parse(data);
+
 				$('#añadirReferenciaModal').modal('hide')
 
-				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El color ha sido agregado satisfactoriamente.');
+				toastNotifications('fas fa-check', 'text-success', '¡Agregadas!', 'Las referencias han sido agregadas satisfactoriamente.');
 
-				const elems = formulario.serializeArray();
+                const elems = formulario.serializeArray();
 
-				// Datatables => Añadiendo el elemento al frontend.
-				tabla.row.add({
-                    "ID":               data,
-                    "REFERENCIA":       elems[0].value,
-                    "MARCA":            elems[1].value,
-                    "TALLA":            elems[2].value,
-                    "MATERIAL":         elems[3].value,
-                    "PESO_MAQUINA":     elems[4].value,
-                    "PESO_IDEAL":       elems[5].value,
-                    "CAP_EMPAQUETADO":  elems[6].value,
-                    "ID":               data
-				}).draw().node();
+                var i = 0;
+
+                elems.forEach((elem, index) => {
+
+                    if(elem.name === 'talla[]'){
+
+                        // Datatables => Añadiendo el elemento al frontend.
+                        tabla.row.add({
+                            "ID":               ids[i],
+                            "REFERENCIA":       elems[0].value,
+                            "MARCA":            elems[1].value,
+                            "TALLA":            elem.value,
+                            "MATERIAL":         elems[2].value,
+                            "PESO_MAQUINA":     elems[3].value,
+                            "PESO_IDEAL":       elems[4].value,
+                            "CAP_EMPAQUETADO":  elems[5].value,
+                            "ID":               ids[i]
+                        });
+
+                        i++;
+                        
+                    }
+
+                });	
+                
+                tabla.draw();
 
                 // Borrando los inputs del Modal.
 				$('#añadirReferenciaModal').on('hidden.bs.modal', function (e) {
@@ -464,13 +502,27 @@ $('#editarReferenciaModal').on('show.bs.modal', function (e) {
 
                 if( result[0].MATERIAL == this.value ){
 
-                    $(this).prop("selected", true);
+                    $(this).prop("selected", true).trigger("change");
                     
                     return false;
                 
                 }
 
             });
+
+            
+            $("#editarTalla > option").each(function() {
+
+                if( result[0].TALLA == this.value ){
+
+                    $(this).prop("selected", true).trigger("change");
+                    
+                    return false;
+                
+                }
+
+            });
+
 
             document.getElementById('editarId').value = result[0].ID;
             document.getElementById('editarReferencia').value = result[0].REFERENCIA;
@@ -483,6 +535,21 @@ $('#editarReferenciaModal').on('show.bs.modal', function (e) {
         }
     });
 
+});
+
+// Select2 => Dependencia de este archivo
+$(document).ready(function () {
+	$('.select2-multiple').select2({
+		// dropdownParent: $('#example'),
+		language: {
+			"noResults": function(){
+				return "No se encuentran resultados";
+			}
+		},
+		closeOnSelect: false,
+		allowClear: true,
+		placeholder: 'Seleccione una talla.'
+	});
 });
 
 </script>

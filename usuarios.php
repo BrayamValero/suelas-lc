@@ -25,7 +25,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Panel de Control', 'Usuarios'); ?>
+    <?php get_navbar('Panel de Control', 'Usuarios', true); ?>
 
     <!-- Mostramos la tabla con la información correspondiente -->
     <div class="table-responsive-lg">
@@ -195,7 +195,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
                             <div class="form-group col-sm-6">
                                 <label for="editarRol">Cargo</label>
-                                <select id="editarRol" class="form-control" name="cargo">
+                                <select id="editarRol" class="form-control dropdown-select2" name="cargo">
                                     <?php
                                         foreach (ROLES as $rol) {
                                             echo "<option value='$rol'>". mb_convert_case($rol, MB_CASE_TITLE) ."</option>";
@@ -322,13 +322,15 @@ $('#editarUsuario-modal').on('show.bs.modal', function (e) {
 
                 if(result[0].CARGO == this.value){
 
-                    $(this).prop("selected", true);
+                    $(this).prop("selected", true).trigger("change");
         
                     return false;
 
                 }
 
             });
+
+            
 
             document.getElementById("editarId").value = result[0].ID;
             document.getElementById("editarCedula").value = result[0].CEDULA;

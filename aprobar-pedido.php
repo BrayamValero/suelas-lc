@@ -25,7 +25,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Ventas', "Aprobar Pedido <span class='badge badge-danger'>" . $_GET['id'] . "</span>"); ?>
+    <?php get_navbar('Ventas', "Aprobar Pedido <span class='badge badge-danger'>" . $_GET['id'] . "</span>", false); ?>
 
     <!-- Form -->
     <form>

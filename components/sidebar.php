@@ -192,7 +192,7 @@
                         echo "<li class='sidebar-dropdown'>
                             <a href='despachos-parciales.php'>
                                 <i class='fas fa-truck'></i>
-                                <span class='sidebar-menu-text'>Despachos</span>
+                                <span class='sidebar-menu-text'>Despachos Parciales</span>
                             </a>
                         </li>";
                     }

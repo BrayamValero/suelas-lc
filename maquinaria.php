@@ -29,7 +29,7 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Panel de Control', 'Maquinaria'); ?>
+    <?php get_navbar('Panel de Control', 'Maquinaria', true); ?>
 
     <!-- Mostramos la tabla con la información correspondiente -->
     <div class="table-responsive-lg">
@@ -128,7 +128,7 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
 
                             <div class="form-group col-sm-3">
                                 <label for="inputAñadirCasillas-modal">Casillas</label>
-                                <select id="inputAñadirCasillas-modal" class="form-control" name="casillas">
+                                <select id="inputAñadirCasillas-modal" class="form-control dropdown-select2" name="casillas">
                                     <option value="30" selected>30</option>
                                     <option value="20">20</option>
                                     <option value="5">5</option>
@@ -143,7 +143,7 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
 
                             <div class="form-group col-sm-3">
                                 <label for="inputAñadirEstado-modal">Estado</label>
-                                <select id="inputAñadirEstado-modal" class="form-control" name="estado">
+                                <select id="inputAñadirEstado-modal" class="form-control dropdown-select2" name="estado">
                                     <option value="ACTIVO" selected>Activo</option>
                                     <option value="INACTIVO">Inactivo</option>
                                 </select>
@@ -214,7 +214,7 @@ if (isset($_SESSION['eliminar_maquinaria']) && $_SESSION['eliminar_maquinaria'] 
 
                             <div class="form-group col-sm-3">
                                 <label for="inputEditarEstado-modal">Estado</label>
-                                <select id="inputEditarEstado-modal" class="form-control" name="estado">
+                                <select id="inputEditarEstado-modal" class="form-control dropdown-select2" name="estado">
                                     <option value="ACTIVO" selected>Activo</option>
                                     <option value="INACTIVO">Inactivo</option>
                                 </select>
@@ -315,12 +315,19 @@ $('#editarMaquinaria-modal').on('show.bs.modal', function (e) {
             
             const res = JSON.parse(data);
 
-            if (res[0].ESTADO === 'ACTIVO') {
-                inputEditarEstado.selectedIndex = 0
-            } else {
-                inputEditarEstado.selectedIndex = 1
-            }
+                       
+            $("#inputEditarEstado-modal > option").each(function() {
 
+                if( res[0].ESTADO == this.value ){
+
+                    $(this).prop("selected", true).trigger("change");
+                    
+                    return false;
+
+                }
+
+            });
+            
             inputEditarId.value = res[0].ID;
             inputEditarCasillas.value = res[0].CASILLEROS;
             inputEditarCapacidad.value = res[0].CAPACIDAD;

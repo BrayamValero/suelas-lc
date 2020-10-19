@@ -24,7 +24,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Ventas', 'Busqueda Avanzada'); ?>
+    <?php get_navbar('Ventas', 'Busqueda Avanzada', true); ?>
 
 
     <h6 class="font-weight-bold my-3">

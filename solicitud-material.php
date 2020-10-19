@@ -24,7 +24,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Norsaplast', 'Solicitud de Material'); ?>
+    <?php get_navbar('Norsaplast', 'Solicitud de Material', true); ?>
 
     <!-- Tabla -->
     <div class="table-responsive-lg">

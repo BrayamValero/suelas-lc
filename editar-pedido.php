@@ -30,7 +30,7 @@ if( (!in_array($_SESSION['ROL'], $roles_permitidos)) || $status == 'PENDIENTE' |
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Pedido', "Editar Pedido <span class='badge badge-danger'>" . $pedido_id . "</span>"); ?>
+    <?php get_navbar('Pedido', "Editar Pedido <span class='badge badge-danger'>" . $pedido_id . "</span>", false); ?>
 
     <!-- Toast => Alertas (data-delay="700" data-autohide="false") --> 
 	<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000">
@@ -56,7 +56,6 @@ if( (!in_array($_SESSION['ROL'], $roles_permitidos)) || $status == 'PENDIENTE' |
             </h6>
 
             <?php
-                require_once "backend/api/db.php";
                 $sql = "SELECT * FROM CLIENTES WHERE ACTIVO = 'SI';";
                 $result = db_query($sql);
 

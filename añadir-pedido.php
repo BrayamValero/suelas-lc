@@ -25,7 +25,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Pedidos', 'Añadir Pedido'); ?>
+    <?php get_navbar('Pedidos', 'Añadir Pedido', false); ?>
 
     <!-- Form -->
     <form id="añadirPedidoForm">
@@ -44,7 +44,6 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                     <label for="añadirNombre">Nombre</label>
                     <select id="añadirNombre" name="nombre" class="form-control dropdown-select2" required>
                         <?php
-                            require_once "backend/api/db.php";
                             $sql = "SELECT * FROM CLIENTES WHERE ACTIVO = 'SI';";
                             $result = db_query($sql);
                             foreach ($result as $row) {
@@ -87,7 +86,6 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                     <label for="añadirSerie">Serie</label>
                     <select id="añadirSerie" class="form-control dropdown-select2" name="serie" required>
                         <?php
-                            require_once "backend/api/db.php";
                             $sql = "SELECT * FROM SERIES;";
                             $result = db_query($sql);
                             foreach ($result as $row) {
@@ -104,7 +102,6 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                     <label for="añadirColor">Color</label>
                     <select id="añadirColor" class="form-control dropdown-select2" name="color" required>
                         <?php
-                            require_once "backend/api/db.php";
                             $sql = "SELECT * FROM COLOR;";
                             $result = db_query($sql);
                             foreach ($result as $row) {

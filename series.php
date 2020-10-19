@@ -24,7 +24,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <div id="contenido">
 
     <!-- Incluimos el Navbar -->
-    <?php get_navbar('Inventario', 'Series'); ?>
+    <?php get_navbar('Inventario', 'Series', true); ?>
 
     <!-- Mostramos la tabla con la información correspondiente -->
 	<div class="table-responsive text-center" style="width:100%">
@@ -68,7 +68,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 							</div>
 							<div class="form-group col-sm-10">
 								<label for="añadirItem">Marca</label>
-								<select id="añadirItem" class="select-multiple form-control" name="suelas[]" multiple="multiple">
+								<select id="añadirItem" class="select-multiple form-control" name="suelas[]" multiple="multiple" required>
 
 								<?php
 
@@ -118,7 +118,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 							</div>
 							<div class="form-group col-sm-10">
 								<label for="editarItem">Marca</label>
-								<select id="editarItem" class="select-multiple form-control" name="suelas_edit[]" multiple="multiple">
+								<select id="editarItem" class="select-multiple form-control" name="suelas_edit[]" multiple="multiple" required>
 
 								<?php
 
@@ -260,9 +260,10 @@ $(document).ready(function () {
 			"noResults": function(){
 				return "No se encuentran resultados";
 			}
-   		},
+		},
+		closeOnSelect: false,
 		allowClear: true,
-		placeholder: 'Seleccione una marca'
+		placeholder: 'Seleccione una marca.'
 	});
 });
 
