@@ -106,8 +106,6 @@ $.ajax({
 
         const result = JSON.parse(data);
 
-        console.log(result);
-
         tabla = $('#tabla').DataTable({
             "initComplete": function(settings, json) {
                 $("#spinner").css('display', 'none');
