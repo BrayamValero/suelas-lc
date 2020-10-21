@@ -84,7 +84,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
                 <div class="form-group col-lg-6 col-md-6">
                     <label for="añadirSerie">Serie</label>
-                    <select id="añadirSerie" class="form-control dropdown-select2" name="serie" required>
+                    <select id="añadirSerie" class="form-control dropdown-select2" required>
                         <?php
                             $sql = "SELECT * FROM SERIES;";
                             $result = db_query($sql);
@@ -100,7 +100,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
                 <div class="form-group col-lg-3 col-md-3">
                     <label for="añadirColor">Color</label>
-                    <select id="añadirColor" class="form-control dropdown-select2" name="color" required>
+                    <select id="añadirColor" class="form-control dropdown-select2" required>
                         <?php
                             $sql = "SELECT * FROM COLOR;";
                             $result = db_query($sql);
@@ -146,19 +146,16 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <!-- Inline JavaScript -->
 <script>
 
-// Datos del cliente.
+// Declaración de Variables y Constantes
 var i = 1;
 var j = 1;
 var verificadorSerie = [];
 var obtenerColor, obtenerSerie; 
 
-const añadirNombre = document.getElementById('añadirNombre');
 const añadirFecha = document.getElementById('añadirFecha');
-const añadirPago = document.getElementById('añadirPago');
 const añadirSerie = document.getElementById('añadirSerie');
 const añadirColor = document.getElementById('añadirColor');
 const botonAñadirSerie = document.getElementById('botonAñadirSerie');
-const botonAñadirPedido = document.getElementById('botonAñadirPedido');
 
 // Asignando la fecha al input fecha.
 añadirFecha.min = new Date().toDateInputValue();
@@ -294,7 +291,7 @@ $(document).on('click', '.eliminarSerie', function(e) {
 });
 
 // Botón de Añadir Pedido.
-botonAñadirPedido.addEventListener("click", function(){
+document.getElementById('botonAñadirPedido').addEventListener("click", function(){
 
     // ID del formulario.
 	let formulario = $('#añadirPedidoForm');
