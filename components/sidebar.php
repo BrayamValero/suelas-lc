@@ -87,7 +87,7 @@
 
             <!-- Producción -->
             <?php
-                if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'MOLINERO' || $rol == 'OPERARIO' || $rol == 'PRODUCCION' || $rol == 'CONTROL'):
+                if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION' || $rol == 'CONTROL'):
             ?>
 
             <li class="sidebar-header-menu">
@@ -95,7 +95,7 @@
             </li>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'PRODUCCION') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION') {
                         echo "<li class='sidebar-dropdown'>
                             <a href='tablero-general.php'>
                                 <i class='fas fa-columns'></i>
@@ -281,7 +281,7 @@
 
             <!-- Inventario -->  
             <?php
-                if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'MOLINERO'):
+                if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO'):
             ?>
 
             <li class="sidebar-header-menu">
@@ -300,7 +300,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO') {
+                    if($rol == 'ADMINISTRADOR' || $rol == 'DESPACHO') {
                         echo "<li class='sidebar-dropdown'>
                         <a href='suelas-en-stock.php'>
                             <i class='fas fa-boxes'></i>

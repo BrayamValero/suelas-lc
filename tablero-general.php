@@ -7,7 +7,7 @@ require_once 'components/navbar.php';
 
 // Agregamos los roles que se quiere que usen esta página.
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
-$roles_permitidos = array('ADMINISTRADOR');
+$roles_permitidos = array('ADMINISTRADOR', 'PRODUCCION');
 
 if(!in_array($_SESSION['ROL'], $roles_permitidos)){
     require_once 'components/error.php';
