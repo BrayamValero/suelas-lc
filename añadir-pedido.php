@@ -318,23 +318,29 @@ document.getElementById('botonAñadirPedido').addEventListener("click", function
             if (result.isConfirmed) {
 
                 // $.post => Enviando el elemento al backend.
-                $.post(`backend/api/pedidos/añadir.php`, formulario.serialize());
-            
-                Swal.fire({
-                    title: 'Exito',
-                    text: 'El pedido ha sido añadido satisfactoriamente.',
-                    icon: 'success',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    allowEscapeKey: false,
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer || result.value){
-                        location.href = 'pedidos-pendientes.php';
-                    }
-                });
+                $.post(`backend/api/pedidos/añadir.php`, formulario.serialize(), function(data) {
 
-            }
+                    if(data === 'ERROR'){
+                        return Swal.fire("Error", "Ha ocurrido un error al agregar el pedido, recarga la página.", "error");
+                    }
+                    
+                    Swal.fire({
+                        title: 'Exito',
+                        text: 'El pedido ha sido añadido satisfactoriamente.',
+                        icon: 'success',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        allowEscapeKey: false,
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.timer || result.value){
+                            location.href = 'pedidos-pendientes.php';
+                        }
+                    });
+
+            })
+
+        }
 
         });
 

@@ -26,43 +26,51 @@ function db_connect(){
     $user = DB['user'];
     $pass = DB['pass'];
     $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
-
+    
     try {
-        $db = new PDO($dsn, $user, $pass, $options);
+        $conn = new PDO($dsn, $user, $pass, $options);
         // $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $db;
-    } catch (PDOException $e) {
+        return $conn;
+    } catch (PDOException $error) {
         echo '<h1>Error al conectarse a la base de datos</h1><br>';
-
-        echo '<p>Error: <mark>' . $e->getMessage() . '</mark></p>';
+        echo '<p>Error: <mark>' . $error->getMessage() . '</mark></p>';
         die();
     }
 }
 
 function db_query($sql, $data = array()){
     try {
-        $db = db_connect();
-        $mysql = $db->prepare($sql);
+        $conn = db_connect();
+        $mysql = $conn->prepare($sql);
         $mysql->execute($data);
+        $result = $mysql->fetchAll(PDO::FETCH_ASSOC);
+        $conn = null;
+        return $result;
     } catch (PDOException $e) {
         echo '<p>Error: <mark>' . $e->getMessage() . '</mark></p>';
         die();
-        // return $mysql->errorInfo();
     }
+}
 
-    $result = $mysql->fetchAll(PDO::FETCH_ASSOC);
-    $db = null;
-    return $result;
+// db_insert => Insertar un elemento a la base de datos.
+function db_insert($sql, $data = array()){
+    try {
+        $conn = db_connect();
+        $result = $conn->prepare($sql)->execute($data);
+        $conn = null;
+        return $result;
+    } catch (PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage(); 
+        die();
+    }
 }
 
 // Chequear los inputs.
 function test_input($data) {
-
     if(!empty($data)){
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         return $data;
     }
-
 }
