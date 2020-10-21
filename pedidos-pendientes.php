@@ -180,48 +180,56 @@ $.ajax({
                 { data: 'ID', title: "Opciones",
 					render: function(value, type, row) {
                         
-                        if ( row.ESTADO === 'EN ANALISIS') {
+                        if (row.ESTADO === 'EN ANALISIS') {
                             return `
-                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'VENTAS'): ?>
+                                <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'VENTAS'): ?>
                                 <a href='editar-pedido.php?id=${row.ID}' class='mr-1'>
                                     <i class='fas fa-edit icon-color'></i>
                                 </a>
                                 <a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-trash icon-color'></i>
                                 </a>
-                            <?php endif; ?>
+                                <?php endif; ?>
+
                                 <a href='javascript:void(0)' class='verPedido' data-id='${row.ID}'>
                                     <i class='fas fa-eye icon-color'></i>
                                 </a>`;
-                        } else if ( row.IMPRESO === 'NO' ) {
-                            return `
-                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
-                                <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
-                                    <i class='fas fa-print icon-color'></i>
-                                </a>
-                            <?php elseif ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
-                                <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
-                                    <i class='fas fa-ban icon-color'></i>
-                                </a>
-                            <?php endif; ?>
-                                <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
-                                    <i class='fas fa-eye icon-color'></i>
-                                </a>
-                                `;
                         } else {
-                            return `
-                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
-                                <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
-                                    <i class='fas fa-ban icon-color'></i>
-                                </a>
-                                <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
-                                    <i class='fas fa-print icon-color'></i>
-                                </a>
-                            <?php endif; ?>
-                                <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
-                                    <i class='fas fa-eye icon-color'></i>
-                                </a>`;
-                        }
+
+                            if( row.IMPRESO === 'NO' ) {
+                                return `
+                                    <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
+                                    <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
+                                        <i class='fas fa-ban icon-color'></i>
+                                    </a>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
+                                    <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
+                                        <i class='fas fa-print icon-color'></i>
+                                    </a>
+                                    <?php endif; ?>
+
+                                    <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
+                                        <i class='fas fa-eye icon-color'></i>
+                                    </a>`;
+                            } else {
+                                return `
+                                    <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
+                                    <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
+                                        <i class='fas fa-ban icon-color'></i>
+                                    </a>
+                                    <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
+                                        <i class='fas fa-print icon-color'></i>
+                                    </a>
+                                    <?php endif; ?>
+                              
+                                    <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
+                                        <i class='fas fa-eye icon-color'></i>
+                                    </a>`;
+                            }   
+                        
+                        } 
 
                 	}
                 },
