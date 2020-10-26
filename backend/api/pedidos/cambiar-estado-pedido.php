@@ -2,7 +2,23 @@
 session_start();
 require_once '../db.php';
 
-$id = $_GET['id'];
+$id = $_POST['id'];
+$estado  = $_POST['estado'];
 
-$sql = "UPDATE PEDIDOS SET IMPRESO = 'SI' WHERE ID = ?;";
-db_query($sql, array($id));
+if( $estado === 'analisis' ){
+
+    $sql = "UPDATE PEDIDOS SET ESTADO = 'PENDIENTE' WHERE ID = ?;";
+    db_query($sql, array($id));
+    
+    $sql = "UPDATE PRODUCCION SET ESTADO = 'PENDIENTE' WHERE PEDIDO_ID = ?;";
+    db_query($sql, array($id));
+
+} else if ( $estado === 'pendiente' ){
+
+    $sql = "UPDATE PEDIDOS SET ESTADO = 'PRODUCCION' WHERE ID = ?;";
+    db_query($sql, array($id));
+    
+    $sql = "UPDATE PRODUCCION SET ESTADO = 'PRODUCCION', CREATED_AT = NOW() WHERE PEDIDO_ID = ?;";
+    db_query($sql, array($id));
+
+}

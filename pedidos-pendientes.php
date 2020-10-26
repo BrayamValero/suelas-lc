@@ -9,7 +9,9 @@ require_once 'components/navbar.php';
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO', 'PRODUCCION');
 
-if(!in_array($_SESSION['ROL'], $roles_permitidos)){
+$rol = $_SESSION['ROL'];
+
+if(!in_array($rol, $roles_permitidos)){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -50,7 +52,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 	</div>
 
     <!-- Añadimos el botón de Añadir Pedido -->
-    <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'VENTAS'): ?>
+    <?php if ($rol === 'ADMINISTRADOR' || $rol === 'VENTAS'): ?>
         <div class="d-flex justify-content-center mt-5">
             <a class="btn btn-sm btn-main" href="añadir-pedido.php" role="button">Añadir Pedido</a>
         </div>
@@ -83,6 +85,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
 // VARIABLES => Declarando Variables Globales.
 var tabla, prioridades;
+var posicionTabla;
 
 // AJAX => Obtejemos las Prioridades.
 $.ajax({
@@ -150,9 +153,9 @@ $.ajax({
 
                         });
 
-                        <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
+                        <?php if ($rol === 'ADMINISTRADOR'): ?>
 
-                            return `<select class='cambiarPrioridad custom-select custom-select-sm dropdown-select2' data-id='${row.ID}'>${opciones}</select>`;
+                            return `<select class='cambiarPrioridad custom-select custom-select-sm' data-id='${row.ID}'>${opciones}</select>`;
 
                         <?php else: ?>
 
@@ -164,78 +167,95 @@ $.ajax({
 				},
 				{ data: "ESTADO", title: "Estado", 
 					render: function(value, type, row) {
-						if ( row.ESTADO === 'ANALISIS') {
+
+                        if (row.ESTADO === 'ANALISIS') {
+
                             return `
-                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
-                                <a href='javascript:void(0)' class='btn btn-sm btn-main cambiarEstado'>En Analisis</a>
+                            <?php if ($rol === 'ADMINISTRADOR' || $rol === 'DESPACHO'): ?>
+                                <a href='javascript:void(0)' class='btn btn-sm btn-main cambiarEstado' data-id='${row.ID}' data-estado='analisis'>Cambiar Estado</a>
                             <?php else: ?>
                                 En Analisis
-                            <?php endif; ?> 
+                            <?php endif; ?>
                             `;
-                        } else if ( row.ESTADO === 'PENDIENTE'){
+
+                            
+                        } else if(row.ESTADO === 'PENDIENTE') {
+
                             return `
-                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
-                                <a href='aprobar-pedido.php?id=${row.ID}' class='btn btn-sm btn-main'>Aprobar Pedido</a>
+                            <?php if ($rol === 'ADMINISTRADOR' || $rol === 'DESPACHO'): ?>
+                                <a href='aprobar-pedido.php?id=${row.ID}' class='btn btn-sm btn-danger'>Aprobar Pedido</a>
                             <?php else: ?>
                                 Aprobar Pedido
-                            <?php endif; ?> 
+                            <?php endif; ?>
                             `;
+                            
+                        } else {
+
+                            return `Producción`;
+
                         }
+
 					}
 				},
                 { data: 'ID', title: "Opciones",
 					render: function(value, type, row) {
                         
                         if (row.ESTADO === 'ANALISIS') {
+
                             return `
-                                <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'VENTAS'): ?>
-                                <a href='editar-pedido.php?id=${row.ID}' class='mr-1'>
-                                    <i class='fas fa-edit icon-color'></i>
+                            <?php if ($rol === 'ADMINISTRADOR' || $rol === 'VENTAS'): ?>
+                            <a href='editar-pedido.php?id=${row.ID}' class='mr-1'>
+                                <i class='fas fa-edit icon-color'></i>
+                            </a>
+                            <a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='${row.ID}'>
+                                <i class='fas fa-trash icon-color'></i>
+                            </a>
+                            <?php endif; ?>
+
+                            <a href='javascript:void(0)' class='verPedido' data-id='${row.ID}'>
+                                <i class='fas fa-eye icon-color'></i>
+                            </a>`;
+                                
+                        } else if (row.ESTADO === 'PENDIENTE' || row.ESTADO === 'PRODUCCION') {
+
+                            if( row.IMPRESO === 'NO' ) {
+
+                                return `
+                                <?php if ($rol === 'ADMINISTRADOR'): ?>
+                                <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
+                                    <i class='fas fa-ban icon-color'></i>
                                 </a>
-                                <a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='${row.ID}'>
-                                    <i class='fas fa-trash icon-color'></i>
+                                <?php endif; ?>
+                                
+                                <?php if ($rol === 'ADMINISTRADOR' || $rol === 'DESPACHO'): ?>
+                                <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
+                                    <i class='fas fa-print icon-color'></i>
                                 </a>
                                 <?php endif; ?>
 
-                                <a href='javascript:void(0)' class='verPedido' data-id='${row.ID}'>
+                                <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-eye icon-color'></i>
                                 </a>`;
-                        } else {
 
-                            if( row.IMPRESO === 'NO' ) {
-                                return `
-                                    <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
-                                    <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
-                                        <i class='fas fa-ban icon-color'></i>
-                                    </a>
-                                    <?php endif; ?>
-                                    
-                                    <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
-                                    <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
-                                        <i class='fas fa-print icon-color'></i>
-                                    </a>
-                                    <?php endif; ?>
-
-                                    <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
-                                        <i class='fas fa-eye icon-color'></i>
-                                    </a>`;
                             } else {
+
                                 return `
-                                    <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR'): ?>
-                                    <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
-                                        <i class='fas fa-ban icon-color'></i>
-                                    </a>
-                                    <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
-                                        <i class='fas fa-print icon-color'></i>
-                                    </a>
-                                    <?php endif; ?>
-                              
-                                    <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
-                                        <i class='fas fa-eye icon-color'></i>
-                                    </a>`;
+                                <?php if ($rol === 'ADMINISTRADOR'): ?>
+                                <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
+                                    <i class='fas fa-ban icon-color'></i>
+                                </a>
+                                <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
+                                    <i class='fas fa-print icon-color'></i>
+                                </a>
+                                <?php endif; ?>
+                            
+                                <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
+                                    <i class='fas fa-eye icon-color'></i>
+                                </a>`;
+
                             }   
                         
-                        } 
+                        }
 
                 	}
                 },
@@ -255,6 +275,11 @@ $.ajax({
 	   
     }
 
+});
+
+// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar un Elemento)
+$('#tabla tbody').on( 'click', 'tr', function () { 
+	posicionTabla = this;
 });
 
 // VER => Ver un Pedido.
@@ -279,9 +304,10 @@ $('#tabla tbody').on( 'click', '.verPedido', function () {
 
 });
 
+
 // CAMBIAR => Cambiar el estado de un pedido.
 $('#tabla tbody').on( 'click', '.cambiarEstado', function () { 
-
+    
     let id = $(this).data("id");
 
     Swal.fire({
@@ -292,12 +318,16 @@ $('#tabla tbody').on( 'click', '.cambiarEstado', function () {
         confirmButtonText: 'Si',
         cancelButtonText: 'No',
     }).then((result) => {
+
         if (result.value) {
 
-          // Eliminando del backend.
-          $.post('backend/api/pedidos/cambiar-estado-pedido.php', { id });
+            // Cambiando el estado del pedido.
+            $.post('backend/api/pedidos/cambiar-estado-pedido.php', { id, estado: 'analisis' });
+
+            window.location = window.location.href;
 
         }
+
     });
 
 });
@@ -365,7 +395,7 @@ $('#tabla tbody').on( 'change', '.cambiarPrioridad', function () {
 
     let id = $(this).data("id");
     let prioridad = $(this).val();
-    $.get(`backend/api/pedidos/cambiar_prioridad.php?id=${id}&prioridad=${prioridad}`);
+    $.post('backend/api/pedidos/cambiar-prioridad.php', { id, prioridad });
 
 });
 

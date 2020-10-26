@@ -423,9 +423,11 @@ document.getElementById('botonAprobarPedido').addEventListener('click', function
 
                     });
                     
-                    // 3. Cambiamos el botón de confirmar pedido.
-                    window.location = `backend/api/pedidos/confirmar.php?id=${pedido_id}`
-                    
+                    // Cambiando el estado del pedido.
+                    $.post('backend/api/pedidos/cambiar-estado-pedido.php', { id: pedido_id, estado: 'pendiente' });
+
+                    window.location = 'pedidos-pendientes.php';
+
                 });
             }
         });

@@ -299,7 +299,7 @@ botonEditarColor.addEventListener('click', function () {
 
 				const elems = formulario.serializeArray();
 
-				// Datatables => Añadiendo el elemento al frontend.
+				// Datatables => Editando el elemento en el frontend.
 				tabla.row(posicionTabla).data({
 					"ID":               elems[0].value,
 					"COLOR":       		elems[1].value,
