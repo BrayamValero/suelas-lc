@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Actualizamos la "PRODUCCION" para evitar errores con "CONTROL DE CALIDAD"
             $sql = "UPDATE PRODUCCION 
-                SET ESTADO = IF(CANTIDAD = ?, 'POR DESPACHAR', 'PENDIENTE'), 
+                SET ESTADO = IF(CANTIDAD = ?, 'DESPACHO', 'PENDIENTE'), 
                     STOCK = ?,
                     RESTANTE = RESTANTE - ?,
                     DISPONIBLE = ?

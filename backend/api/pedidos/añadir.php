@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once "../db.php";
-// echo '<pre>'; print_r($_POST); echo '</pre>';
+echo '<pre>'; print_r($_POST); echo '</pre>';
 
 // Si se ejecuta un Request, ya sea GET o POST se ejecuta el código.
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Datos del pedido.
     $pedidos = $_POST['pedido'];
     $prioridad_id = 1;
-    $estado = 'EN ANALISIS';
+    $estado = 'ANALISIS';
     $impreso = 'NO';
 
     // Pedido => Añadir Pedido.
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $cantidad = test_input($pedido['cantidad']);
                 $restante = test_input($pedido['cantidad']);
     
-                $sql = "INSERT INTO PRODUCCION VALUES (NULL, ?, ?, ?, ?, ?, ?, 0, 0, 0, 0, 0, ?, ?, NULL)";
+                $sql = "INSERT INTO PRODUCCION VALUES (NULL, ?, ?, ?, ?, ?, ?, 0, 0, 0, 0, ?, ?, NULL)";
                 db_query($sql, array($pedido_id, $suela_id, $serie_id, $color_id, $cantidad, $restante, $urgente, $estado));
     
             }

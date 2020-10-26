@@ -106,6 +106,8 @@ $.ajax({
 
         const result = JSON.parse(data);
 
+        console.log(result);
+
         tabla = $('#tabla').DataTable({
             "initComplete": function(settings, json) {
                 $("#spinner").css('display', 'none');
@@ -164,7 +166,15 @@ $.ajax({
 				},
 				{ data: "ESTADO", title: "Estado", 
 					render: function(value, type, row) {
-						if ( row.ESTADO === 'EN ANALISIS') {
+						if ( row.ESTADO === 'ANALISIS') {
+                            return `
+                            <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
+                                <a href='javascript:void(0)' class='btn btn-sm btn-main cambiarEstado'>En Analisis</a>
+                            <?php else: ?>
+                                En Analisis
+                            <?php endif; ?> 
+                            `;
+                        } else if ( row.ESTADO === 'PENDIENTE'){
                             return `
                             <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'DESPACHO'): ?>
                                 <a href='aprobar-pedido.php?id=${row.ID}' class='btn btn-sm btn-main'>Aprobar Pedido</a>
@@ -172,15 +182,13 @@ $.ajax({
                                 Aprobar Pedido
                             <?php endif; ?> 
                             `;
-                        } else {
-                            return `Pendiente`;
                         }
 					}
 				},
                 { data: 'ID', title: "Opciones",
 					render: function(value, type, row) {
                         
-                        if (row.ESTADO === 'EN ANALISIS') {
+                        if (row.ESTADO === 'ANALISIS') {
                             return `
                                 <?php if ($_SESSION['ROL'] == 'ADMINISTRADOR' || $_SESSION['ROL'] == 'VENTAS'): ?>
                                 <a href='editar-pedido.php?id=${row.ID}' class='mr-1'>

@@ -349,8 +349,6 @@ document.getElementById('botonAprobarPedido').addEventListener('click', function
 
     });
 
-    console.table(actualizar_stock);
-
     if(verif_disponibilidad.includes(false)){
 
         return Swal.fire('Error','Estás superando los valores permitidos del stock y/o pedido.', 'error');

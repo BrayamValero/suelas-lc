@@ -669,7 +669,7 @@ function obtenerPedidosPendientes(){
                     ON PED.CLIENTE_ID = CLI.ID
                 JOIN PRIORIDAD PRI
                     ON PRI.ID = PED.PRIORIDAD_ID 
-            WHERE PED.ESTADO IN ('EN ANALISIS', 'PENDIENTE');";
+            WHERE PED.ESTADO IN ('ANALISIS', 'PENDIENTE', 'PRODUCCION');";
     $result = db_query($sql);
     echo json_encode($result);
 }
