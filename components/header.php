@@ -116,11 +116,44 @@ if (empty($_SESSION)) {
     }
 
     // Toast Notification
-    function toastNotifications(icon, icon_color, msg1, msg2){
-        $('.toast-icon').removeClass().addClass(`toast-icon ${icon} ${icon_color} mr-2`);
-        $('.toast-title').text(msg1);
-        $('.toast-body').text(msg2);
+    function mostrarNotificacion(tipo, titulo, mensaje){
+
+        switch (tipo) {
+
+            // Editar
+            case 'editar':
+
+                document.getElementsByClassName('toast-icon')[0].classList.remove(...document.getElementsByClassName('toast-icon')[0].classList).classList.add('toast-icon fas fa-edit text-warning mr-2');
+
+                // $('.toast-icon').removeClass().addClass(`toast-icon fas fa-edit text-warning mr-2`);
+
+                break;
+            
+            // Eliminar
+            case 'eliminar':
+                
+                document.getElementsByClassName('toast-icon')[0].classList.remove(...document.getElementsByClassName('toast-icon')[0].classList).classList.add('toast-icon fas fa-trash text-danger mr-2');
+
+                // $('.toast-icon').removeClass().addClass(`toast-icon fas fa-trash text-danger mr-2`);
+                break;
+
+            // Añadir
+            case 'añadir':
+                $('.toast-icon').removeClass().addClass(`toast-icon fas fa-check text-success mr-2`);
+                break;
+            
+            // Error
+            default:
+                $('.toast-icon').removeClass().addClass(`toast-icon fas fa-ban text-secondary mr-2`);
+                break;
+                
+        }
+
+        document.getElementsByClassName('toast-title')[0].innerHTML = titulo;
+        document.getElementsByClassName('toast-body')[0].innerHTML = mensaje;
+
         $('.toast').toast('show');
+
     }
 
     </script>

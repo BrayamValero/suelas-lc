@@ -106,8 +106,6 @@ $.ajax({
 
         const result = JSON.parse(data);
 
-        console.log(result);
-
         tabla = $('#tabla').DataTable({
             "initComplete": function(settings, json) {
                 $("#spinner").css('display', 'none');
@@ -281,14 +279,14 @@ $('#tabla tbody').on( 'click', '.verPedido', function () {
 
 });
 
-// ELIMINAR => Eliminando un Pedido.
-$('#tabla tbody').on( 'click', '.eliminarPedido', function () { 
+// CAMBIAR => Cambiar el estado de un pedido.
+$('#tabla tbody').on( 'click', '.cambiarEstado', function () { 
 
     let id = $(this).data("id");
 
     Swal.fire({
-        title: '¿Deseas eliminar el pedido?',
-        text: 'Si eliminas el pedido tendrás que agregarlo nuevamente.',
+        title: '¿Deseas cambiar el estado a pendiente?',
+        text: 'Al cambiarlo no se podrá editar el pedido.',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Si',
@@ -296,17 +294,40 @@ $('#tabla tbody').on( 'click', '.eliminarPedido', function () {
     }).then((result) => {
         if (result.value) {
 
-            // Eliminando del backend.
-            $.get(`backend/api/pedidos/eliminar.php?id=${id}`);
-
-            // Datatable => Quitando el elemento del frontend.
-            tabla.row($(this).parents('tr')).remove().draw(false);
-
-            // Mostrando Notificación de éxito.
-            toastNotifications('fas fa-trash', 'text-danger', '¡Eliminado!', 'El pedido ha sido eliminado.');
+          // Eliminando del backend.
+          $.post('backend/api/pedidos/cambiar-estado-pedido.php', { id });
 
         }
     });
+
+});
+
+// ELIMINAR => Eliminando un Pedido.
+$('#tabla tbody').on( 'click', '.eliminarPedido', function () {
+
+  let id = $(this).data("id");
+
+  Swal.fire({
+      title: '¿Deseas eliminar el pedido?',
+      text: 'Si eliminas el pedido tendrás que agregarlo nuevamente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No',
+  }).then((result) => {
+      if (result.value) {
+
+        // Eliminando del backend.
+        $.post('backend/api/pedidos/eliminar.php', { id });
+
+        // Datatable => Quitando el elemento del frontend.
+        tabla.row($(this).parents('tr')).remove().draw(false);
+
+        // Metodo => Notificación
+        mostrarNotificacion('eliminar', '¡Eliminado!', 'El pedido ha sido eliminado.');
+
+      }
+  });
 
 });
 
@@ -331,8 +352,8 @@ $('#tabla tbody').on( 'click', '.cancelarPedido', function () {
             // Datatable => Quitando el elemento del frontend.
             tabla.row($(this).parents('tr')).remove().draw(false);
 
-            // Mostrando Notificación de éxito.
-            toastNotifications('fas fa-trash', 'text-danger', '¡Cancelado!', 'El pedido ha sido cancelado.');
+            // Metodo => Notificación
+            mostrarNotificacion('eliminar', '¡Cancelado!', 'El pedido ha sido cancelado.');
 
         }
     });
