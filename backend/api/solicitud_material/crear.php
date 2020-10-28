@@ -59,7 +59,7 @@ foreach ($actualizar_stock as $stock){
 
     // Actualizamos la "PRODUCCION" para evitar errores con "CONTROL DE CALIDAD"
     $sql = "UPDATE PRODUCCION 
-        SET ESTADO = IF(CANTIDAD = ?, 'POR DESPACHAR', 'PENDIENTE'), 
+        SET ESTADO = IF(CANTIDAD = ?, 'PENDIENTE', 'PRODUCCION', 'DESPACHO'), 
             STOCK = ?,
             RESTANTE = RESTANTE - ?,
             DISPONIBLE = ?

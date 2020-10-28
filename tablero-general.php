@@ -105,7 +105,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
             S.PESO_MAQUINA AS SUELA_PESO_MAQUINA
                 FROM PRODUCCION P 
                     JOIN SUELAS S ON P.SUELA_ID = S.ID 
-                        WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ? ORDER BY CREATED_AT ASC;";
+                        WHERE P.ESTADO = 'PRODUCCION' AND P.COLOR_ID = ? ORDER BY CREATED_AT ASC;";
 
     $produccion_actual = db_query($sql, array($maquinaria_color[0]['ID']));
 
@@ -114,7 +114,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
             SUM(P.CANTIDAD) AS TOTAL_PRODUCIR
                 FROM PRODUCCION P 
                     JOIN SUELAS S ON P.SUELA_ID = S.ID 
-                        WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ? GROUP BY S.ID";
+                        WHERE P.ESTADO = 'PRODUCCION' AND P.COLOR_ID = ? GROUP BY S.ID";
 
     $produccion_agrupada = db_query($sql, array($maquinaria_color[0]['ID']));
 

@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
        
         // Primer Bucle => Datos de las SERIES.
-        foreach ($datosSeries as $key => $serie) {
+        foreach ($datosSeries as $serie) {
 
             // Se declara deontro del bucle para evitar datos duplicados.
             $append = '';
@@ -47,13 +47,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $colorHex = $red * 0.299 + $green * 0.587 + $blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
 
             // Segundo Bucle => Datos de las REFERENCIAS que van dentro de las series.
-            foreach ($grupo_series as $key => $referencia) {
+            foreach ($grupo_series as $referencia) {
                 
                 $prod_id = $disponible = $estado = null;
                 $despachado = '<i class="fas fa-ban text-danger"></i>';
 
                 // Tercer Bucle => Obtenemos los datos correspondientes al pedido.
-                foreach ($datosPedido as $key => $pedido) {
+                foreach ($datosPedido as $pedido) {
 
                     if($referencia['SUELA_ID'] == $pedido['SUELA_ID'] && $color_id == $pedido['COLOR_ID']){
                         
