@@ -191,7 +191,7 @@ $.ajax({
                             
                         } else {
 
-                            return `Producción`;
+                            return `En Producción`;
 
                         }
 

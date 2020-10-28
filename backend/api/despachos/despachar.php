@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $completado = true;
 
         foreach ($result as $row) {
-            if ($row['ESTADO'] == 'PENDIENTE' || $row['ESTADO'] == 'POR DESPACHAR') {
+            if ($row['ESTADO'] == 'PRODUCCION' || $row['ESTADO'] == 'DESPACHO') {
                 $completado = false;
             }
         }

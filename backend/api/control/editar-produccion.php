@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
     // Si no hay producción restante se cambia de estado para quitar de CONTROL DE CALIDAD.
     if ($restante[0]['RESTANTE'] === '0') {
-        $sql = "UPDATE PRODUCCION SET ESTADO = 'POR DESPACHAR' WHERE ID = ?;";
+        $sql = "UPDATE PRODUCCION SET ESTADO = 'DESPACHO' WHERE ID = ?;";
         db_query($sql, array($produccion_id));
     }
 

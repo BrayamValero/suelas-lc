@@ -5,26 +5,26 @@
 @import "default.scss";
 
 body {
-    background: $primary-color !important;
+  background: $primary-color !important;
 }
 
 form {
-    background: white;
-    padding: 75px 60px;
-    border-radius: 2px;
-    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  background: white;
+  padding: 75px 60px;
+  border-radius: 2px;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
 .form-container {
-    width: 480px;
-    height: 424px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
+  width: 480px;
+  height: 424px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 
-#recuperarClaveForm{
-    padding: 1rem !important;
-    box-shadow: none;
+#recuperarClaveForm {
+  padding: 1rem !important;
+  box-shadow: none;
 }

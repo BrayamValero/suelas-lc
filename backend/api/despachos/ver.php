@@ -67,51 +67,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 }
 
-                // Dependiendo de la disponibilidad, muestra una vista distinta de suelas disponibles.
+                // Dependiendo de la disponibilidad muestra una vista distinta.
                 if($disponible != 0){
 
-                    $status = "<div class='badge-checkboxes mt-2'>
+                    $status = "<div class='badge-checkboxes'>
                         <div class='checkbox'>
-                            <span class='badge badge-main mb-2'>Desp: $despachado</span>
-                            <label>
+                            <div class='medalla'>
+                                <span class='medalla-titulo'>Despachado</span>
+                                <span>$despachado</span>
+                            </div>
+                            <label class='d-block w-100'>
                                 <input type='checkbox' name='producción-id-$prod_id' value='$prod_id'>
-                                <span class='badge'>Disp: $disponible</span>
+                                <div class='medalla'>
+                                    <span class='medalla-titulo'>Disponible</span>
+                                    <span>$disponible</span>
+                                </div>
                             </label>
                         </div>
                     </div>";
 
                 } elseif ($disponible == null) {
 
-                    $status = "";
+                    $status = null;
 
                 } else {
 
-                    $status = "<span class='badge badge-main mt-2'>Desp: $despachado</span>";
+                    $status = "<div class='medalla'>
+                                <span class='medalla-titulo'>Despachado</span>
+                                <span>$despachado</span>
+                            </div>";
 
                 }
-                
-                // Evaluamos el estado para poder colocar las cantidades.
-                if($estado == 'COMPLETADO'){
+
+                // Dependiendo del estado de la producción muestra una vista distinta.
+                switch ($estado) {
+                    
+                    case 'ANALISIS':
+                    case 'PENDIENTE':
+                    case 'PRODUCCION':
 
                     $append .= "
-                        <div class='form-group col mb-0'>
-                            <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
-                            <div class='form-control input-cantidades'>
-                                <i class='fas fa-check text-success'></i>
-                            </div>
-                            $status
-                        </div>";
+                    <div class='form-group col mb-0'>
+                        <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
+                        <div class='form-control input-cantidades'>$cantidad</div>
+                        $status
+                    </div>";
 
-                } elseif ($estado == 'PENDIENTE' || $estado == 'POR DESPACHAR' || $estado == 'EN ANALISIS') {
+                        break;
+
+                    case 'COMPLETADO':
 
                     $append .= "
-                        <div class='form-group col mb-0'>
-                            <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
-                            <div class='form-control input-cantidades'>$cantidad</div>
-                            $status
-                        </div>";
+                    <div class='form-group col mb-0'>
+                        <label class='label-cantidades' for='cantidades'>{$referencia['TALLA']}</label>
+                        <div class='form-control input-cantidades'>
+                            <i class='fas fa-check text-success'></i>
+                        </div>
+                        $status
+                    </div>";
 
-                } else {
+                        break;
+                    
+                    default:
 
                     $append .= "
                     <div class='form-group col mb-0'>
@@ -119,6 +136,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class='form-control input-cantidades'>$despachado</div>
                         $status
                     </div>";
+                    
+                        break;
 
                 }
 

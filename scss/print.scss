@@ -1,16 +1,14 @@
 @media print {
+  @page {
+    margin: 0.1rem;
+  }
 
-    @page {
-        margin: .1rem;
-    }
+  .hide-on-print {
+    display: none;
+  }
 
-    .hide-on-print{
-        display: none;
-    }
-
-    .pageBreak {
-        page-break-after: auto;
-        break-after: page;
-    }
-
+  .pageBreak {
+    page-break-after: auto;
+    break-after: page;
+  }
 }

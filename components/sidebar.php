@@ -87,7 +87,8 @@
 
             <!-- Producción -->
             <?php
-                if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION' || $rol == 'CONTROL'):
+                    
+                if( in_array($rol, ['ADMINISTRADOR', 'PRODUCCION', 'CONTROL']) ):
             ?>
 
             <li class="sidebar-header-menu">
@@ -95,7 +96,7 @@
             </li>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'PRODUCCION']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='tablero-general.php'>
                                 <i class='fas fa-columns'></i>
@@ -106,7 +107,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION' || $rol == 'CONTROL') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'PRODUCCION', 'CONTROL']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='control-de-calidad.php'>
                                 <i class='far fa-calendar-check'></i>
@@ -117,7 +118,7 @@
                 ?>
 
                 <?php
-                    // if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO' || $rol == 'PRODUCCION') {
+                    // if( in_array($rol, ['ADMINISTRADOR', 'MOLINERO', 'OPERARIO', 'PRODUCCION']) ) {
                     //     echo "<li class='sidebar-dropdown'>
                     //         <a href='reporte-de-produccion.php'>
                     //             <i class='fas fa-book'></i>
@@ -128,7 +129,7 @@
                 ?>
 
                 <?php
-                    // if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION') {
+                    // if( in_array($rol, ['ADMINISTRADOR', 'PRODUCCION']) ) {
                     //     echo "<li class='sidebar-dropdown'>
                     //         <a href='operarios.php'>
                     //             <i class='fas fa-address-card'></i>
@@ -145,7 +146,7 @@
 
             <!-- Ventas -->
             <?php
-                if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO' || $rol == 'CLIENTE' || $rol == 'PRODUCCION'):
+                if( in_array($rol, ['ADMINISTRADOR', 'VENTAS', 'DESPACHO', 'CLIENTE', 'PRODUCCION']) ):
             ?>
             
             <li class="sidebar-header-menu">
@@ -153,7 +154,7 @@
             </li>
                     
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'VENTAS']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='añadir-pedido.php'>
                                 <i class='fas fa-shopping-cart'></i>
@@ -165,7 +166,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO' || $rol == 'PRODUCCION') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'VENTAS', 'PRODUCCION']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='pedidos-pendientes.php'>
                                 <i class='fas fa-store'></i>
@@ -177,7 +178,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO' || $rol == 'PRODUCCION') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'VENTAS', 'DESPACHO', 'PRODUCCION']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='busqueda-avanzada.php'>
                                 <i class='fas fa-search'></i>
@@ -188,7 +189,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO'|| $rol == 'PRODUCCION') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'VENTAS', 'DESPACHO', 'PRODUCCION']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='despachos-parciales.php'>
                                 <i class='fas fa-truck'></i>
@@ -199,7 +200,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS' || $rol == 'DESPACHO') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'DESPACHO']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='ventas-culminadas.php'>
                                 <i class='fa fa-chart-line'></i>
@@ -210,7 +211,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'VENTAS') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'VENTAS']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='clientes.php'>
                                 <i class='fa fa-user-tie'></i>
@@ -227,7 +228,7 @@
 
             <!-- Auditorias -->
             <?php
-                if($rol == 'ADMINISTRADOR'):
+                if( in_array($rol, ['ADMINISTRADOR']) ):
             ?>
 
             <li class="sidebar-header-menu">
@@ -235,7 +236,7 @@
             </li> 
 
                 <?php
-                    if($rol == 'ADMINISTRADOR') {
+                    if( in_array($rol, ['ADMINISTRADOR']) ) {
 
                         echo "<li class='sidebar-dropdown'>
                             <a href='auditoria-control.php'>
@@ -281,7 +282,7 @@
 
             <!-- Inventario -->  
             <?php
-                if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO'):
+                if( in_array($rol, ['ADMINISTRADOR', 'MOLINERO']) ):
             ?>
 
             <li class="sidebar-header-menu">
@@ -289,7 +290,7 @@
             </li>
 
                 <?php
-                    // if($rol == 'ADMINISTRADOR' || $rol == 'PRODUCCION' || $rol == 'MOLINERO') {
+                    // if( in_array($rol, ['ADMINISTRADOR', 'PRODUCCION', 'MOLINERO']) ) {
                     //     echo "<li class='sidebar-dropdown'>
                     //         <a href='materia-prima.php'>
                     //             <i class='fab fa-react'></i>
@@ -300,7 +301,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR' || $rol == 'DESPACHO') {
+                    if( in_array($rol, ['ADMINISTRADOR', 'DESPACHO']) ) {
                         echo "<li class='sidebar-dropdown'>
                         <a href='suelas-en-stock.php'>
                             <i class='fas fa-boxes'></i>
@@ -311,7 +312,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR') {
+                    if( in_array($rol, ['ADMINISTRADOR']) ) {
                         echo "<li class='sidebar-dropdown'>
                         <a href='referencias.php'>
                             <i class='fab fa-slack-hash'></i>
@@ -322,7 +323,7 @@
                 ?>
                 
                 <?php
-                    if($rol == 'ADMINISTRADOR') {
+                    if( in_array($rol, ['ADMINISTRADOR']) ) {
                         echo "<li class='sidebar-dropdown'>
                         <a href='series.php'>
                             <i class='fas fa-sort-amount-up-alt'></i>
@@ -333,7 +334,7 @@
                 ?>
 
                 <?php
-                    if($rol == 'ADMINISTRADOR') {
+                    if( in_array($rol, ['ADMINISTRADOR']) ) {
                         echo "<li class='sidebar-dropdown'>
                         <a href='color.php'>
                             <i class='fas fa-star'></i>
@@ -350,7 +351,7 @@
 
             <!-- Norsaplast -->  
             <?php
-                if($rol == 'ADMINISTRADOR' || $rol == 'NORSAPLAST'):
+                if( in_array($rol, ['ADMINISTRADOR', 'NORSAPLAST']) ):
             ?>
 
             <!-- <li class="sidebar-header-menu">
@@ -358,7 +359,7 @@
             </li> -->
                     
                 <?php
-                    // if($rol == 'ADMINISTRADOR' || $rol == 'NORSAPLAST') {
+                    // if( in_array($rol, ['ADMINISTRADOR', 'NORSAPLAST']) ) {
                     //     echo "<li class='sidebar-dropdown'>
                     //         <a href='solicitud-material.php'>
                     //             <i class='fas fa-sticky-note'></i>
@@ -375,7 +376,7 @@
 
             <!-- Molinero -->
             <?php
-                if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO'):
+                if( in_array($rol, ['ADMINISTRADOR', 'MOLINERO', 'OPERARIO']) ):
             ?>
           
             <!-- <li class="sidebar-header-menu">
@@ -383,7 +384,7 @@
             </li> -->
 
                 <?php
-                    // if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO') {
+                    // if( in_array($rol, ['ADMINISTRADOR', 'MOLINERO']) ) {
                     //     echo "<li class='sidebar-dropdown'>
                     //         <a href='formulas.php'>
                     //             <i class='fas fa-flask'></i>
@@ -394,7 +395,7 @@
                 ?>
                 
                 <?php
-                    // if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO' || $rol == 'OPERARIO') {
+                    // if( in_array($rol, ['ADMINISTRADOR', 'MOLINERO', 'OPERARIO']) ) {
                     //     echo "<li class='sidebar-dropdown'>
                     //         <a href='entrega-de-material.php'>
                     //             <i class='fas fa-truck-loading'></i>
@@ -405,7 +406,7 @@
                 ?>
 
                 <?php
-                    // if($rol == 'ADMINISTRADOR' || $rol == 'MOLINERO') {
+                    // if( in_array($rol, ['ADMINISTRADOR', 'MOLINERO']) ) {
                     //     echo "<li class='sidebar-dropdown'>
                     //         <a href='auditoria-de-entrega.php'>
                     //             <i class='fas fa-dolly-flatbed'></i>
@@ -428,7 +429,7 @@
     <div class="sidebar-footer bg-light">
         <div class="row text-center">
             <?php
-                if($rol == 'ADMINISTRADOR') {
+                if( in_array($rol, ['ADMINISTRADOR']) ) {
                     echo "<div class='col'>
                         <div>
                             <a href='#' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>

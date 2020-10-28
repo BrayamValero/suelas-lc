@@ -127,7 +127,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
                     JOIN SUELAS S ON P.SUELA_ID = S.ID
                     JOIN PEDIDOS PED ON P.PEDIDO_ID = PED.ID
                     JOIN PRIORIDAD PRI ON PED.PRIORIDAD_ID = PRI.ID    
-                        WHERE P.ESTADO = 'PENDIENTE' AND P.COLOR_ID = ? ORDER BY PRIORIDAD_ID DESC, CREATED_AT ASC;";
+                        WHERE P.ESTADO = 'PRODUCCION' AND P.COLOR_ID = ? ORDER BY PRIORIDAD_ID DESC, CREATED_AT ASC;";
                         
 
     $produccion_actual = db_query($sql, array($maquinaria_color[0]['ID']));
