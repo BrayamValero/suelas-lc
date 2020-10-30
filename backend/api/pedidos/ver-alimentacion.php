@@ -5,7 +5,7 @@ if(isset($pedido_id)){
     $output = '';
 
     // 1. Primero buscamos el PEDIDO dependiendo del ID dado.
-    $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, CANTIDAD, URGENTE FROM PRODUCCION WHERE PEDIDO_ID = ?;";
+    $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, ESTADO, RESTANTE, URGENTE FROM PRODUCCION WHERE PEDIDO_ID = ?;";
     $datosPedido = db_query($sql, array($pedido_id));
 
     // 2. Ahora filtramos las SERIE_ID y COLOR_ID.
@@ -49,14 +49,15 @@ if(isset($pedido_id)){
             foreach ($datosPedido as $pedido) {
 
                 if($suela_id == $pedido['SUELA_ID'] && $color_id == $pedido['COLOR_ID']){
-                    $cantidad = $pedido['CANTIDAD'];
+                    $restante = $pedido['RESTANTE'];
                     $prod_id = $pedido['PROD_ID'];
+                    $estado = $pedido['ESTADO'];
                     break;
                 }
 
             }
 
-            if ($prod_id === null) {
+            if ($prod_id === null || $estado === 'DESPACHO') {
 
                 $append .= "
                     <div class='form-group col mb-0'>
@@ -71,13 +72,13 @@ if(isset($pedido_id)){
                 $append .= "
                     <div class='form-group col mb-0'>
                         <label class='label-cantidades' for='cantidades'>$talla</label>
-                        <div class='form-control input-cantidades'>$cantidad</div>
-                        <input type='number' name='produccion[$prod_id]' class='form-control text-center rounded-0 mt-2' value='' max='$cantidad' placeholder='Valor'>
+                        <div class='form-control input-cantidades'>$restante</div>
+                        <input type='number' data-prod-id='$prod_id' class='form-control text-center rounded-0 mt-2' value='' max='$restante' placeholder='Valor'>
                     </div>";
 
             }
 
-            unset($cantidad, $prod_id);
+            unset($restante, $prod_id);
 
         }
 

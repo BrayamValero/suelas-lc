@@ -411,7 +411,7 @@ document.getElementById('botonAprobarPedido').addEventListener('click', function
 
                             // 2. Creamos la solicitud de la materia prima a Norsaplast.
                             $.post("backend/api/solicitud_material/crear.php", {
-                                solicitud_material: JSON.stringify({
+                                'solicitud_material': JSON.stringify({
                                     'pedido_id': pedido_id,
                                     'cliente_id': cliente_id
                                 }),
