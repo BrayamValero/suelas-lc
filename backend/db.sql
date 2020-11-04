@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS PEDIDOS
     ID                  INT PRIMARY KEY AUTO_INCREMENT,
     USUARIO_ID          INT                 NOT NULL,
     CLIENTE_ID          INT                 NOT NULL,
-    ESTADO              ENUM ('ANALISIS', 'PENDIENTE' , 'PRODUCCION', 'COMPLETADO') NOT NULL DEFAULT 'ANALISIS',
+    ESTADO              ENUM ('ANALISIS', 'PENDIENTE' , 'PRODUCCION', 'DESPACHO', 'COMPLETADO') NOT NULL DEFAULT 'ANALISIS',
     PRIORIDAD_ID        INT                 NOT NULL,
     FORMA_PAGO          VARCHAR(20)         NOT NULL                                  DEFAULT 'CREDITO',
     IMPRESO             ENUM ('SI', 'NO')   NOT NULL                                  DEFAULT 'NO',

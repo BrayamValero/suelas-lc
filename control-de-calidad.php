@@ -467,8 +467,7 @@ function marcarEmpaquetado(id, restante) {
             Swal.fire({
                 title: '¿Estás seguro?',
                 html: `
-                ¿Deseas enviar ${cantidad} pares de suelas, los cuales pesan ${pesado} Kgs?
-                `,
+                ¿Deseas enviar ${cantidad} pares de suelas, los cuales pesan ${pesado} Kgs?`,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonText: 'Si',
@@ -476,22 +475,32 @@ function marcarEmpaquetado(id, restante) {
             }).then((result) => {
                 if (result.value) {
 
-                    Swal.fire({
-                        title: '¡Empaquetado!',
-                        text: 'El paquete ha sido enviado a despachos.',
-                        icon: 'success'
-                    }).then(function () {
-
-                        $.get("backend/api/control/editar-produccion.php", {
-                            id: id,
-                            pesado: pesado,
-                            cantidad: cantidad
-                        }, function (data, status) {
-                            if (status === "success") {
-                                window.location.reload();
-                            }
-                        });
+                    $.get("backend/api/control/editar-produccion.php", {
+                        id: id,
+                        pesado: pesado,
+                        cantidad: cantidad
+                    }, function (data) {
                         
+                        const res = JSON.parse(data);
+
+                        if(res.status === 'success') {
+
+                            Swal.fire({
+                                title: '¡Empaquetado!',
+                                text: 'El paquete ha sido enviado a despachos.',
+                                icon: 'success'
+                            }).then(() => window.location.reload());
+                            
+                        } else if (res.status === 'error') {
+
+                            Swal.fire({
+                                title: '¡Error!',
+                                text: 'La producción ha sido editada en producción, actualizando...',
+                                icon: 'error'
+                            }).then(() => window.location.reload());
+
+                        }
+
                     });
                     
                 }

@@ -73,14 +73,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $status = "<div class='badge-checkboxes'>
                         <div class='checkbox'>
                             <div class='medalla'>
-                                <span class='medalla-titulo'>Despachado</span>
-                                <span>$despachado</span>
+                                <i class='fas fa-box-open text-white mr-1'></i>
+                                $despachado
                             </div>
                             <label class='d-block w-100'>
                                 <input type='checkbox' name='producción-id-$prod_id' value='$prod_id'>
                                 <div class='medalla'>
-                                    <span class='medalla-titulo'>Disponible</span>
-                                    <span>$disponible</span>
+                                    <i class='fas fa-check text-secondary mr-1'></i>
+                                    $disponible
                                 </div>
                             </label>
                         </div>
@@ -93,8 +93,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
 
                     $status = "<div class='medalla'>
-                                <span class='medalla-titulo'>Despachado</span>
-                                <span>$despachado</span>
+                                <i class='fas fa-box-open text-white mr-1'></i>
+                                $despachado
                             </div>";
 
                 }
@@ -105,6 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     case 'ANALISIS':
                     case 'PENDIENTE':
                     case 'PRODUCCION':
+                    case 'DESPACHO':
 
                     $append .= "
                     <div class='form-group col mb-0'>

@@ -189,10 +189,13 @@ $.ajax({
                             <?php endif; ?>
                             `;
                             
-                        } else {
+                        } else if(row.ESTADO === 'PRODUCCION'){
 
                             return `En Producción`;
 
+                        } else {
+
+                            return 'Por Despachar';
                         }
 
 					}
@@ -216,7 +219,23 @@ $.ajax({
                                 <i class='fas fa-eye icon-color'></i>
                             </a>`;
                                 
-                        } else if (row.ESTADO === 'PENDIENTE' || row.ESTADO === 'PRODUCCION') {
+                        } else if (row.ESTADO === 'PENDIENTE') {
+
+                            return`
+                            <?php if ($rol === 'ADMINISTRADOR'): ?>
+                            <a href='editar-pedido.php?id=${row.ID}' class='mr-1'>
+                                <i class='fas fa-edit icon-color'></i>
+                            </a>
+                            <a href='javascript:void(0)' class='eliminarPedido mr-1' data-id='${row.ID}'>
+                                <i class='fas fa-trash icon-color'></i>
+                            </a>
+                            <?php endif; ?>
+
+                            <a href='javascript:void(0)' class='verPedido' data-id='${row.ID}'>
+                                <i class='fas fa-eye icon-color'></i>
+                            </a>`;                       
+
+                        } else if (row.ESTADO === 'PRODUCCION') {
 
                             if( row.IMPRESO === 'NO' ) {
 
@@ -232,7 +251,7 @@ $.ajax({
                                     <i class='fas fa-print icon-color'></i>
                                 </a>
                                 <a href='alimentar-pedido.php?id=${row.ID}' class='mr-1'>
-                                    <i class='fas fa-search icon-color'></i>
+                                    <i class='fas fa-paper-plane icon-color'></i>
                                 </a>
                                 <?php endif; ?>
 
@@ -261,6 +280,13 @@ $.ajax({
 
                             }   
                         
+                        } else {
+
+                            return `
+                            <a href='javascript:void(0)' class='verPedido mr-1' data-id='${row.ID}'>
+                                <i class='fas fa-eye icon-color'></i>
+                            </a>`;
+                            
                         }
 
                 	}

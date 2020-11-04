@@ -15,7 +15,7 @@ $status = db_query($sql, array($pedido_id))[0]['ESTADO'];
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS', 'DESPACHO');
 
-if(!in_array($_SESSION['ROL'], $roles_permitidos) || in_array($status, array('ANALISIS', 'PENDIENTE', 'COMPLETADO'))){
+if( !in_array($_SESSION['ROL'], $roles_permitidos) || $status != 'PRODUCCION' ){
     require_once 'components/error.php';
     require_once 'components/footer.php';
     exit();
@@ -93,10 +93,11 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos) || in_array($status, array('AN
 
         <!-- Tabla de Pedidos -->
         <div class="tablaPedidos shadow-sm mt-4">
-
-            <h6 class="font-weight-bold mb-4">
+                        
+            <h6 class="font-weight-bold">
                 <i class="fas fa-shopping-bag icon-color mr-2"></i> Datos del Pedido
             </h6>
+            <small class="text-muted d-block mb-3">Ingrese las suelas que desea despachar en el pedido de manera manual.</small>
 
             <?php include_once 'backend/api/pedidos/ver-alimentacion.php'; ?>
 
@@ -117,32 +118,64 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos) || in_array($status, array('AN
 // AÑADIR => Añandiendo nueva referencia al Stock. 
 document.getElementById('botonAlimentarPedido').addEventListener('click', function () {
 
-    var datos = [];
-    let inputs = document.querySelectorAll('input[type=number]');
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Si realizas esta acción no puede ser revertida.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Si',
+        cancelButtonText: 'No',
+    }).then((result) => {
 
-    inputs.forEach( input => {
-        if( input.value ) {
-            datos.push({
-                'prod_id': parseInt(input.getAttribute('data-prod-id')),
-                'valor': parseInt(input.value),
-                'html': input
+        if (result.isConfirmed) {
+
+            let datos = [];
+            let inputs = document.querySelectorAll('input[type=number]');
+
+            inputs.forEach( input => {
+                if( input.value ) {
+                    datos.push({
+                        'prod_id': parseInt(input.getAttribute('data-prod-id')),
+                        'valor': parseInt(input.value),
+                        'html': input
+                    });
+                } 
             });
-        } 
-    });
 
-    // 1. Verificamos que al menos haya (1) input con data.
-    if( datos.length === 0 ) return Swal.fire('Error', 'Al menos (1) campo debe tener valor.', 'error');
+            // 1. Verificamos que al menos haya (1) input con data.
+            if( datos.length === 0 ) return Swal.fire('Error', 'Al menos (1) campo debe tener valor.', 'error');
 
-    // 2. Verificamos que la data esté correcta.
-    for (let index = 0; index < datos.length; index++) {
-        if( !datos[index].html.checkValidity() ) return Swal.fire('Error', 'No puedes despachar más de la cantidad establecida.', 'error');
-    }
+            // 2. Verificamos que la data esté correcta.
+            for (let index = 0; index < datos.length; index++) {
+                if( !datos[index].html.checkValidity() ) return Swal.fire('Error', 'No puedes despachar más de la cantidad establecida.', 'error');
+            }
 
-    Swal.fire('Éxito', 'Se ha enviado la data.', 'success');
-  
-    $.post('backend/api/pedidos/enviar-alimentacion.php',  { 'datos': JSON.stringify(datos) }, (data) => {
+            // 3. Enviamos la data al backend para comprobar su validez.
+            $.post('backend/api/pedidos/enviar-alimentacion.php',  { 'datos': JSON.stringify(datos) }, data => {
+                
+                const res = JSON.parse(data);
 
-        console.log("Éxito");
+                if(res.status === 'success') {
+
+                    Swal.fire({
+                        title: '¡Empaquetados!',
+                        text: 'La producción ha sido enviado a despachos.',
+                        icon: 'success'
+                    }).then(() => window.location = "pedidos-pendientes.php");
+                    
+                } else if (res.status === 'error') {
+
+                    Swal.fire({
+                        title: '¡Error!',
+                        text: 'La producción ha sido editada en producción. Actualizando...',
+                        icon: 'error'
+                    }).then(() => window.location.reload());
+
+                }
+
+            });
+
+        }
 
     });
 

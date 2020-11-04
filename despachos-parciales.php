@@ -51,7 +51,7 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
     <!-- Modal de Ver Orderes Despachadas -->
     <div id ="verDespachosModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="verDespachosModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <form action="backend/api/despachos/despachar.php" method="POST" name="pedidosDespachadosForm" id="verifCheckbox">
                     <div class="modal-header">

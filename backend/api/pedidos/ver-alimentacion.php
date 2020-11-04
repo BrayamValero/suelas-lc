@@ -70,7 +70,7 @@ if(isset($pedido_id)){
             } else {
 
                 $append .= "
-                    <div class='form-group col mb-0'>
+                    <div class='form-group col mb-2'>
                         <label class='label-cantidades' for='cantidades'>$talla</label>
                         <div class='form-control input-cantidades'>$restante</div>
                         <input type='number' data-prod-id='$prod_id' class='form-control text-center rounded-0 mt-2' value='' max='$restante' placeholder='Valor'>
