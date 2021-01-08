@@ -426,8 +426,7 @@ $('#tabla tbody').on( 'click', '.eliminarStock', function () {
 			tabla.row($(this).parents('tr')).remove().draw(false);
 
 			// Mostrando Notificación de éxito.
-			
-			toastNotifications('eliminar', '¡Eliminado!', 'El stock ha sido eliminado satisfactoriamente.');
+			mostrarNotificacion('eliminar', '¡Eliminado!', 'El stock ha sido eliminado satisfactoriamente.');
 
 		}
 	});
