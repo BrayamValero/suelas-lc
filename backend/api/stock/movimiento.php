@@ -17,9 +17,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             db_query($sql, array($cantidad, $id));
             echo $id;
         } else {
-            $sql = "UPDATE STOCK SET CANTIDAD = CANTIDAD - ? WHERE ID = ?;";
-            db_query($sql, array($cantidad, $id));
-            echo $id;
+
+            $sql = "SELECT CANTIDAD FROM STOCK WHERE ID = ?;";
+            $cantidad_actual = db_query($sql, array($id))[0]['CANTIDAD'];
+
+            if($cantidad_actual >= $cantidad){
+
+                $sql = "UPDATE STOCK SET CANTIDAD = CANTIDAD - ? WHERE ID = ?;";
+                db_query($sql, array($cantidad, $id));
+                echo $id;
+
+            } else {
+                echo 'ERROR';
+            }
+
         }
 
     } else {

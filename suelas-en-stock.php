@@ -361,10 +361,14 @@ botonAñadirMovimiento.addEventListener('click', function(e) {
 
 	// Se ejecuta el metodo $.post para enviar la data a PHP mediante AJAX.
 	$.post("backend/api/stock/movimiento.php", formulario.serialize(), function(data) {
+		console.log(data);
 
 		// Se esconde el modal al momento de terminar con el query en PHP.
 		$('#añadirMovimientoModal').modal('hide');
 
+		// Verificar Movimiento :D
+		if(data === 'ERROR') return mostrarNotificacion('eliminar', '¡Error!', 'Ingresa una cantidad menor a la indicada.');
+		
 		// Se envia la notificación al front-end.
 		mostrarNotificacion('editar', '¡Editado!', 'El stock ha sido editado satisfactoriamente.');
 
@@ -426,6 +430,7 @@ $('#tabla tbody').on( 'click', '.eliminarStock', function () {
 			tabla.row($(this).parents('tr')).remove().draw(false);
 
 			// Mostrando Notificación de éxito.
+			
 			mostrarNotificacion('eliminar', '¡Eliminado!', 'El stock ha sido eliminado satisfactoriamente.');
 
 		}

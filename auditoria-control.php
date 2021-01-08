@@ -143,7 +143,7 @@ $('#tabla tbody').on( 'click', '.devolverEmpaquetado', function () {
 
                 if(data == 'ERROR'){
 
-                    mostrarNotificacion('eliminar', '¡Error!', 'No hay suelas disponibles para corregir el error.');
+                   return mostrarNotificacion('eliminar', '¡Error!', 'No hay suelas disponibles para corregir el error.');
                     
                 } else {
 

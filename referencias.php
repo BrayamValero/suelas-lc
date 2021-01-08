@@ -478,7 +478,7 @@ $('#tabla tbody').on( 'click', '.eliminarReferencia', function () {
             tabla.row( $(this).parents('tr') ).remove().draw(false);
 
             // Mostrando Notificación de éxito.
-            mostrarNotificacion('eliminar', '¡Eliminado!', '¡Eliminada!', 'La referencia ha sido eliminada satisfactoriamente.');
+            mostrarNotificacion('eliminar', '¡Eliminado!', '¡Referencia eliminada!', 'La referencia ha sido eliminada satisfactoriamente.');
 
         }
     });
