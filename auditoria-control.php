@@ -135,18 +135,30 @@ $('#tabla tbody').on( 'click', '.devolverEmpaquetado', function () {
         confirmButtonText: 'Si',
         cancelButtonText: 'No',
     }).then((result) => {
+
         if (result.value) {
 
-            // Eliminando del backend.
-            $.get(`backend/api/auditoria/devolver-produccion.php?id=${id}`);
+            // $.post => Añadiendo el elemento al backend.
+            $.post( 'backend/api/auditoria/devolver-produccion.php', { id } , function(data) {
 
-            // Datatable => Quitando el elemento del frontend.
-            tabla.row($(this).parents('tr')).remove().draw(false);
+                if(data == 'ERROR'){
 
-            // Mostrando Notificación de éxito.
-            mostrarNotificacion('agregar', '¡Devuelto!', 'Los errores han sido corregidos.');
+                    mostrarNotificacion('eliminar', '¡Error!', 'No hay suelas disponibles para corregir el error.');
+                    
+                } else {
 
+                    // Datatable => Quitando el elemento del frontend.
+                    tabla.row($(this).parents('tr')).remove().draw(false);
+
+                    // Mostrando Notificación de éxito.
+                    mostrarNotificacion('añadir', '¡Devuelto!', 'Las suelas han sido reintegradas a producción.');
+
+                }
+
+            })
+         
         }
+
     });
 
 });

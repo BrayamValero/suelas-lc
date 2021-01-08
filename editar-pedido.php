@@ -15,10 +15,12 @@ $status = db_query($sql, array($pedido_id))[0]['ESTADO'];
 // 'ADMINISTRADOR', 'VENTAS', 'MOLINERO', 'OPERARIO', 'PRODUCCION', 'DESPACHO', 'CONTROL', 'NORSAPLAST', 'CLIENTE'
 $roles_permitidos = array('ADMINISTRADOR', 'VENTAS');
 
-if( (!in_array($_SESSION['ROL'], $roles_permitidos)) || $status == 'PENDIENTE' || $status == 'COMPLETADO'){
-    require_once 'components/error.php';
-    require_once 'components/footer.php';
-    exit();
+if( !in_array($_SESSION['ROL'], $roles_permitidos) ){
+    if( ($_SESSION['ROL'] !== 'ADMINISTRADOR') || $status == 'PENDIENTE' || $status == 'COMPLETADO' ){
+        require_once 'components/error.php';
+        require_once 'components/footer.php';
+        exit();
+    }
 }
 
 ?>
