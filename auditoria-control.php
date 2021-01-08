@@ -144,7 +144,7 @@ $('#tabla tbody').on( 'click', '.devolverEmpaquetado', function () {
             tabla.row($(this).parents('tr')).remove().draw(false);
 
             // Mostrando Notificación de éxito.
-            toastNotifications('fas fa-trash', 'text-success', '¡Devuelto!', 'Los errores han sido corregidos.');
+            mostrarNotificacion('agregar', '¡Devuelto!', 'Los errores han sido corregidos.');
 
         }
     });

@@ -306,8 +306,8 @@ botonAñadirStock.addEventListener('click', function () {
 				// Se esconde el modal al momento de terminar con el query en PHP.
 				$('#añadirStockModal').modal('hide')
 
-				// Se envia la notificación al front-end.
-				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El stock ha sido agregado satisfactoriamente.');
+				// Toast Notification
+				mostrarNotificacion('añadir', '¡Agregado!', 'El stock ha sido agregado satisfactoriamente.')
 
 				// Se realiza un AJAX request en el cual se obtienen los datos del ID actual para actualizar la data en la tabla de DataTables.
 				$.ajax({
@@ -366,7 +366,7 @@ botonAñadirMovimiento.addEventListener('click', function(e) {
 		$('#añadirMovimientoModal').modal('hide');
 
 		// Se envia la notificación al front-end.
-		toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'El stock ha sido editado satisfactoriamente.');
+		mostrarNotificacion('editar', '¡Editado!', 'El stock ha sido editado satisfactoriamente.');
 
 		// Se realiza un AJAX request en el cual se obtienen los datos del ID actual para actualizar la data en la tabla de DataTables.
 		$.ajax({
@@ -426,7 +426,8 @@ $('#tabla tbody').on( 'click', '.eliminarStock', function () {
 			tabla.row($(this).parents('tr')).remove().draw(false);
 
 			// Mostrando Notificación de éxito.
-			toastNotifications('fas fa-trash', 'text-danger', '¡Eliminado!', 'El stock ha sido eliminado satisfactoriamente.');
+			
+			toastNotifications('eliminar', '¡Eliminado!', 'El stock ha sido eliminado satisfactoriamente.');
 
 		}
 	});

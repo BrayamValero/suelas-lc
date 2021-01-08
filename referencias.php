@@ -351,7 +351,7 @@ botonAñadirReferencia.addEventListener('click', function () {
 
 				$('#añadirReferenciaModal').modal('hide')
 
-				toastNotifications('fas fa-check', 'text-success', '¡Agregadas!', 'Las referencias han sido agregadas satisfactoriamente.');
+				mostrarNotificacion('agregar', '¡Agregadas!', 'Las referencias han sido agregadas satisfactoriamente.');
 
                 const elems = formulario.serializeArray();
 
@@ -426,7 +426,7 @@ botonEditarReferencia.addEventListener('click', function () {
 
                 $('#editarReferenciaModal').modal('hide')
 
-                toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'La referencia ha sido editada satisfactoriamente.');
+                mostrarNotificacion('editar', '¡Editado!', 'La referencia ha sido editada satisfactoriamente.');
 
                 const elems = formulario.serializeArray();
 
@@ -478,7 +478,7 @@ $('#tabla tbody').on( 'click', '.eliminarReferencia', function () {
             tabla.row( $(this).parents('tr') ).remove().draw(false);
 
             // Mostrando Notificación de éxito.
-            toastNotifications('fas fa-trash', 'text-danger', '¡Eliminada!', 'La referencia ha sido eliminada satisfactoriamente.');
+            mostrarNotificacion('eliminar', '¡Eliminado!', '¡Eliminada!', 'La referencia ha sido eliminada satisfactoriamente.');
 
         }
     });

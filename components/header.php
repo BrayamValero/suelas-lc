@@ -122,23 +122,17 @@ if (empty($_SESSION)) {
 
             // Editar
             case 'editar':
-
-                document.getElementsByClassName('toast-icon')[0].classList.remove(...document.getElementsByClassName('toast-icon')[0].classList).classList.add('toast-icon fas fa-edit text-warning mr-2');
-
-                // $('.toast-icon').removeClass().addClass(`toast-icon fas fa-edit text-warning mr-2`);
-
+                $('.toast-icon').removeClass().addClass(`toast-icon fas fa-edit text-warning mr-2`);
                 break;
             
             // Eliminar
             case 'eliminar':
-                
-                document.getElementsByClassName('toast-icon')[0].classList.remove(...document.getElementsByClassName('toast-icon')[0].classList).classList.add('toast-icon fas fa-trash text-danger mr-2');
-
-                // $('.toast-icon').removeClass().addClass(`toast-icon fas fa-trash text-danger mr-2`);
+                $('.toast-icon').removeClass().addClass(`toast-icon fas fa-trash text-danger mr-2`);
                 break;
 
             // Añadir
             case 'añadir':
+    
                 $('.toast-icon').removeClass().addClass(`toast-icon fas fa-check text-success mr-2`);
                 break;
             
@@ -151,7 +145,6 @@ if (empty($_SESSION)) {
 
         document.getElementsByClassName('toast-title')[0].innerHTML = titulo;
         document.getElementsByClassName('toast-body')[0].innerHTML = mensaje;
-
         $('.toast').toast('show');
 
     }

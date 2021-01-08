@@ -454,7 +454,7 @@ botonAñadirCliente.addEventListener('click', function () {
 
 				$('#añadirClienteModal').modal('hide')
 
-				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El cliente ha sido agregado satisfactoriamente.');
+				mostrarNotificacion('agregar', '¡Agregado!', 'El cliente ha sido agregado satisfactoriamente.');
 
 				const elems = formulario.serializeArray();
 
@@ -515,7 +515,7 @@ botonEditarCliente.addEventListener('click', function () {
 
                 $('#editarClienteModal').modal('hide')
 
-                toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'El cliente ha sido editado satisfactoriamente.');
+                mostrarNotificacion('editar', '¡Editado!', 'El cliente ha sido editado satisfactoriamente.');
 
 				const elems = formulario.serializeArray();
 				

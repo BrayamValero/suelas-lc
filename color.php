@@ -240,7 +240,7 @@ botonAñadirColor.addEventListener('click', function () {
 
 				$('#añadirColorModal').modal('hide')
 
-				toastNotifications('fas fa-check', 'text-success', '¡Agregado!', 'El color ha sido agregado satisfactoriamente.');
+				mostrarNotificacion('agregar', '¡Agregado!', 'El color ha sido agregado satisfactoriamente.');
 
 				const elems = formulario.serializeArray();
 
@@ -295,7 +295,7 @@ botonEditarColor.addEventListener('click', function () {
 
 				$('#editarColorModal').modal('hide')
 
-				toastNotifications('fas fa-edit', 'text-warning', '¡Editado!', 'El color ha sido editado satisfactoriamente.');
+				mostrarNotificacion('editar', '¡Editado!', 'El color ha sido editado satisfactoriamente.');
 
 				const elems = formulario.serializeArray();
 
