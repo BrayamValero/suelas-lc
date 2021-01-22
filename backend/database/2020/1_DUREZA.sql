@@ -1,0 +1,2 @@
+INSERT INTO `DUREZA` (`ID`, `DUREZA`) VALUES
+('1', 65);
