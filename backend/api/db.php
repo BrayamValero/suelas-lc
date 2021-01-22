@@ -11,7 +11,7 @@ if(strtoupper(substr(PHP_OS, 0 ,3)) == 'WIN'){
     define('DB', array(
         'dsn' => 'mysql:host=localhost;dbname=SUELAS;charset=utf8',
         'user' => 'root',
-        'pass' => ''
+        'pass' => 'root'
     ));
 } else{
     define('DB', array(

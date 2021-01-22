@@ -239,11 +239,15 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 
     <!-- En caso de que no haya MAQUINARIA ACTIVA, mostrar el siguiente mensaje. -->
     <?php else: ?>
-        <div class="container mt-4 text-center">
-            <i class="fas fa-cog fa-5x icon-color mb-2"></i>
-            <h4 class="font-weight-bold">¡Whoops!</h4>
-            <p class="mb-2">No se encuentran máquinas activas o puede que no estén creadas aun.</p>
-            <small class="text-secondary">Prueba activando una máquina.</small>
+        <div class="container h-100">
+            <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-6 text-center">
+                    <i class="fas fa-cog fa-5x icon-color mb-2"></i>
+                    <h4 class="font-weight-bold">¡Whoops!</h4>
+                    <p class="mb-2">No se encuentran máquinas activas o puede que no estén creadas aun.</p>
+                    <small class="text-secondary">Prueba activando una máquina.</small>
+                </div>
+            </div>
         </div>
     <?php endif; ?>
 
