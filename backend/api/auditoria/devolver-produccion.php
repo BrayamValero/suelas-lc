@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         SET RESTANTE = RESTANTE + ?,
             PESADO = PESADO - ?,
             DISPONIBLE = DISPONIBLE - ?,
-            ESTADO = 'PENDIENTE'
+            ESTADO = 'PRODUCCION'
         WHERE ID = ?;";
         db_query($sql, array($cantidad, $pesado, $cantidad, $produccion_id));
 
