@@ -291,10 +291,13 @@ div.badge-checkboxes > .checkbox label > input[type="checkbox"] {
   clip: rect(0 0 0 0);
 }
 
-div.badge-checkboxes .checkbox input[type="checkbox"]:checked + .medalla {
-  color: white;
+input[type="checkbox"]:checked ~ .medalla {
   background-color: #28a745;
   border-color: #28a745;
+}
+
+input[type="checkbox"]:checked ~ .medalla > i.fas {
+  color: white !important;
 }
 
 div.badge-checkboxes .checkbox input[type="checkbox"] + .medalla {

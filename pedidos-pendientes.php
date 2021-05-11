@@ -247,11 +247,8 @@ $.ajax({
                                 <?php endif; ?>
                                 
                                 <?php if ($rol === 'ADMINISTRADOR' || $rol === 'DESPACHO'): ?>
-                                <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
-                                    <i class='fas fa-print icon-color'></i>
-                                </a>
                                 <a href='alimentar-pedido.php?id=${row.ID}' class='mr-1'>
-                                    <i class='fas fa-paper-plane icon-color'></i>
+                                    <i class="fas fa-luggage-cart icon-color"></i>
                                 </a>
                                 <?php endif; ?>
 
@@ -260,14 +257,15 @@ $.ajax({
                                 </a>`;
 
                             } else {
+                                
+                                // <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
+                                //     <i class='fas fa-print icon-color'></i>
+                                // </a>
 
                                 return `
                                 <?php if ($rol === 'ADMINISTRADOR' || $rol === 'DESPACHO'): ?>
                                 <a href='javascript:void(0)' class='cancelarPedido mr-1' data-id='${row.ID}'>
                                     <i class='fas fa-ban icon-color'></i>
-                                </a>
-                                <a href='ver-etiquetas.php?id=${row.ID}' class='mr-1'>
-                                    <i class='fas fa-print icon-color'></i>
                                 </a>
                                 <a href='alimentar-pedido.php?id=${row.ID}' class='mr-1'>
                                     <i class='fas fa-search icon-color'></i>
