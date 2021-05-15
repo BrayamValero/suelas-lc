@@ -307,7 +307,6 @@ function obtenerColor()
 {
     $sql = "SELECT * FROM COLOR WHERE ID = ?;";
     $result = db_query($sql, array($_POST['id']));
-
     echo json_encode($result);
 }
 
@@ -315,7 +314,6 @@ function obtenerMateriasPrimas()
 {
     $sql = "SELECT * FROM MATERIA_PRIMA;";
     $result = db_query($sql);
-
     echo json_encode($result);
 }
 

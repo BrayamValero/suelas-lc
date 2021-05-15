@@ -166,96 +166,88 @@ botonAñadirSerie.addEventListener('click', function () {
 
     let serieId = añadirSerie.value;
     let colorId = añadirColor.value;
-    let agregarSerie = { "SERIE_ID": serieId, "COLOR_ID": colorId };
+
+    let agregarSerie = {
+        "SERIE_ID": serieId,
+        "COLOR_ID": colorId
+    };
 
     // Se verifica que haya un elemento en el array de series, luego se compara la selección con el array en cuestión para cerciorarse que no hayan repetidos.
     if(verificadorSerie.length !== 0){
-
-        var verif = verificadorSerie.some(serie => serie.SERIE_ID === serieId && serie.COLOR_ID === colorId);
-
-        if(verif){
-            return Swal.fire("Whoops", "No puedes asignar la misma serie con el mismo color.", "warning");
-        }
-
+        let verif = verificadorSerie.some(serie => serie['SERIE_ID'] === serieId && serie['COLOR_ID'] === colorId);
+        if(verif) return Swal.fire("Whoops", "No puedes asignar la misma serie con el mismo color.", "warning");
         verificadorSerie.push(agregarSerie);
-
     } else {
-
         verificadorSerie.push(agregarSerie);
-
     }
 
-    // COLOR_ID
-    $.ajax({
-        type: 'post',
-        url: 'backend/api/utils.php?fun=obtenerColor',
-        async: false,
-        data: `id=${colorId}`,
-        success: function (data) {
 
-            obtenerColor = JSON.parse(data);
+    const submitResults = async () => {
 
+        try {
+
+            // 1. Obteniendo el color seleccionado
+            const { 'data': color } = await axios.post('backend/api/utils.php?fun=obtenerColor', `id=${colorId}`);
+
+            // 2. Obteniendo la serie_id seleccionada
+            const { 'data': serie } = await axios.get('backend/api/utils.php?fun=obtenerGrupoSerie', { params: { 'id': serieId } });
+
+            // 3. Object Destructuring (color & suela)
+            const { 'ID': color_id, 'COLOR': color_name, 'CODIGO': color_code } = color[0];
+            const { 'SUELA_ID': sole_id, 'MARCA': sole_brand } = serie[0];
+
+            // 4. Realizando formulas para la personalización de colores.
+            const red = parseInt(color_code.substring(1, 3), 16);
+            const green = parseInt(color_code.substring(3, 5), 16);
+            const blue = parseInt(color_code.substring(5, 7), 16);
+            const color_hex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
+
+            // 4. Incrustando el HTML
+            document.getElementById('inicioPedidos').insertAdjacentHTML('afterend', 
+            `<div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
+                <div class="form-row">
+                    <div class="col-8">
+                        <strong>${sole_brand.toProperCase()}</strong>
+                        <span class="badge border" style="background-color: ${color_code}; color: ${color_hex};">${color_name.toProperCase()}</span>
+                        <small class="text-muted">${serie[0]['TALLA']} al ${serie[serie.length - 1].TALLA}</small>
+                    </div>
+                    <div class="col-4">
+                        <button type="button" class="close eliminarSerie" data-id="${i}" data-serie-id="${serieId}" data-color-id="${colorId}" tabIndex="-1">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <button type="button" class="close esconderSerie" data-id="${i}" tabIndex="-1">
+                            <span aria-hidden="true" class="mr-2">&minus;</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="grupoSeries-${i}" class="form-row text-center"></div>
+            </div>`);
+
+            serie.forEach(elem => {
+
+                document.getElementById('grupoSeries-' + i).innerHTML +=
+                `<div class="form-group col mb-0 mt-2">
+                    <label class="label-cantidades" for="cantidades">${elem['TALLA']}</label>
+                    <input class="form-control input-cantidades" type="number" name="pedido[${j}][cantidad]" min="0" required>
+                    <input type="hidden" name="pedido[${j}][suela_id]" value="${elem['SUELA_ID']}">
+                    <input type="hidden" name="pedido[${j}][serie_id]" value="${serieId}">
+                    <input type="hidden" name="pedido[${j}][color_id]" value="${colorId}">
+                </div>`;
+
+                j++;
+
+            });
+
+            i++;
+
+        } catch (err) {
+            // Handle Error Here
+            console.error(err);
         }
-    });
-    
-    // SERIE_ID
-    $.ajax({
-        type: 'get',
-        url: `backend/api/utils.php?fun=obtenerGrupoSerie&id=${serieId}`,
-        async: false,
-        success: function (data) {
+        
+    }
 
-            obtenerSerie = JSON.parse(data);
-
-        }
-    });
-    
-    // Realizando formulas para la personalización de colores.
-    let color = obtenerColor[0].COLOR.toProperCase();
-    let backgroundHex = obtenerColor[0].CODIGO;
-
-    let red = parseInt(backgroundHex.substring(1, 3), 16);
-    let green = parseInt(backgroundHex.substring(3, 5), 16);
-    let blue = parseInt(backgroundHex.substring(5, 7), 16);
-
-    let colorHex = red * 0.299 + green * 0.587 + blue * 0.114 > 186 ? '#000000' : '#FFFFFF';
-
-    document.getElementById('inicioPedidos').insertAdjacentHTML('afterend', 
-    `<div id="serie-${i}" class="contenedor-serie shadow-sm" data-serie-id="${serieId}" data-color-id="${colorId}">
-        <div class="form-row">
-            <div class="col-8">
-                <strong>${obtenerSerie[0].MARCA.toProperCase()}</strong>
-                <span class="badge border" style="background-color: ${backgroundHex}; color: ${colorHex};">${color}</span>
-                <small class="text-muted">${obtenerSerie[0].TALLA} al ${obtenerSerie[obtenerSerie.length - 1].TALLA}</small>
-            </div>
-            <div class="col-4">
-                <button type="button" class="close eliminarSerie" data-id="${i}" data-serie-id="${serieId}" data-color-id="${colorId}" tabIndex="-1">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <button type="button" class="close esconderSerie" data-id="${i}" tabIndex="-1">
-                    <span aria-hidden="true" class="mr-2">&minus;</span>
-                </button>
-            </div>
-        </div>
-        <div id="grupoSeries-${i}" class="form-row text-center"></div>
-    </div>`);
-
-    obtenerSerie.forEach(serie => {
-
-        document.getElementById('grupoSeries-' + i).innerHTML +=
-        `<div class="form-group col mb-0 mt-2">
-            <label class="label-cantidades" for="cantidades">${serie.TALLA}</label>
-            <input class="form-control input-cantidades" type="number" name="pedido[${j}][cantidad]" min="0" required>
-            <input type="hidden" name="pedido[${j}][suela_id]" value="${serie.SUELA_ID}">
-            <input type="hidden" name="pedido[${j}][serie_id]" value="${serieId}">
-            <input type="hidden" name="pedido[${j}][color_id]" value="${colorId}">
-        </div>`;
-
-        j++;
-
-    });
-
-    i++;
+    submitResults();
 
 });
 
@@ -264,7 +256,6 @@ $(document).on('click', '.esconderSerie', function() {
 
     let id = $(this).data('id');
     let serie = document.getElementById('grupoSeries-' + id);
-
     serie.style.display === 'none' ? serie.style.display = 'flex' : serie.style.display = 'none';
 
 });
