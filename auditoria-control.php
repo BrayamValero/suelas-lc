@@ -55,77 +55,67 @@ if(!in_array($_SESSION['ROL'], $roles_permitidos)){
 <!-- Inline JavaScript -->
 <script>
 
-// VARIABLES => Declarando Variables Globales.
-var tabla;
+var posicionTabla;
 
-// DATATABLES => Mostrando la tabla PEDIDOS_PENDIENTES.
-$.ajax({
-    type: 'get',
-    url: 'backend/api/utils.php?fun=obtenerAuditoriaControl',
-    async: false,
-    success: function (data) {
-
-        const result = JSON.parse(data);
-
-        tabla = $('#tabla').DataTable({
-            "initComplete": function(settings, json) {
-                $("#spinner").css('display', 'none');
-            },
-            "info": false,
-            "dom": "lrtip",
-            "pageLength": 10,
-            "lengthChange": false,
-            "order": [[0, 'desc']],
-            "data": result,
-            "columns": [
-                { data: "ID", title: "#" },
-				{ data: "PEDIDO_ID", title: "Pedido" },
-                { data: "FECHA_EMPAQUETADO", title: "Fecha Registro", 
-					render: function(value, type, row) {
-
-                        let date = new Date(Date.parse(row.FECHA_EMPAQUETADO));
-                        
-                        return `${date.toLocaleDateString('es-US')} ${date.toLocaleTimeString('en-US')}`;
-
-					}
-				},
-                { data: "NOMBRE_USUARIO", title: "Usuario" },
-                { data: "REFERENCIA", title: "Referencia" },
-				{ data: "CANTIDAD", title: "Cantidad" },
-                { data: "PESADO", title: "Peso", 
-					render: function(value, type, row) {
-                        return `${row.PESADO} Kgs`;
-					}
-				},
-				{ data: "ID", title: "Opciones", 
-					render: function(value, type, row) {
-                        return `<a href='javascript:void(0)' data-id='${row.ID}' class='btn btn-sm btn-main devolverEmpaquetado'>
-                            <i class="fas fa-undo-alt"></i>
-                        </a>`;
-					}
-				}
-            ],
-            "columnDefs": [{
-                searchable: true,
-                orderable: true,
-                className: "align-middle", "targets": "_all"
-            }],
-            "language": {
-                "url": "datatables/Spanish.json"
+// DataTables => Init Table
+var tabla = $('#tabla').DataTable({
+    "initComplete": function(settings, json) {
+        $("#spinner").css('display', 'none');
+    },
+    "info": false,
+    "dom": "lrtip",
+    "pageLength": 10,
+    "lengthChange": false,
+    "order": [[0, 'desc']],
+    "ajax": { 
+        "url": "backend/api/utils.php?fun=obtenerAuditoriaControl",
+        "dataSrc": json => {
+            console.log(json);
+            return json;
+        }
+    },
+    "columns": [
+        { data: "ID", title: "#" },
+        { data: "PEDIDO_ID", title: "Pedido" },
+        { data: "FECHA_EMPAQUETADO", title: "Fecha Registro", 
+            render: function(value, type, row) {
+                let date = new Date(Date.parse(row.FECHA_EMPAQUETADO));
+                return `${date.toLocaleDateString('es-US')} ${date.toLocaleTimeString('en-US')}`;
             }
-        });
-
-        // DATATABLES => Paginación
-        $.fn.DataTable.ext.pager.numbers_length = 5;
-	   
+        },
+        { data: "NOMBRE_USUARIO", title: "Usuario" },
+        { data: "REFERENCIA", title: "Referencia" },
+        { data: "CANTIDAD", title: "Cantidad" },
+        { data: "PESADO", title: "Peso", 
+            render: function(value, type, row) {
+                return `${row.PESADO} Kgs`;
+            }
+        },
+        { data: "ID", title: "Opciones", 
+            render: function(value, type, row) {
+                return `<a href='javascript:void(0)' data-id='${row.ID}' class='btn btn-sm btn-main devolverEmpaquetado'>
+                    <i class="fas fa-undo-alt"></i>
+                </a>`;
+            }
+        }
+    ],
+    "columnDefs": [{
+        searchable: true,
+        orderable: true,
+        className: "align-middle", "targets": "_all"
+    }],
+    "language": {
+        "url": "datatables/Spanish.json"
     }
-
 });
+
+// DATATABLES => Paginación
+$.fn.DataTable.ext.pager.numbers_length = 5;
 
 // DEVOLVER => Devolver un paquete mal alimentado a Producción nuevamente.
 $('#tabla tbody').on( 'click', '.devolverEmpaquetado', function () { 
 
-    let id = $(this).data("id");
+    const id = this.getAttribute('data-id');
 
     Swal.fire({
         title: '¿Deseas revertir el empaquetado?',
@@ -138,17 +128,20 @@ $('#tabla tbody').on( 'click', '.devolverEmpaquetado', function () {
 
         if (result.value) {
 
+            // Saving Current Row
+            const row = $(this).parents('tr');
+
             // $.post => Añadiendo el elemento al backend.
             $.post( 'backend/api/auditoria/devolver-produccion.php', { id } , function(data) {
 
                 if(data == 'ERROR'){
 
                    return mostrarNotificacion('eliminar', '¡Error!', 'No hay suelas disponibles para corregir el error.');
-                    
+
                 } else {
 
                     // Datatable => Quitando el elemento del frontend.
-                    tabla.row($(this).parents('tr')).remove().draw(false);
+                    tabla.row(row).remove().draw(true);
 
                     // Mostrando Notificación de éxito.
                     mostrarNotificacion('añadir', '¡Devuelto!', 'Las suelas han sido reintegradas a producción.');

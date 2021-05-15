@@ -317,7 +317,7 @@ $.ajax({
 
 });
 
-// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar un Elemento)
+// DATATABLES => Detectar Fila Actual (Aplica para Eliminar y Editar)
 $('#tabla tbody').on( 'click', 'tr', function () { 
 	posicionTabla = this;
 });
