@@ -210,6 +210,10 @@ if (isset($_GET['fun'])) {
             obtenerPedidosPendientes();
             break;
 
+        case 'obtenerPedidosParaImprimir':
+            obtenerPedidosParaImprimir();
+            break;
+
         case 'obtenerPrioridades':
             obtenerPrioridades();
             break;
@@ -670,6 +674,82 @@ function obtenerPedidosPendientes(){
             WHERE PED.ESTADO NOT IN ('COMPLETADO');";
     $result = db_query($sql);
     echo json_encode($result);
+}
+
+function obtenerPedidosParaImprimir(){
+
+    // Method => Group By
+    function group_by($key, $data) {
+        $result = array();
+        $final_data = array();
+    
+        foreach($data as $val) {
+            if(array_key_exists($key, $val)){
+                $result[$val[$key]][] = $val;
+            }else{
+                $result[""][] = $val;
+            }
+        }
+
+        foreach($result as $key => $val) {
+            $tallas = array_column($val, null, 'TALLA');
+            $formatted = (object) [
+                'MARCA' => $val[0]['MARCA'],
+                'COLOR' => $val[0]['COLOR'],
+                'TALLAS' => $tallas,
+            ];
+            array_push($final_data, $formatted);
+        }
+
+        return $final_data;
+    }
+
+    // Declaramos la variable que almacenara toda la produccion.
+    $result = array();
+
+    // Obtenemos TODOS los pedidos.
+    $sql = "SELECT PED.ID AS PEDIDO_ID, CLI.NOMBRE, PED.CREATED_AT AS FECHA_CREACION, PED.ESTADO
+        FROM PEDIDOS PED 
+            JOIN CLIENTES CLI 
+                ON PED.CLIENTE_ID = CLI.ID
+            JOIN PRIORIDAD PRI
+                ON PRI.ID = PED.PRIORIDAD_ID 
+        WHERE PED.ESTADO NOT IN ('COMPLETADO');";
+    $allOrders = db_query($sql);
+
+    // Obtenemos toda la produccion de cada pedido, para eso tenemos que hacer un loop de cada pedido.
+    foreach ($allOrders as $key => $value) {
+
+        // Destructuracion de los elementos
+        extract($value);
+      
+        $sql = "SELECT PROD.SERIE_ID, SUE.MARCA, COL.COLOR,  SUE.TALLA, PROD.CANTIDAD
+        FROM PRODUCCION PROD
+            JOIN SUELAS SUE 
+                ON PROD.SUELA_ID = SUE.ID
+            JOIN COLOR COL 
+                ON PROD.COLOR_ID = COL.ID
+            WHERE PEDIDO_ID = ?;";
+        $order = db_query($sql, array($PEDIDO_ID));
+
+        // Spliteamos la orden 
+        $orderGrouped = group_by("MARCA", $order);
+
+        // Anadimos ID, Nombre, Fecha Creacion y Estado en todos los elementos.
+        foreach ($orderGrouped as $key => $val) {
+            $orderGrouped[$key]->PEDIDO_ID = $PEDIDO_ID; 
+            $orderGrouped[$key]->NOMBRE = $NOMBRE; 
+            $orderGrouped[$key]->FECHA_CREACION = $FECHA_CREACION; 
+            $orderGrouped[$key]->ESTADO = $ESTADO; 
+        }
+
+        // Pusheamos los resultados obtenidos.
+        array_push($result, ...$orderGrouped);
+
+    }
+
+    echo json_encode($result);
+
 }
 
 function obtenerPrioridades(){
