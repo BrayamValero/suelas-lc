@@ -29,8 +29,8 @@ if(!in_array($rol, $roles_permitidos)){
     <?php get_navbar('Ventas', 'Pedidos Pendientes', true); ?>
 
     <!-- Mostramos la tabla con la información correspondiente -->
-	<div class="table-responsive text-center W-100">
-		<div id="spinner" class="spinner-border text-center" role="status">
+	<div class="table table-responsive text-center W-100">
+        <div id="spinner" class="spinner-border text-center" role="status">
 			<span class="sr-only">Cargando...</span>
 		</div>
 		<table class="table table-bordered text-center" id="tabla">
@@ -39,14 +39,16 @@ if(!in_array($rol, $roles_permitidos)){
 	</div>
 	<!-- Fin de Tabla -->
 
+    <!-- Pagination -->
+    <div class='tablePagination'>
+
+    </div>
+
 </div>
 <!-- / Fin del contenido -->
 
 <!-- Inline JavaScript -->
 <script>
-
-// VARIABLES => Declarando Variables Globales.
-var tabla
 
 // DATATABLES => Mostrando la tabla PEDIDOS_PENDIENTES.
 $.ajax({
@@ -56,9 +58,6 @@ $.ajax({
     success: (data) => {
 
         const result = JSON.parse(data);
-
-        console.log(result);
-
 
         // Defining Custom Column Data
         const columns = [
@@ -70,28 +69,29 @@ $.ajax({
             { data: "COLOR", title: 'COLOR' },
         ];
 
-        // Pushing 0
+        // Pushing 0 as Aplique...
         columns.push({ 
             data: "TALLAS", 
-            title: '0', 		
+            title: "0", 		
             render: (value, type, row) => {
                 return value[0] ? value[0]['CANTIDAD'] : null;
             }
         })
 
-        // Printing all Columns
+        // Printing from 21 to 44 (as needed)
         for (let i = 21; i < 44; i++) {
             columns.push({ 
                 data: "TALLAS", 
-                title: i, 		
+                title: i.toString(), 		
                 render: (value, type, row) => {
                     return value[i] ? value[i]['CANTIDAD'] : null;
                 }
             })
         }
 
-        tabla = $('#tabla').DataTable({
-            "initComplete": (settings, json) => {
+        // Pushing Table
+        const TABLA = $('#tabla').DataTable({
+            initComplete: (settings, json) => {
                 $("#spinner").css('display', 'none');
             },
             "info": false,
@@ -110,14 +110,31 @@ $.ajax({
                 "url": "datatables/Spanish.json"
             },
             "buttons": [
-                'csv', 'excel',
+                {
+                    extend: 'csv',
+                    text: 'CSV',
+                    title: 'Suelas LC | Impresión de Pedidos',
+                    className: 'btn btn-info',
+                },
+                {
+                    extend: 'excel',
+                    text: 'Excel',
+                    title: 'Suelas LC | Impresión de Pedidos',
+                    className: 'btn btn-success',
+                },
                 {
                     extend: 'pdf',
+                    text: 'PDF',
+                    title: 'Suelas LC | Impresión de Pedidos',
+                    className: 'btn btn-danger',
                     orientation: 'landscape',
                     pageSize: 'LEGAL'
                 },
                 {
                     extend: "print",
+                    text: 'Imprimir',
+                    title: 'Suelas LC | Impresión de Pedidos',
+                    className: 'btn btn-primary',
                     customize: (win) => {
                         $(win.document.body)
                             .css( 'margin', '10px' )

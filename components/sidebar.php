@@ -166,6 +166,17 @@
                 ?>
 
                 <?php
+                    if( in_array($rol, ['ADMINISTRADOR', 'VENTAS']) ) {
+                        echo "<li class='sidebar-dropdown'>
+                            <a href='imprimir-pedidos-pendientes.php'>
+                                <i class='fas fa-print'></i>
+                                <span class='sidebar-menu-text'>Imprimir Pedidos</span>
+                            </a>
+                        </li>";
+                    }
+                ?>
+
+                <?php
                     if( in_array($rol, ['ADMINISTRADOR', 'VENTAS', 'PRODUCCION']) ) {
                         echo "<li class='sidebar-dropdown'>
                             <a href='pedidos-pendientes.php'>
