@@ -46,7 +46,7 @@ if (isset($_GET['fun'])) {
         case 'obtenerProduccionReferencia':
             obtenerProduccionReferencia();
             break;
-        
+
         case 'obtenerCantidadesSolicitud':
             obtenerCantidadesSolicitud();
             break;
@@ -58,15 +58,15 @@ if (isset($_GET['fun'])) {
         case 'obtenerUsuarioId':
             obtenerUsuarioId();
             break;
-			
-		case 'obtenerUsuarios':
-			obtenerUsuarios();
+
+        case 'obtenerUsuarios':
+            obtenerUsuarios();
             break;
 
         case 'obtenerSuelaId':
             obtenerSuelaId();
             break;
-        
+
         case 'obtenerMateriaPrima':
             obtenerMateriaPrima();
             break;
@@ -152,7 +152,7 @@ if (isset($_GET['fun'])) {
         case 'obtenerSuelasEnStock':
             obtenerSuelasEnStock();
             break;
-            
+
         case 'obtenerStockCompleto':
             obtenerStockCompleto();
             break;
@@ -160,7 +160,7 @@ if (isset($_GET['fun'])) {
         case 'obtenerSuelaEnStock':
             obtenerSuelaEnStock();
             break;
-        
+
 
         case 'obtenerSerie':
             obtenerSerie();
@@ -181,7 +181,7 @@ if (isset($_GET['fun'])) {
         case 'obtenerMaterialesSolicitadosId':
             obtenerMaterialesSolicitadosId();
             break;
-            
+
         case 'obtenerEstadoPedidoAProduccion':
             obtenerEstadoPedidoAProduccion();
             break;
@@ -201,13 +201,17 @@ if (isset($_GET['fun'])) {
         case 'obtenerPedidoAlimentarId':
             obtenerPedidoAlimentarId();
             break;
-            
+
         case 'obtenerPedidos':
             obtenerPedidos();
             break;
 
         case 'obtenerPedidosPendientes':
             obtenerPedidosPendientes();
+            break;
+
+        case 'obtenerMisPedidos':
+            obtenerMisPedidos();
             break;
 
         case 'obtenerPedidosParaImprimir':
@@ -217,11 +221,11 @@ if (isset($_GET['fun'])) {
         case 'obtenerPrioridades':
             obtenerPrioridades();
             break;
-            
+
         case 'obtenerPedidosEnProceso':
             obtenerPedidosEnProceso();
             break;
-            
+
         case 'obtenerPedidosParaEmpaquetar':
             obtenerPedidosParaEmpaquetar();
             break;
@@ -233,7 +237,6 @@ if (isset($_GET['fun'])) {
         case 'obtenerAuditoriaControl':
             obtenerAuditoriaControl();
             break;
-
     }
 }
 
@@ -514,7 +517,8 @@ function obtenerReporteProduccion()
     echo json_encode($result);
 }
 
-function obtenerSuelasEnStock(){
+function obtenerSuelasEnStock()
+{
     $sql = "SELECT ST.ID, C.NOMBRE, SU.REFERENCIA, SU.MARCA, SU.TALLA, COL.COLOR, ST.CANTIDAD 
                 FROM STOCK ST
                     LEFT JOIN SUELAS SU
@@ -528,7 +532,8 @@ function obtenerSuelasEnStock(){
 }
 
 
-function obtenerSuelaEnStock(){
+function obtenerSuelaEnStock()
+{
     $sql = "SELECT ST.ID, C.NOMBRE, SU.REFERENCIA, SU.MARCA, SU.TALLA, COL.COLOR, ST.CANTIDAD 
     FROM STOCK ST
         LEFT JOIN SUELAS SU
@@ -543,7 +548,8 @@ function obtenerSuelaEnStock(){
 }
 
 
-function obtenerStockCompleto(){
+function obtenerStockCompleto()
+{
 
     $sql = "SELECT STO.SUELA_ID, STO.COLOR_ID, STO.CANTIDAD
             FROM STOCK STO
@@ -553,7 +559,6 @@ function obtenerStockCompleto(){
 
     $result = db_query($sql);
     echo json_encode($result);
-
 }
 
 function obtenerSerie()
@@ -600,7 +605,6 @@ function obtenerClienteIdPedido()
     $result = db_query($sql, array($_POST['pedido_id']));
 
     echo json_encode($result);
-
 }
 
 
@@ -615,7 +619,6 @@ function obtenerMaterialesSolicitadosId()
     $result = db_query($sql, array($_POST['solicitud_material_id']));
 
     echo json_encode($result);
-    
 }
 
 function obtenerEstadoPedidoAProduccion()
@@ -625,23 +628,25 @@ function obtenerEstadoPedidoAProduccion()
     $result = db_query($sql, array($_POST['id']));
 
     echo json_encode($result);
-
 }
 
-function obtenerEstadoNorsaplastAInventario(){
+function obtenerEstadoNorsaplastAInventario()
+{
     $sql = "SELECT ESTADO FROM AUDITORIA_NOR_INV WHERE SOLICITUD_MATERIAL_ID = ?;";
     $result = db_query($sql, array($_POST['solicitud_material_id']));
     echo json_encode($result);
 }
 
 
-function obtenerDureza(){
+function obtenerDureza()
+{
     $sql = "SELECT * FROM DUREZA;";
     $result = db_query($sql);
     echo json_encode($result);
 }
 
-function obtenerPedidoId(){
+function obtenerPedidoId()
+{
     $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, CANTIDAD, URGENTE
         FROM PRODUCCION 
         WHERE PEDIDO_ID = ?;";
@@ -649,7 +654,8 @@ function obtenerPedidoId(){
     echo json_encode($result);
 }
 
-function obtenerPedidoAlimentarId(){
+function obtenerPedidoAlimentarId()
+{
     $sql = "SELECT ID AS PROD_ID, SUELA_ID, SERIE_ID, COLOR_ID, RESTANTE, URGENTE
         FROM PRODUCCION 
         WHERE PEDIDO_ID = ?;";
@@ -658,13 +664,15 @@ function obtenerPedidoAlimentarId(){
 }
 
 
-function obtenerPedidos(){
+function obtenerPedidos()
+{
     $sql = "SELECT * FROM PEDIDOS;";
     $result = db_query($sql);
     echo json_encode($result);
 }
 
-function obtenerPedidosPendientes(){
+function obtenerPedidosPendientes()
+{
     $sql = "SELECT PED.*, PRI.TIPO_PRIORIDAD, CLI.ID AS CLIENTE_ID, CLI.TIPO AS CLIENTE_TIPO, CLI.NOMBRE AS CLIENTE_NOMBRE 
             FROM PEDIDOS PED 
                 JOIN CLIENTES CLI 
@@ -676,22 +684,43 @@ function obtenerPedidosPendientes(){
     echo json_encode($result);
 }
 
-function obtenerPedidosParaImprimir(){
+function obtenerMisPedidos()
+{
+
+    $user_name = $_GET['user_name'];
+    $user_email = $_GET['user_email'];
+
+    $sql = "SELECT PED.*, PRI.TIPO_PRIORIDAD, CLI.ID AS CLIENTE_ID, CLI.TIPO AS CLIENTE_TIPO, CLI.NOMBRE AS CLIENTE_NOMBRE 
+            FROM PEDIDOS PED 
+                JOIN CLIENTES CLI 
+                    ON PED.CLIENTE_ID = CLI.ID
+                JOIN PRIORIDAD PRI
+                    ON PRI.ID = PED.PRIORIDAD_ID 
+            WHERE PED.ESTADO NOT IN ('COMPLETADO') 
+                AND CLI.NOMBRE = ?
+                AND CLI.CORREO = ? ;";
+    $result = db_query($sql, array($user_name, $user_email));
+    echo json_encode($result);
+}
+
+function obtenerPedidosParaImprimir()
+{
 
     // Method => Group By
-    function group_by($key, $data) {
+    function group_by($key, $data)
+    {
         $result = array();
         $final_data = array();
-    
-        foreach($data as $val) {
-            if(array_key_exists($key, $val)){
+
+        foreach ($data as $val) {
+            if (array_key_exists($key, $val)) {
                 $result[$val[$key]][] = $val;
-            }else{
+            } else {
                 $result[""][] = $val;
             }
         }
 
-        foreach($result as $key => $val) {
+        foreach ($result as $key => $val) {
             $tallas = array_column($val, null, 'TALLA');
             $formatted = (object) [
                 'MARCA' => $val[0]['MARCA'],
@@ -722,7 +751,7 @@ function obtenerPedidosParaImprimir(){
 
         // Destructuracion de los elementos
         extract($value);
-      
+
         $sql = "SELECT PROD.SERIE_ID, SUE.MARCA, COL.COLOR,  SUE.TALLA, PROD.CANTIDAD
         FROM PRODUCCION PROD
             JOIN SUELAS SUE 
@@ -737,28 +766,28 @@ function obtenerPedidosParaImprimir(){
 
         // Anadimos ID, Nombre, Fecha Creacion y Estado en todos los elementos.
         foreach ($orderGrouped as $key => $val) {
-            $orderGrouped[$key]->PEDIDO_ID = $PEDIDO_ID; 
-            $orderGrouped[$key]->NOMBRE = $NOMBRE; 
-            $orderGrouped[$key]->FECHA_CREACION = $FECHA_CREACION; 
-            $orderGrouped[$key]->ESTADO = $ESTADO; 
+            $orderGrouped[$key]->PEDIDO_ID = $PEDIDO_ID;
+            $orderGrouped[$key]->NOMBRE = $NOMBRE;
+            $orderGrouped[$key]->FECHA_CREACION = $FECHA_CREACION;
+            $orderGrouped[$key]->ESTADO = $ESTADO;
         }
 
         // Pusheamos los resultados obtenidos.
         array_push($result, ...$orderGrouped);
-
     }
 
     echo json_encode($result);
-
 }
 
-function obtenerPrioridades(){
+function obtenerPrioridades()
+{
     $sql = "SELECT * FROM PRIORIDAD ORDER BY ID ASC;";
     $result = db_query($sql);
     echo json_encode($result);
 }
 
-function obtenerPedidosEnProceso(){
+function obtenerPedidosEnProceso()
+{
     $sql = "SELECT P.*, C.ID AS CLIENTE_ID, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE 
         FROM PEDIDOS P 
             JOIN CLIENTES C 
@@ -768,7 +797,8 @@ function obtenerPedidosEnProceso(){
     echo json_encode($result);
 }
 
-function obtenerPedidosParaEmpaquetar(){
+function obtenerPedidosParaEmpaquetar()
+{
     $sql = "SELECT PROD.PEDIDO_ID AS PEDIDO_ID, CLI.NOMBRE, SUE.MARCA AS MARCA, COL.COLOR AS COLOR, SUE.TALLA AS TALLA, PROD.CANTIDAD AS CANTIDAD, SUE.CAP_EMPAQUETADO AS CAP_EMPAQUETADO
         FROM PRODUCCION PROD
             LEFT JOIN SUELAS SUE
@@ -780,11 +810,12 @@ function obtenerPedidosParaEmpaquetar(){
             LEFT JOIN CLIENTES CLI
                 ON CLI.ID = PED.CLIENTE_ID
         WHERE PROD.PEDIDO_ID = ?;";
-    $result = db_query($sql, array($_POST['pedido_id'],$_POST['pedido_id']));
+    $result = db_query($sql, array($_POST['pedido_id'], $_POST['pedido_id']));
     echo json_encode($result);
 }
 
-function obtenerVentasCulminadas(){
+function obtenerVentasCulminadas()
+{
     $sql = "SELECT P.*, C.TIPO AS CLIENTE_TIPO, C.NOMBRE AS CLIENTE_NOMBRE 
                 FROM PEDIDOS P 
                     JOIN CLIENTES C 
@@ -794,7 +825,8 @@ function obtenerVentasCulminadas(){
     echo json_encode($result);
 }
 
-function obtenerAuditoriaControl(){
+function obtenerAuditoriaControl()
+{
     $sql = "SELECT AC.*, CONCAT (SUE.MARCA, ' '  , SUE.TALLA) AS REFERENCIA, PROD.ESTADO FROM AUDITORIA_CONTROL AC
                     JOIN PRODUCCION PROD
                         ON AC.PRODUCCION_ID = PROD.ID
