@@ -719,7 +719,6 @@ function obtenerPedidosParaImprimir()
                 $result[""][] = $val;
             }
         }
-
         foreach ($result as $key => $val) {
             $tallas = array_column($val, null, 'TALLA');
             $formatted = (object) [
@@ -729,7 +728,6 @@ function obtenerPedidosParaImprimir()
             ];
             array_push($final_data, $formatted);
         }
-
         return $final_data;
     }
 
@@ -752,7 +750,7 @@ function obtenerPedidosParaImprimir()
         // Destructuracion de los elementos
         extract($value);
 
-        $sql = "SELECT PROD.SERIE_ID, SUE.MARCA, COL.COLOR,  SUE.TALLA, PROD.CANTIDAD
+        $sql = "SELECT PROD.SERIE_ID, CONCAT(SUE.MARCA, ' ',COL.COLOR) AS REFERENCIA, SUE.MARCA, COL.COLOR, SUE.TALLA, PROD.CANTIDAD
         FROM PRODUCCION PROD
             JOIN SUELAS SUE 
                 ON PROD.SUELA_ID = SUE.ID
@@ -762,7 +760,7 @@ function obtenerPedidosParaImprimir()
         $order = db_query($sql, array($PEDIDO_ID));
 
         // Spliteamos la orden 
-        $orderGrouped = group_by("MARCA", $order);
+        $orderGrouped = group_by("REFERENCIA", $order);
 
         // Anadimos ID, Nombre, Fecha Creacion y Estado en todos los elementos.
         foreach ($orderGrouped as $key => $val) {

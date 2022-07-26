@@ -43,37 +43,37 @@ if (!in_array($_SESSION['ROL'], $roles_permitidos)) {
                 <div class="form-group col-lg-6 col-md-6">
                     <label for="añadirNombre">Nombre</label>
                     <select id="añadirNombre" name="nombre" class="form-control dropdown-select2" required>
-                        <?php
-
-                        // 1. Seleccionamos todos los clientes.
-                        $sql = "SELECT * FROM CLIENTES WHERE ACTIVO = 'SI';";
-                        $result = db_query($sql);
-
-                        if (empty($result)) {
-                            echo "<option value=''>No hay clientes disponibles.</option>";
+                    <?php
+                    
+                        list('ROL' => $user_role, 'NOMBRE' => $user_name, 'CORREO' => $user_email) = $_SESSION;
+                
+                        if ($user_role === 'CLIENTE') {
+                            $sql = "SELECT * FROM CLIENTES WHERE ACTIVO = 'SI' AND NOMBRE = ? AND CORREO = ?;";
+                            $result = db_query($sql, array($user_name, $user_email));
+                        } else {
+                            $sql = "SELECT * FROM CLIENTES WHERE ACTIVO = 'SI';";
+                            $result = db_query($sql);
                         }
 
-                        // 2. Obtenemos el loggedUser.
-                        foreach ($result as $cliente) {
-                            $options = "";
-                            $user_name = strtoupper($_SESSION['NOMBRE']);
-                            $user_email = strtoupper($_SESSION['CORREO']);
-
-                            $client_name = strtoupper($cliente['NOMBRE']);
-                            $client_email = strtoupper($cliente['CORREO']);
-
-                            if ($user_name == $client_name && $user_email == $client_email) {
-                                $options = "<option value='{$cliente['ID']}'>" . mb_convert_case($cliente['NOMBRE'], MB_CASE_TITLE, "UTF-8") . " - {$cliente['DOCUMENTO']} - {$cliente['DOCUMENTO_NRO']}</option>";
-                                break;
-                            } else {
-                                $options .= "<option value='{$cliente['ID']}'>" . mb_convert_case($cliente['NOMBRE'], MB_CASE_TITLE, "UTF-8") . " - {$cliente['DOCUMENTO']} - {$cliente['DOCUMENTO_NRO']}</option>";
-                            }
+                        if (empty($result)){
+                            echo "<option value=''>No hay clientes disponibles.</option>";           
                         }
+   
+                        foreach ($result as $client) {
 
-                        // 3. Imprimimos el output.
-                        echo $options;
+                            list(
+                                'ID' => $client_id,
+                                'NOMBRE' => $client_name,
+                                'CORREO' => $client_email,
+                                'DOCUMENTO' => $client_doctype,
+                                'DOCUMENTO_NRO' => $client_docnum,
+                            ) = $client;
 
-                        ?>
+                            echo "<option value='{$client_id}'>" . mb_convert_case($client_name, MB_CASE_TITLE, "UTF-8") . " - {$client_doctype} - {$client_docnum}</option>";
+                            
+                        }
+                    
+                    ?>
                     </select>
                 </div>
 
