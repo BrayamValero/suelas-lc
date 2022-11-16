@@ -60,14 +60,12 @@ if (!in_array($rol, $roles_permitidos)) {
 
             const result = JSON.parse(data);
 
+            console.log(result);
+
             // Defining Custom Column Data
             const columns = [{
                     data: "PEDIDO_ID",
-                    title: '#'
-                },
-                {
-                    data: "NOMBRE",
-                    title: 'CLIENTE'
+                    title: 'CODIGO'
                 },
                 {
                     data: "FECHA_CREACION",
@@ -84,8 +82,16 @@ if (!in_array($rol, $roles_permitidos)) {
                     }
                 },
                 {
+                    data: "NOMBRE",
+                    title: 'CLIENTE'
+                },
+                {
+                    data: "ID",
+                    title: 'ID CLIENTE'
+                },
+                {
                     data: "MARCA",
-                    title: 'MARCA'
+                    title: 'REFERENCIA'
                 },
                 {
                     data: "COLOR",
