@@ -86,7 +86,7 @@ if (!in_array($rol, $roles_permitidos)) {
                     title: 'CLIENTE'
                 },
                 {
-                    data: "ID",
+                    data: "DOCUMENTO_NRO",
                     title: 'ID CLIENTE'
                 },
                 {

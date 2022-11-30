@@ -735,7 +735,7 @@ function obtenerPedidosParaImprimir()
     $result = array();
 
     // Obtenemos TODOS los pedidos.
-    $sql = "SELECT PED.ID AS PEDIDO_ID, CLI.ID, CLI.NOMBRE, PED.CREATED_AT AS FECHA_CREACION, PED.ESTADO
+    $sql = "SELECT PED.ID AS PEDIDO_ID, CLI.DOCUMENTO_NRO, CLI.NOMBRE, PED.CREATED_AT AS FECHA_CREACION, PED.ESTADO
         FROM PEDIDOS PED 
             JOIN CLIENTES CLI 
                 ON PED.CLIENTE_ID = CLI.ID
@@ -765,7 +765,7 @@ function obtenerPedidosParaImprimir()
         // Anadimos ID, Nombre, Fecha Creacion y Estado en todos los elementos.
         foreach ($orderGrouped as $key => $val) {
             $orderGrouped[$key]->PEDIDO_ID = $PEDIDO_ID;
-            $orderGrouped[$key]->ID = $ID;
+            $orderGrouped[$key]->DOCUMENTO_NRO = $DOCUMENTO_NRO;
             $orderGrouped[$key]->NOMBRE = $NOMBRE;
             $orderGrouped[$key]->FECHA_CREACION = $FECHA_CREACION;
             $orderGrouped[$key]->ESTADO = $ESTADO;
