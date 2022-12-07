@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if(empty($check)){
 
             $sql = "INSERT INTO COLOR VALUES(NULL, ?, ?);";
-            db_query($sql, array($color, $codigo));
+            db_query($sql, array(ucfirst(strtolower($color)), $codigo));
 
             $sql = "SELECT MAX(ID) AS ID FROM COLOR;";
             $id = db_query($sql)[0]['ID'];

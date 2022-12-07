@@ -38,17 +38,13 @@ if (!in_array($rol, $roles_permitidos)) {
         </table>
     </div>
     <!-- Fin de Tabla -->
-
-    <!-- Pagination -->
-    <div class='tablePagination'>
-
-    </div>
-
+    
 </div>
 <!-- / Fin del contenido -->
 
 <!-- Inline JavaScript -->
 <script>
+
     var tabla;
 
     // DATATABLES => Mostrando la tabla PEDIDOS_PENDIENTES.
@@ -56,16 +52,16 @@ if (!in_array($rol, $roles_permitidos)) {
         type: 'get',
         url: 'backend/api/utils.php?fun=obtenerPedidosParaImprimir',
         async: true,
+        deferRender: true, // By enabling this, the table will only render 10 rows.
         success: (data) => {
 
             const result = JSON.parse(data);
 
-            console.log(result);
-
             // Defining Custom Column Data
-            const columns = [{
+            const columns = [
+                {
                     data: "PEDIDO_ID",
-                    title: 'CODIGO'
+                    title: 'CODIGO',
                 },
                 {
                     data: "FECHA_CREACION",
@@ -77,8 +73,7 @@ if (!in_array($rol, $roles_permitidos)) {
                             month: '2-digit',
                             year: 'numeric',
                         });
-                        const result = dateFormatter.format(date);
-                        return result;
+                        return dateFormatter.format(date);
                     }
                 },
                 {
@@ -99,22 +94,20 @@ if (!in_array($rol, $roles_permitidos)) {
                 },
             ];
 
-            // Pushing 0 as Aplique...
-            columns.push({
-                data: "TALLAS",
-                title: "0",
-                render: (val, type, row) => {
-                    return val[0] ? val[0]['CANTIDAD'] : null;
-                }
-            })
-
-            // Printing from 21 to 44 (as needed)
-            for (let i = 21; i < 44; i++) {
+            // Printing from 21 to 45 (as needed)
+            for (let i = 21; i < 45; i++) {
                 columns.push({
                     data: "TALLAS",
                     title: i.toString(),
+                    sortable: false,
+                    searchable: false,
                     render: (val, type, row) => {
-                        return val[i] ? val[i]['CANTIDAD'] : null;
+                        // Only for display purpose
+                        if(type === "display") {
+                            return val[i] ? val[i]['CANTIDAD'] : null;
+                        }
+                        // Search, order and type can use the original data
+                        return val;
                     }
                 })
             }
@@ -137,8 +130,10 @@ if (!in_array($rol, $roles_permitidos)) {
                     searchable: true,
                     orderable: true,
                     className: "align-middle",
-                    "targets": "_all"
-                }],
+                    "targets": "_all",
+           
+                },
+            ],
                 "language": {
                     "url": "datatables/Spanish.json"
                 },
