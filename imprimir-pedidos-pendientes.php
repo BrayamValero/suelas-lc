@@ -88,8 +88,8 @@ fetch('backend/api/utils.php?fun=obtenerPedidosParaImprimir')
             },
         ];
 
-        // Printing from 21 to 45 (as needed)
-        for (let i = 21; i < 45; i++) {
+        // Printing from 21 to 51 (as needed)
+        for (let i = 21; i < 51; i++) {
             columns.push({
                 data: "TALLAS",
                 title: i.toString(),
